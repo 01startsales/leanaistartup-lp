@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>リーンAIスタートアップ講座 | 案F: Sun* Inspired</title>
+<meta name="description" content="12週間で、生成AIを武器に新規事業をPMFまで導く実践プログラム。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --red: #FF3C00;
+  --red-dark: #E03500;
+  --black: #1A1A1A;
+  --black-deep: #111111;
+  --body: #444444;
+  --muted: #999999;
+  --light: #CCCCCC;
+  --border: #E8E8E8;
+  --bg: #FFFFFF;
+  --bg-alt: #F8F8F8;
+  --ff-jp: 'Noto Sans JP', sans-serif;
+  --ff-en: 'Sora', sans-serif;
+  --max-w: 1100px;
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: var(--ff-jp); font-weight: 400; font-size: 15px; color: var(--body); background: var(--bg); line-height: 1.9; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 40px; }
+@media (max-width: 640px) { .wrap { padding: 0 24px; } }
+
+/* ===== NAV ===== */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.96); backdrop-filter: blur(20px); height: 72px; }
+.nav__inner { max-width: var(--max-w); margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.nav__logo { font-family: var(--ff-en); font-weight: 800; font-size: 1.1rem; color: var(--red); letter-spacing: -0.02em; }
+.nav__links { list-style: none; display: flex; align-items: center; gap: 32px; }
+.nav__links a { font-family: var(--ff-en); font-size: 0.8rem; font-weight: 500; color: var(--muted); transition: color var(--transition); }
+.nav__links a:hover { color: var(--black); }
+.nav__contact { display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 50%; background: var(--red); color: var(--bg); font-family: var(--ff-en); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.04em; position: fixed; top: -14px; right: 32px; z-index: 101; transition: background var(--transition), transform var(--transition); padding-top: 14px; }
+.nav__contact:hover { background: var(--red-dark); transform: scale(1.05); }
+.nav__ham { display: none; background: none; border: none; cursor: pointer; }
+.nav__ham span { display: block; width: 24px; height: 1.5px; background: var(--black); margin: 6px 0; }
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .nav__ham { display: block; }
+  .nav__contact { width: 72px; height: 72px; top: -8px; right: 16px; font-size: 0.65rem; padding-top: 8px; }
+  .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(255,255,255,0.98); padding: 32px 40px; gap: 20px; }
+}
+
+/* ===== HERO ===== */
+.hero { padding: 200px 0 120px; text-align: center; min-height: 100vh; display: flex; align-items: center; }
+.hero__tagline { font-family: var(--ff-en); font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 300; color: var(--red); line-height: 1.3; letter-spacing: -0.02em; margin-bottom: 32px; }
+.hero__main { font-family: var(--ff-jp); font-weight: 900; font-size: clamp(1.4rem, 3.5vw, 2.4rem); color: var(--black); line-height: 1.6; margin-bottom: 20px; }
+.hero__sub { font-size: 1rem; color: var(--muted); line-height: 2; max-width: 520px; margin: 0 auto 48px; }
+.hero__cta-wrap { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; align-items: center; }
+.hero__cta-circle { display: flex; align-items: center; justify-content: center; width: 160px; height: 160px; border-radius: 50%; background: var(--red); color: var(--bg); font-family: var(--ff-jp); font-weight: 700; font-size: 0.85rem; line-height: 1.5; text-align: center; transition: all var(--transition); }
+.hero__cta-circle:hover { background: var(--red-dark); transform: scale(1.06); }
+.hero__cta-text { font-size: 0.85rem; color: var(--muted); }
+.hero__cta-text a { color: var(--black); font-weight: 500; border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: border-color var(--transition); }
+.hero__cta-text a:hover { border-color: var(--black); }
+
+/* ===== DATA SECTION ===== */
+.data-section { padding: 120px 0; }
+.data-row { display: flex; align-items: baseline; gap: 40px; padding: 40px 0; border-top: 1px solid var(--border); }
+.data-row:last-child { border-bottom: 1px solid var(--border); }
+.data-label { font-family: var(--ff-en); font-size: 0.8rem; font-weight: 600; color: var(--red); min-width: 140px; letter-spacing: 0.02em; }
+.data-value { font-family: var(--ff-en); font-weight: 300; font-size: clamp(3rem, 8vw, 5.5rem); color: var(--red); line-height: 1; letter-spacing: -0.03em; }
+.data-value small { font-size: 0.5em; }
+@media (max-width: 640px) {
+  .data-row { flex-direction: column; gap: 8px; padding: 28px 0; }
+  .data-label { min-width: auto; }
+}
+
+/* ===== SEC ===== */
+.sec { padding: clamp(80px, 14vw, 160px) 0; }
+.sec__label { font-family: var(--ff-en); font-size: 0.8rem; font-weight: 600; color: var(--red); margin-bottom: 24px; }
+.sec__h2 { font-family: var(--ff-jp); font-weight: 900; font-size: clamp(1.5rem, 3.5vw, 2.4rem); color: var(--black); line-height: 1.6; margin-bottom: 16px; }
+.sec__h2-en { font-family: var(--ff-en); font-weight: 300; font-size: clamp(2rem, 5vw, 3.6rem); color: var(--red); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 32px; }
+.sec__lead { font-size: 0.95rem; color: var(--muted); max-width: 560px; line-height: 2; }
+.sec__header { margin-bottom: 64px; }
+
+/* ===== PAIN ===== */
+.pain-item { padding: 32px 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 48px 1fr; gap: 24px; align-items: start; }
+.pain-item:last-child { border-bottom: 1px solid var(--border); }
+.pain-num { font-family: var(--ff-en); font-size: 0.75rem; font-weight: 600; color: var(--red); padding-top: 4px; }
+.pain-body {}
+.pain-title { font-weight: 700; font-size: 1.05rem; color: var(--black); margin-bottom: 6px; line-height: 1.6; }
+.pain-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.9; }
+.pain-resolve { margin-top: 48px; padding: 32px 40px; text-align: center; border: 1px solid var(--border); border-radius: 80px; }
+.pain-resolve p { font-weight: 700; color: var(--black); font-size: 1rem; }
+
+/* ===== PHASES ===== */
+.phases-list {}
+.phase-row { display: grid; grid-template-columns: 120px 200px 1fr; gap: 32px; align-items: baseline; padding: 36px 0; border-top: 1px solid var(--border); }
+.phase-row:last-child { border-bottom: 1px solid var(--border); }
+.phase-num { font-family: var(--ff-en); font-weight: 300; font-size: 3rem; color: var(--red); line-height: 1; }
+.phase-title { font-weight: 700; font-size: 1.1rem; color: var(--black); line-height: 1.5; }
+.phase-week { font-family: var(--ff-en); font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+.phase-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.9; }
+@media (max-width: 768px) {
+  .phase-row { grid-template-columns: 60px 1fr; gap: 16px; }
+  .phase-desc { grid-column: span 2; padding-left: 76px; margin-top: -8px; }
+  .phase-num { font-size: 2rem; }
+}
+@media (max-width: 480px) {
+  .phase-row { grid-template-columns: 1fr; gap: 4px; }
+  .phase-desc { grid-column: 1; padding-left: 0; margin-top: 4px; }
+}
+
+/* ===== AUTHORITY ===== */
+.auth { display: grid; grid-template-columns: 240px 1fr; gap: 56px; align-items: start; }
+.auth__photo { width: 240px; height: 300px; background: var(--bg-alt); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.85rem; }
+.auth__name { font-weight: 900; font-size: 1.5rem; color: var(--black); }
+.auth__role { font-size: 0.85rem; color: var(--red); font-weight: 500; margin: 4px 0 20px; }
+.auth__creds { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.auth__cred { font-size: 0.75rem; color: var(--muted); padding: 4px 12px; border: 1px solid var(--border); border-radius: 40px; }
+.auth__msg { font-size: 0.95rem; color: var(--body); line-height: 2.1; }
+.auth__quote { margin-top: 20px; padding-left: 20px; border-left: 2px solid var(--red); font-size: 0.9rem; color: var(--muted); line-height: 2; }
+@media (max-width: 768px) {
+  .auth { grid-template-columns: 1fr; gap: 32px; }
+  .auth__photo { width: 160px; height: 160px; margin: 0 auto; }
+}
+
+/* ===== PRICING ===== */
+.pricing-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.price-col { padding: 40px 32px; border-right: 1px solid var(--border); transition: background var(--transition); }
+.price-col:last-child { border-right: none; }
+.price-col:hover { background: var(--bg-alt); }
+.price-col--rec { background: var(--bg-alt); }
+.price-col__badge { display: inline-block; font-family: var(--ff-en); font-size: 0.6rem; font-weight: 700; color: var(--bg); background: var(--red); padding: 3px 12px; border-radius: 40px; letter-spacing: 0.08em; margin-bottom: 16px; }
+.price-col__name { font-family: var(--ff-en); font-size: 0.75rem; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; }
+.price-col__price { font-family: var(--ff-en); font-weight: 300; font-size: clamp(2rem, 5vw, 3.2rem); color: var(--red); line-height: 1; letter-spacing: -0.02em; }
+.price-col__price small { font-size: 0.4em; color: var(--muted); font-weight: 400; }
+.price-col__note { font-size: 0.8rem; color: var(--muted); margin: 8px 0 24px; }
+.price-col__features { list-style: none; font-size: 0.8rem; color: var(--body); }
+.price-col__features li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.price-col__features li:last-child { border-bottom: none; }
+.price-col__cta { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; padding: 14px 20px; background: var(--black-deep); color: var(--bg); font-family: var(--ff-jp); font-weight: 700; font-size: 0.85rem; border-radius: 60px; transition: background var(--transition); }
+.price-col__cta::after { content: '>'; font-family: var(--ff-en); font-size: 1rem; }
+.price-col__cta:hover { background: var(--red); }
+.price-col--rec .price-col__cta { background: var(--red); }
+.price-col--rec .price-col__cta:hover { background: var(--red-dark); }
+.pricing-note { text-align: center; margin-top: 40px; font-size: 0.8rem; color: var(--muted); }
+@media (max-width: 768px) {
+  .pricing-cols { grid-template-columns: 1fr; }
+  .price-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .price-col:last-child { border-bottom: none; }
+}
+
+/* ===== TRIAL ===== */
+.trial-sec { padding: clamp(80px, 14vw, 160px) 0; text-align: center; background: var(--bg-alt); }
+.trial-sec h3 { font-weight: 900; font-size: clamp(1.3rem, 3vw, 2rem); color: var(--black); margin-bottom: 12px; }
+.trial-sec p { font-size: 0.95rem; color: var(--muted); margin-bottom: 40px; line-height: 2; }
+.trial-circle { display: inline-flex; align-items: center; justify-content: center; width: 180px; height: 180px; border-radius: 50%; background: var(--red); color: var(--bg); font-family: var(--ff-jp); font-weight: 700; font-size: 0.9rem; line-height: 1.6; text-align: center; transition: all var(--transition); }
+.trial-circle:hover { background: var(--red-dark); transform: scale(1.06); }
+.trial-trust { display: flex; justify-content: center; gap: 32px; margin-top: 32px; }
+.trial-trust span { font-size: 0.8rem; color: var(--muted); }
+
+/* ===== FINAL ===== */
+.final { padding: clamp(100px, 16vw, 200px) 0; text-align: center; }
+.final__en { font-family: var(--ff-en); font-weight: 300; font-size: clamp(2.4rem, 6vw, 4.5rem); color: var(--red); line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 16px; }
+.final__jp { font-weight: 900; font-size: clamp(1.2rem, 2.5vw, 1.6rem); color: var(--black); margin-bottom: 48px; }
+.final__cta-wrap { display: flex; justify-content: center; gap: 24px; align-items: center; flex-wrap: wrap; }
+.final__circle { display: flex; align-items: center; justify-content: center; width: 200px; height: 200px; border-radius: 50%; background: var(--red); color: var(--bg); font-family: var(--ff-jp); font-weight: 700; font-size: 0.95rem; line-height: 1.5; text-align: center; transition: all var(--transition); }
+.final__circle:hover { background: var(--red-dark); transform: scale(1.06); }
+.final__sub-link { font-size: 0.85rem; color: var(--muted); }
+.final__sub-link a { color: var(--black); font-weight: 500; border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: border-color var(--transition); }
+.final__sub-link a:hover { border-color: var(--black); }
+.final__trust { margin-top: 40px; font-size: 0.75rem; color: var(--light); letter-spacing: 0.04em; }
+
+/* ===== FOOTER ===== */
+.footer { padding: 48px 0; border-top: 1px solid var(--border); }
+.footer__inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer__links { display: flex; gap: 28px; flex-wrap: wrap; }
+.footer__links a { font-size: 0.75rem; color: var(--muted); transition: color var(--transition); }
+.footer__links a:hover { color: var(--black); }
+.footer__copy { font-family: var(--ff-en); font-size: 0.7rem; color: var(--light); }
+
+/* ===== REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.rd1 { transition-delay: 0.06s; }
+.rd2 { transition-delay: 0.12s; }
+.rd3 { transition-delay: 0.18s; }
+.rd4 { transition-delay: 0.24s; }
+
+/* ===== STICKY (mobile) ===== */
+.sticky { display: none; }
+@media (max-width: 768px) {
+  .sticky { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: var(--bg); border-top: 1px solid var(--border); padding: 12px 16px; gap: 10px; }
+  .sticky__btn { flex: 1; text-align: center; padding: 12px; font-weight: 700; font-size: 0.85rem; border-radius: 60px; transition: background var(--transition); }
+  .sticky__btn--ghost { color: var(--black); border: 1px solid var(--border); }
+  .sticky__btn--fill { background: var(--red); color: var(--bg); }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="#" class="nav__logo">LeanAI*</a>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="#phases">Curriculum</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+    <button class="nav__ham" id="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<a href="#pricing" class="nav__contact">Apply<br>Now</a>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="hero__tagline">Lean AI Startup Program.</div>
+      <h1 class="hero__main">12週間で、生成AIを武器に<br>新規事業をPMFまで導く</h1>
+      <p class="hero__sub">アイデアがあるのに動き出せない。<br>そのループを抜け出す、AI時代の実践プログラム。</p>
+      <div class="hero__cta-wrap">
+        <a href="#" class="hero__cta-circle">月額¥4,980で<br>始める</a>
+        <div class="hero__cta-text">または <a href="trial.html">Week 1を無料で体験する</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA -->
+<section class="data-section">
+  <div class="wrap">
+    <div class="data-row reveal">
+      <div class="data-label">Participants</div>
+      <div class="data-value">10,000<small>+</small></div>
+    </div>
+    <div class="data-row reveal rd1">
+      <div class="data-label">Videos</div>
+      <div class="data-value">161</div>
+    </div>
+    <div class="data-row reveal rd2">
+      <div class="data-label">Total Hours</div>
+      <div class="data-value">42<small>h</small></div>
+    </div>
+    <div class="data-row reveal rd3">
+      <div class="data-label">Program</div>
+      <div class="data-value">12<small>weeks</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="sec" id="pain">
+  <div class="wrap">
+    <div class="sec__header reveal">
+      <div class="sec__label">Problem</div>
+      <div class="sec__h2-en">What's stopping you?</div>
+      <h2 class="sec__h2">こんな壁にぶつかっていませんか？</h2>
+    </div>
+    <div>
+      <div class="pain-item reveal rd1">
+        <div class="pain-num">01</div>
+        <div class="pain-body">
+          <div class="pain-title">ツールは使えるが、事業にならない</div>
+          <p class="pain-desc">生成AIでコンテンツは作れる。でも、それが売上にどう繋がるのかが見えない。</p>
+        </div>
+      </div>
+      <div class="pain-item reveal rd2">
+        <div class="pain-num">02</div>
+        <div class="pain-body">
+          <div class="pain-title">アイデアの検証方法がわからない</div>
+          <p class="pain-desc">思いつくアイデアはある。でも、市場に出す前に「筋が良いか」を確かめる方法を知らない。</p>
+        </div>
+      </div>
+      <div class="pain-item reveal rd3">
+        <div class="pain-num">03</div>
+        <div class="pain-body">
+          <div class="pain-title">PMFの具体的な進め方がわからない</div>
+          <p class="pain-desc">CPF→PSF→PMFの概念は知っている。でも、実際に何をどうやればいいのかが見えない。</p>
+        </div>
+      </div>
+      <div class="pain-item reveal rd4">
+        <div class="pain-num">04</div>
+        <div class="pain-body">
+          <div class="pain-title">情報がバラバラで実践に落ちない</div>
+          <p class="pain-desc">リーンスタートアップ、デザイン思考、生成AI活用。それぞれは理解しているが、統合して使えない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="pain-resolve reveal">
+      <p>このプログラムは、その全てを12週間で解決するために設計されています。</p>
+    </div>
+  </div>
+</section>
+
+<!-- PHASES -->
+<section class="sec" id="phases" style="background: var(--bg-alt);">
+  <div class="wrap">
+    <div class="sec__header reveal">
+      <div class="sec__label">Curriculum</div>
+      <div class="sec__h2-en">5 Phases / 12 Weeks</div>
+      <h2 class="sec__h2">CPF→PSF→PMFを<br>12週間で一気通貫で体験する</h2>
+      <p class="sec__lead">161動画・約42時間。理論だけでなく、実際に事業仮説を検証しながら学ぶ唯一の講座。</p>
+    </div>
+    <div class="phases-list">
+      <div class="phase-row reveal">
+        <div class="phase-num">01</div>
+        <div class="phase-title">基礎設計<div class="phase-week">Week 1 – 2</div></div>
+        <div class="phase-desc">起業家マインドセット、ビジネスモデル設計、リーンキャンバス作成</div>
+      </div>
+      <div class="phase-row reveal rd1">
+        <div class="phase-num">02</div>
+        <div class="phase-title">顧客課題の発見（CPF）<div class="phase-week">Week 3 – 5</div></div>
+        <div class="phase-desc">カスタマー開発、インタビュー設計、課題仮説の検証</div>
+      </div>
+      <div class="phase-row reveal rd2">
+        <div class="phase-num">03</div>
+        <div class="phase-title">ソリューション検証（PSF）<div class="phase-week">Week 6 – 8</div></div>
+        <div class="phase-desc">MVPr構築、マフィアオファー、ソリューション仮説の検証</div>
+      </div>
+      <div class="phase-row reveal rd3">
+        <div class="phase-num">04</div>
+        <div class="phase-title">市場適合（PMF）<div class="phase-week">Week 9 – 11</div></div>
+        <div class="phase-desc">トラクション獲得、チャネル検証、ユニットエコノミクス設計</div>
+      </div>
+      <div class="phase-row reveal rd4">
+        <div class="phase-num">05</div>
+        <div class="phase-title">スケール準備<div class="phase-week">Week 12</div></div>
+        <div class="phase-desc">成長エンジン構築、組織設計、次の資金調達に向けた準備</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTHORITY -->
+<section class="sec" id="authority">
+  <div class="wrap">
+    <div class="sec__header reveal">
+      <div class="sec__label">Instructor</div>
+      <div class="sec__h2-en">Who teaches this?</div>
+    </div>
+    <div class="auth reveal">
+      <div class="auth__photo">講師写真</div>
+      <div>
+        <div class="auth__name">芝先 恵介</div>
+        <div class="auth__role">株式会社01START 代表取締役</div>
+        <div class="auth__creds">
+          <span class="auth__cred">MBA（グロービス）</span>
+          <span class="auth__cred">ITベンチャー創業・売却</span>
+          <span class="auth__cred">累計受講者1万人+</span>
+          <span class="auth__cred">企業研修多数</span>
+          <span class="auth__cred">中小企業庁アドバイザー</span>
+        </div>
+        <p class="auth__msg">12年間の起業・失敗・再挑戦から得た知見を、生成AIの力を使って12週間で体験できる形に凝縮しました。</p>
+        <div class="auth__quote">「12週間後に手元に残るのは"知識"ではなく"検証結果"です。あなた自身の事業仮説を実際に検証しながら進めるプログラムです。」</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing" style="background: var(--bg-alt);">
+  <div class="wrap">
+    <div class="sec__header reveal" style="text-align: center;">
+      <div class="sec__label" style="text-align: center;">Pricing</div>
+      <div class="sec__h2-en" style="text-align: center;">Simple plans.</div>
+    </div>
+    <div class="pricing-cols reveal">
+      <div class="price-col">
+        <div class="price-col__name">Monthly</div>
+        <div class="price-col__price">&#165;9,800<small>/月</small></div>
+        <div class="price-col__note">いつでも解約可能</div>
+        <ul class="price-col__features">
+          <li>全161動画（約42時間）</li>
+          <li>クイズ・演習</li>
+          <li>修了証発行</li>
+          <li>月1回ライブQ&A</li>
+          <li>28日間返金保証</li>
+        </ul>
+        <a href="#" class="price-col__cta">申し込む</a>
+      </div>
+      <div class="price-col price-col--rec">
+        <div class="price-col__badge">FOUNDING MEMBER</div>
+        <div class="price-col__name">Founding</div>
+        <div class="price-col__price">&#165;4,980<small>/月</small></div>
+        <div class="price-col__note">永久適用・先着20名限定</div>
+        <ul class="price-col__features">
+          <li>全161動画（約42時間）</li>
+          <li>クイズ・演習</li>
+          <li>修了証発行</li>
+          <li>月1回ライブQ&A</li>
+          <li>28日間返金保証</li>
+        </ul>
+        <a href="#" class="price-col__cta">この価格で始める</a>
+      </div>
+      <div class="price-col">
+        <div class="price-col__name">Annual</div>
+        <div class="price-col__price">&#165;98,000<small>/年</small></div>
+        <div class="price-col__note">2ヶ月分お得</div>
+        <ul class="price-col__features">
+          <li>全161動画（約42時間）</li>
+          <li>クイズ・演習</li>
+          <li>修了証発行</li>
+          <li>月1回ライブQ&A</li>
+          <li>28日間返金保証</li>
+        </ul>
+        <a href="#" class="price-col__cta">申し込む</a>
+      </div>
+    </div>
+    <p class="pricing-note reveal">5名以上の法人利用はお問い合わせください &mdash; support@01start.jp</p>
+  </div>
+</section>
+
+<!-- TRIAL -->
+<section class="trial-sec">
+  <div class="wrap reveal">
+    <h3>まず1週間、完全無料で体験してください</h3>
+    <p>Week 1（全15動画・約3.4時間）をクレジットカード不要で今すぐ。</p>
+    <a href="trial.html" class="trial-circle">Week 1を<br>無料で体験</a>
+    <div class="trial-trust">
+      <span>クレカ不要</span>
+      <span>自動課金なし</span>
+      <span>1分で登録</span>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <div class="wrap reveal">
+    <div class="final__en">Just start.</div>
+    <div class="final__jp">あとはやるだけです</div>
+    <div class="final__cta-wrap">
+      <a href="#" class="final__circle">月額¥4,980で<br>今すぐ始める</a>
+      <div class="final__sub-link"><a href="trial.html">Week 1を無料で体験する</a></div>
+    </div>
+    <p class="final__trust">28日間返金保証 &middot; いつでも解約OK &middot; ファウンディング価格は永久適用</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__inner">
+      <div class="footer__links">
+        <a href="trial.html">無料体験</a>
+        <a href="faq.html">よくある質問</a>
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">特定商取引法</a>
+      </div>
+      <div class="footer__copy">&copy; 2026 株式会社01START</div>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky">
+  <a href="trial.html" class="sticky__btn sticky__btn--ghost">無料体験</a>
+  <a href="#pricing" class="sticky__btn sticky__btn--fill">¥4,980/月で始める</a>
+</div>
+
+<script>
+const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+</script>
+</body>
+</html>
