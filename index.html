@@ -11,6 +11,31 @@
 <meta property="og:url" content="https://leanaistartup.jp">
 <meta name="twitter:card" content="summary_large_image">
 
+<!-- =============================================
+     Google Tag Manager (GTM)
+     TODO: 「GTM-XXXXXXX」を実際のGTMコンテナIDに置き換えてください
+     GA4はGTM経由で管理するため、直接のGA4タグは不要です
+     GTM管理画面: https://tagmanager.google.com/
+     ============================================= -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+
+<!-- =============================================
+     Microsoft Clarity
+     TODO: 「XXXXXXXXXX」を実際のClarityプロジェクトIDに置き換えてください
+     Clarity管理画面: https://clarity.microsoft.com/
+     ============================================= -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","XXXXXXXXXX");
+</script>
+
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2011,6 +2036,11 @@ h1, h2, h3 { font-family: var(--ff-display); line-height: 1.35; }
 </head>
 
 <body>
+
+<!-- Google Tag Manager (noscript) - TODO: 「GTM-XXXXXXX」を実際のGTMコンテナIDに置き換えてください -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- ========== NAVIGATION ========== -->
 <nav class="nav">
