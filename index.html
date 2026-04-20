@@ -8,21 +8,10 @@
 <!-- Prevent auto-scroll restoration on client-side JSX render -->
 <script>
   // ブラウザのスクロール位置自動復元を無効化（Client-side JSX による遅延レンダリング対策）
+  // 初回アクセス時の中段ジャンプを防ぐ。リロード時は自然なブラウザ挙動に任せる。
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  // ロード完了後、ハッシュがなければ必ずトップへ
-  window.addEventListener('load', function () {
-    if (!location.hash) {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    }
-  });
-  // React レンダリング完了後の位置補正（Babel standaloneのコンパイル完了タイミング）
-  document.addEventListener('DOMContentLoaded', function () {
-    if (!location.hash) {
-      window.scrollTo(0, 0);
-    }
-  });
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
