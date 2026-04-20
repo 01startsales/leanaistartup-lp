@@ -1,15 +1,10 @@
 function Curriculum() {
   const C = window.CONTENT.curriculum;
   const [open, setOpen] = useState(0);
-  const [paused, setPaused] = useState(false);
 
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => {
-      setOpen((o) => (o + 1) % C.phases.length);
-    }, 1500);
-    return () => clearInterval(id);
-  }, [paused, C.phases.length]);
+  // 自動切替は削除（Chrome scroll anchoring 問題対策 + UX改善）
+  // 1.5秒ごとにアコーディオンが勝手に切り替わることで
+  // 中段へのスクロールジャンプが発生していた。クリックで開閉のみに変更。
 
   return (
     <section id="curriculum" className="section-pad">
@@ -18,7 +13,7 @@ function Curriculum() {
           <SectionHeader eyebrow={C.eyebrow} title={C.title} lead={C.lead} />
         </Reveal>
 
-        <div style={{marginTop:64}} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+        <div style={{marginTop:64}}>
           {C.phases.map((p, i) => {
             const isOpen = open === i;
             return (
