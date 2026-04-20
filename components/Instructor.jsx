@@ -12,8 +12,7 @@ function Instructor() {
                 aspectRatio:"4/5",borderRadius:12,overflow:"hidden",
                 border:"1px solid var(--line)",position:"relative",background:"var(--bg-3)",
               }}>
-                <img src="https://leanaistartup.jp/images/instructor.jpg" alt="講師 芝先恵介"
-                  onError={(e)=>{e.currentTarget.src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"}}
+                <img src="images/instructor.jpg" alt="講師 芝先恵介"
                   style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
                 <div style={{position:"absolute",left:14,bottom:14,padding:"5px 10px",background:"rgba(0,0,0,.55)",color:"#fff",borderRadius:"var(--radius-pill)",backdropFilter:"blur(6px)",fontFamily:"var(--mono)",fontSize:10,letterSpacing:".14em"}}>
                   SHIBASAKI KEISUKE

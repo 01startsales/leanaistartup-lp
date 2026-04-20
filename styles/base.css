@@ -1,6 +1,8 @@
 /* === Reset & tokens === */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{scroll-behavior:smooth}
+/* scroll-behavior: 初回ロード時は auto（中段ジャンプ防止）、
+   index.html の script で React描画完了後に smooth に切替 */
+html,body{scroll-behavior:auto}
 body{
   font-family:'Inter','Noto Sans JP',system-ui,sans-serif;
   font-feature-settings:'palt';

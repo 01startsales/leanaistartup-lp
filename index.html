@@ -12,6 +12,14 @@
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
+  // React レンダリング完了後に scroll-behavior:smooth を有効化
+  // (初回ロード時は base.css で auto。アンカーリンクのスムーズスクロールはレンダリング後に有効)
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      document.documentElement.style.scrollBehavior = 'smooth';
+      document.body.style.scrollBehavior = 'smooth';
+    }, 1000);
+  });
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
