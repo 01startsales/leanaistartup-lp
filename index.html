@@ -5,21 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>リーンAIスタートアップ講座 — Lean AI Startup</title>
 
-<!-- Prevent auto-scroll restoration on client-side JSX render -->
+<!-- Prevent auto-scroll on client-side JSX render -->
 <script>
-  // ブラウザのスクロール位置自動復元を無効化（Client-side JSX による遅延レンダリング対策）
-  // 初回アクセス時の中段ジャンプを防ぐ。リロード時は自然なブラウザ挙動に任せる。
+  // ブラウザのスクロール位置自動復元を無効化
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  // React レンダリング完了後に scroll-behavior:smooth を有効化
-  // (初回ロード時は base.css で auto。アンカーリンクのスムーズスクロールはレンダリング後に有効)
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      document.documentElement.style.scrollBehavior = 'smooth';
-      document.body.style.scrollBehavior = 'smooth';
-    }, 1000);
-  });
+
+  // Navigation Type 判定 (初回アクセス vs リロード vs 戻る/進む)
+  var _navEntry = performance.getEntriesByType('navigation')[0];
+  var _navType = _navEntry ? _navEntry.type : 'navigate';
+  var _isInitialLoad = (_navType === 'navigate') && !location.hash;
+
+  // 初回アクセス時のみ: React描画 + Font読込 + 画像読込 完了までの2秒間、
+  // スクロール位置を強制的にトップに固定する（Chrome scroll anchoring対策）
+  if (_isInitialLoad) {
+    var _startTime = Date.now();
+    var _keepTop = function () {
+      if (window.scrollY !== 0) window.scrollTo(0, 0);
+      if (Date.now() - _startTime < 2000) {
+        requestAnimationFrame(_keepTop);
+      } else {
+        // 2秒経過後、スムーズスクロールを有効化（アンカーリンク用）
+        document.documentElement.style.scrollBehavior = 'smooth';
+      }
+    };
+    requestAnimationFrame(_keepTop);
+  } else {
+    // リロード/戻るの場合は即座にスムーズスクロール有効化
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        document.documentElement.style.scrollBehavior = 'smooth';
+      }, 500);
+    });
+  }
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
