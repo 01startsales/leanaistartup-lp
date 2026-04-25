@@ -38,6 +38,9 @@ body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1
 /* Japanese text wrapping (全要素に適用、熟語が改行で分断されないように) */
 /* overflow-wrap:break-word は keep-all を上書きして任意位置改行を許可するため使わない */
 body,body *{word-break:keep-all;line-break:strict;text-wrap:pretty}
+/* keep-all で grid/flex item の intrinsic min-width が広がるのを防ぐ */
+html,body{overflow-x:hidden}
+.tcard,.method-card,.problems-card,.compare-cell,.ba-card,.plan-card,.gift-item,.faq-item,.tcard *,.method-card *,.problems-card *,.ba-card *,.plan-card *,.gift-item *,.faq-item *{min-width:0}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -250,7 +253,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
 .logo-plate{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--ink-3);white-space:nowrap;filter:grayscale(1);opacity:.6;transition:opacity .2s,filter .2s}
 .logo-plate:hover{opacity:1;filter:grayscale(0)}
 .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:72px}
-.tcard{padding:32px 28px;height:100%;display:flex;flex-direction:column;gap:20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);transition:border-color .2s,transform .2s;text-decoration:none;color:inherit}
+.tcard{padding:32px 28px;height:100%;display:flex;flex-direction:column;gap:20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);transition:border-color .2s,transform .2s;text-decoration:none;color:inherit;min-width:0;overflow-wrap:anywhere}
 .tcard:hover{border-color:var(--accent);transform:translateY(-2px)}
 .stars{display:flex;gap:2px;color:var(--accent)}
 .tcard blockquote{flex:1;font-size:14.5px;line-height:1.8;color:var(--ink-2)}
