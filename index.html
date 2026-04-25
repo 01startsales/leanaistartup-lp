@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&q=80">
+<link rel="preconnect" href="https://app.heygen.com" crossorigin>
+<link rel="dns-prefetch" href="https://app.heygen.com">
 <style>
 /* ======================================================
    DESIGN TOKENS
@@ -814,12 +816,14 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
     <div class="trial-grid reveal">
       <div>
         <div class="trial-video" id="trialVideo">
-          <button id="trialPlay" onclick="(function(){var wrap=document.getElementById('trialVideo');var btn=document.getElementById('trialPlay');var f=document.createElement('iframe');f.src='https://app.heygen.com/embeds/8df664b4296545fd88b703ad4a1aed42';f.title='スタートアップの定義とJカーブ';f.frameBorder='0';f.allow='encrypted-media; fullscreen; picture-in-picture;';f.allowFullscreen=true;f.setAttribute('allowfullscreen','');f.style.cssText='position:absolute;inset:0;width:100%;height:100%';wrap.appendChild(f);btn.remove();})()" style="position:absolute;inset:0;width:100%;height:100%;background:#1a1a2e;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
-            <div style="width:72px;height:72px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center">
+          <button id="trialPlay" onclick="(function(){var wrap=document.getElementById('trialVideo');var btn=document.getElementById('trialPlay');btn.querySelector('.tp-icon').style.display='none';btn.querySelector('.tp-text').textContent='読み込み中...';btn.querySelector('.tp-spinner').style.display='block';btn.style.cursor='wait';var f=document.createElement('iframe');f.src='https://app.heygen.com/embeds/8df664b4296545fd88b703ad4a1aed42';f.title='スタートアップの定義とJカーブ';f.frameBorder='0';f.loading='eager';f.allow='encrypted-media; fullscreen; picture-in-picture;';f.allowFullscreen=true;f.setAttribute('allowfullscreen','');f.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .3s';f.onload=function(){f.style.opacity='1';btn.remove();};wrap.appendChild(f);})()" style="position:absolute;inset:0;width:100%;height:100%;background:#1a1a2e;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+            <div class="tp-icon" style="width:72px;height:72px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             </div>
-            <div style="color:rgba(255,255,255,.8);font-family:var(--mono);font-size:12px;letter-spacing:.14em">クリックして動画を読み込む</div>
+            <div class="tp-spinner" style="display:none;width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:tp-spin 1s linear infinite"></div>
+            <div class="tp-text" style="color:rgba(255,255,255,.8);font-family:var(--mono);font-size:12px;letter-spacing:.14em">クリックして動画を読み込む</div>
           </button>
+          <style>@keyframes tp-spin{to{transform:rotate(360deg)}}</style>
         </div>
         <div style="margin-top:20px"><a href="https://checkout.teachable.com/secure/2701449/checkout/order_tld2xxlf" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">Week 1を無料で始める →</a></div>
         <div class="trial-chips">
