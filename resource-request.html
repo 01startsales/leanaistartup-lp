@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サービス資料請求 | リーンAIスタートアップ講座</title>
+<meta name="description" content="リーンAIスタートアップ講座のサービス資料を無料でお届けします。フォームご記入後、平日9-18時の営業時間内であれば、すぐに担当よりお電話差し上げます。">
+<meta property="og:title" content="サービス資料請求 | リーンAIスタートアップ講座">
+<meta property="og:description" content="サービス資料を無料でお届け。営業時間内なら即時お電話でフォローします。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leanaistartup.jp/resource-request">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #E8520E;
+  --c-primary-light: #FF7A3D;
+  --c-primary-dark: #C44009;
+  --c-dark: #0B1120;
+  --c-dark-mid: #151E30;
+  --c-dark-card: #1A2540;
+  --c-gold: #F0C040;
+  --c-green: #22C55E;
+  --c-warm-bg: #FBF8F3;
+  --c-warm-bg-alt: #F5F0E8;
+  --c-text: #1E1E2A;
+  --c-text-muted: #5A607A;
+  --c-text-light: #8B90A0;
+  --c-border: #E2DDD4;
+  --c-white: #FFFFFF;
+  --c-accent-gradient: linear-gradient(135deg, #E8520E 0%, #F0C040 100%);
+
+  --ff-display: 'Shippori Mincho', serif;
+  --ff-body: 'Zen Kaku Gothic New', sans-serif;
+  --ff-number: 'DM Sans', sans-serif;
+
+  --fs-hero: clamp(1.75rem, 4.5vw, 3rem);
+  --fs-h2: clamp(1.4rem, 3.5vw, 2.2rem);
+  --fs-h3: clamp(1.1rem, 2.5vw, 1.4rem);
+  --fs-body: clamp(0.95rem, 1.5vw, 1.1rem);
+  --fs-small: clamp(0.8rem, 1.2vw, 0.9rem);
+
+  --space-section: clamp(60px, 10vw, 120px);
+  --max-w: 1120px;
+  --max-w-narrow: 800px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-elevated: 6px 6px 18px rgba(0,0,0,0.1);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body, body * { word-break: keep-all; line-break: strict; text-wrap: pretty; }
+body { font-family: var(--ff-body); font-size: var(--fs-body); color: var(--c-text); background: var(--c-white); line-height: 1.8; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+.container--narrow { max-width: var(--max-w-narrow); margin: 0 auto; padding: 0 24px; }
+
+/* ===== NAV ===== */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(11,17,32,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); height: 72px; }
+.nav__inner { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.nav__logo { font-family: var(--ff-number); font-weight: 800; font-size: 1.2rem; color: var(--c-white); letter-spacing: -0.02em; }
+.nav__logo span { color: var(--c-primary); }
+.nav__links { list-style: none; display: flex; align-items: center; gap: 32px; }
+.nav__links a { color: rgba(255,255,255,0.7); font-size: 0.9rem; font-weight: 500; transition: color var(--transition); }
+.nav__links a:hover { color: var(--c-white); }
+.nav__cta { background: var(--c-primary); color: var(--c-white) !important; padding: 8px 20px; border-radius: 8px; font-weight: 700; }
+.nav__cta:hover { background: var(--c-primary-dark); }
+.nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav__hamburger span { display: block; width: 24px; height: 2px; background: var(--c-white); border-radius: 2px; }
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+  .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(11,17,32,0.98); padding: 24px; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+}
+
+/* ===== HERO SUB ===== */
+.hero-sub { position: relative; padding: 140px 0 80px; overflow: hidden; }
+.hero-sub__bg { position: absolute; inset: 0; background: var(--c-dark); z-index: -2; }
+.hero-sub__bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 40%, rgba(232,82,14,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(240,192,64,0.08) 0%, transparent 55%); z-index: -1; }
+.hero-sub__content { text-align: center; color: var(--c-white); }
+.hero-sub h1 { font-family: var(--ff-display); font-size: var(--fs-hero); font-weight: 700; line-height: 1.3; margin-bottom: 16px; }
+.hero-sub h1 em { font-style: normal; color: var(--c-gold); }
+.hero-sub__lead { font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,0.7); max-width: 640px; margin: 0 auto 40px; line-height: 1.7; }
+
+.gradient-divider { border: none; height: 4px; background: var(--c-accent-gradient); margin: 0; }
+
+/* ===== HIGHLIGHT BADGES ===== */
+.badges-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 32px; }
+.badge-item { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 8px 16px; font-size: 0.85rem; color: rgba(255,255,255,0.85); font-weight: 500; }
+.badge-item svg { color: var(--c-gold); flex-shrink: 0; }
+
+/* ===== FORM SECTION ===== */
+.form-section { padding: var(--space-section) 0; background: var(--c-warm-bg); }
+.form-card { background: var(--c-white); border-radius: var(--radius-lg); padding: 48px 40px; box-shadow: var(--shadow-card); }
+.form-card h2 { font-family: var(--ff-display); font-size: var(--fs-h2); font-weight: 700; margin-bottom: 16px; color: var(--c-dark); text-align: center; }
+.form-card__lead { color: var(--c-text-muted); text-align: center; margin-bottom: 32px; font-size: 0.95rem; }
+
+.form-info { background: var(--c-warm-bg-alt); border-left: 4px solid var(--c-primary); padding: 20px 24px; margin-bottom: 32px; border-radius: 8px; font-size: 0.9rem; color: var(--c-text); }
+.form-info strong { color: var(--c-primary); display: block; margin-bottom: 6px; font-size: 0.95rem; }
+
+#hubspot-form-container { margin-top: 16px; }
+
+/* HubSpot form style overrides */
+#hubspot-form-container .hs-form-field { margin-bottom: 16px; }
+#hubspot-form-container label { font-size: 0.9rem; font-weight: 600; color: var(--c-text); margin-bottom: 6px; display: block; }
+#hubspot-form-container input[type="text"],
+#hubspot-form-container input[type="email"],
+#hubspot-form-container input[type="tel"],
+#hubspot-form-container textarea,
+#hubspot-form-container select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--c-border); border-radius: 8px; font-family: var(--ff-body); font-size: 1rem; color: var(--c-text); background: var(--c-white); transition: border-color var(--transition); }
+#hubspot-form-container input:focus,
+#hubspot-form-container textarea:focus,
+#hubspot-form-container select:focus { outline: none; border-color: var(--c-primary); box-shadow: 0 0 0 3px rgba(232,82,14,0.12); }
+#hubspot-form-container .hs-button { background: var(--c-primary); color: var(--c-white); border: none; padding: 14px 32px; border-radius: 8px; font-family: var(--ff-body); font-size: 1rem; font-weight: 700; cursor: pointer; transition: background var(--transition); width: 100%; margin-top: 8px; }
+#hubspot-form-container .hs-button:hover { background: var(--c-primary-dark); }
+#hubspot-form-container .hs-error-msg,
+#hubspot-form-container .hs-error-msgs { color: #C53030; font-size: 0.85rem; margin-top: 6px; }
+#hubspot-form-container .legal-consent-container { font-size: 0.85rem; color: var(--c-text-muted); margin-top: 16px; }
+#hubspot-form-container .submitted-message { background: linear-gradient(135deg, #ECFDF5 0%, #FBF8F3 100%); border: 1px solid var(--c-green); padding: 32px 24px; border-radius: var(--radius); text-align: center; color: var(--c-text); font-size: 1rem; line-height: 1.7; }
+
+/* ===== FOOTER ===== */
+.footer { background: var(--c-dark); color: rgba(255,255,255,0.5); padding: 40px 0; text-align: center; font-size: 0.85rem; }
+.footer a { color: rgba(255,255,255,0.5); transition: color var(--transition); }
+.footer a:hover { color: var(--c-white); }
+.footer__links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+
+/* ===== REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 640px) {
+  .form-card { padding: 32px 24px; }
+  .badges-row { gap: 8px; }
+  .badge-item { padding: 6px 12px; font-size: 0.78rem; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">Lean<span>AI</span> Startup</a>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="index.html#curriculum">カリキュラム</a></li>
+      <li><a href="index.html#pricing">料金プラン</a></li>
+      <li><a href="trial.html">無料体験</a></li>
+      <li><a href="index.html#pricing" class="nav__cta">申し込む</a></li>
+    </ul>
+    <button class="nav__hamburger" id="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-sub">
+  <div class="hero-sub__bg"></div>
+  <div class="container hero-sub__content">
+    <div class="badges-row">
+      <span class="badge-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        サービス全体像が3分でわかる
+      </span>
+      <span class="badge-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        営業時間内なら即時お電話
+      </span>
+      <span class="badge-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>
+        完全無料・営業電話なし
+      </span>
+    </div>
+    <h1>サービス<em>資料請求</em></h1>
+    <p class="hero-sub__lead">リーンAIスタートアップ講座の全体像、カリキュラム詳細、料金プラン、導入事例をまとめた資料をお届けします。フォーム送信後、平日9-18時の営業時間内であれば、すぐに担当よりお電話でご状況を伺い、最適なプランをご案内します。</p>
+  </div>
+</section>
+
+<hr class="gradient-divider">
+
+<!-- FORM -->
+<section class="form-section">
+  <div class="container--narrow">
+    <div class="form-card reveal">
+      <h2>資料請求フォーム</h2>
+      <p class="form-card__lead">必要事項をご記入ください。所要時間 約1分。</p>
+
+      <div class="form-info">
+        <strong>📞 営業時間内（平日 9:00 - 18:00）の場合</strong>
+        フォーム送信から数分以内に、AI アシスタント「さくら」より、ご状況確認とサービスのご説明のお電話を差し上げます。資料は別途メールでお送りします。
+      </div>
+
+      <div id="hubspot-form-container">
+        <p style="text-align:center;color:var(--c-text-muted);padding:32px 0">フォームを読み込んでいます...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__links">
+      <a href="index.html">トップページ</a>
+      <a href="trial.html">無料体験</a>
+      <a href="faq.html">よくある質問</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">特定商取引法</a>
+    </div>
+    <p>&copy; 2026 株式会社01START</p>
+  </div>
+</footer>
+
+<!-- HubSpot Forms v2 -->
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+<script>
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Hamburger
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// HubSpot Form embed + n8n webhook trigger
+window.addEventListener('load', function() {
+  if (typeof hbspt === 'undefined') {
+    document.getElementById('hubspot-form-container').innerHTML =
+      '<p style="text-align:center;color:#C53030;padding:32px 0">フォームの読み込みに失敗しました。お手数ですが、<a href="mailto:sales@01start.jp" style="color:var(--c-primary);text-decoration:underline">sales@01start.jp</a> までご連絡ください。</p>';
+    return;
+  }
+  hbspt.forms.create({
+    portalId: "8655538",
+    formId: "16WgO1YRITi2P1Gu6xjD1PQ55inm",
+    region: "na2",
+    target: "#hubspot-form-container",
+    onFormSubmit: function($form) {
+      // Submit form data to n8n webhook in parallel with HubSpot
+      // (HubSpot still creates contact normally; n8n triggers immediate AI call)
+      try {
+        const getVal = function(name) {
+          var el = $form.find('input[name="' + name + '"], textarea[name="' + name + '"], select[name="' + name + '"]');
+          return el.length ? (el.val() || '') : '';
+        };
+        const data = {
+          email: getVal('email'),
+          firstname: getVal('firstname'),
+          lastname: getVal('lastname'),
+          company: getVal('company'),
+          mobilephone: getVal('mobilephone'),
+          jobtitle: getVal('jobtitle'),
+          inquiry_type: 'service_info_request',
+          source: 'lp_resource_request_page',
+          submittedAt: new Date().toISOString()
+        };
+        // keepalive: true でページ遷移しても POST 継続
+        fetch('https://keisuke.app.n8n.cloud/webhook/rr-form-submit', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data),
+          keepalive: true
+        }).catch(function(err) {
+          console.warn('n8n webhook error (non-blocking):', err);
+        });
+      } catch(e) {
+        console.warn('Form submit hook error (non-blocking):', e);
+      }
+    },
+    onFormReady: function($form) {
+      // Remove placeholder loading text once form renders
+      var placeholder = document.querySelector('#hubspot-form-container > p');
+      if (placeholder) placeholder.remove();
+    }
+  });
+});
+</script>
+</body>
+</html>
