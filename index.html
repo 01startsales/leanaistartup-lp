@@ -35,6 +35,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 /* scroll-behavior managed via JS only */
 body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:'palt'}
+/* Japanese text wrapping (熟語が改行で分断されないように) */
+body,p,li,.lead,.journey-step-desc,.journey-step-title,.journey-week,h1,h2,h3,h4,h5,h6{word-break:keep-all;line-break:strict;overflow-wrap:break-word}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -154,11 +156,11 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
    JOURNEY
 ====================================================== */
 .journey-rail{position:relative;margin-top:88px}
-.journey-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;position:relative}
+.journey-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
 .journey-line-base{position:absolute;left:10%;right:10%;top:40px;height:1px;background:var(--line-2)}
 .journey-line-anim{position:absolute;left:10%;top:39px;width:80%;height:2px;background:var(--accent);transform-origin:left center;transform:scaleX(0);transition:transform 2200ms var(--ease);box-shadow:0 0 12px rgba(232,90,26,.35)}
 .journey-line-anim.drawn{transform:scaleX(1)}
-.journey-step{text-align:center}
+.journey-step{text-align:center;padding-inline:12px}
 .journey-circle{width:80px;height:80px;border-radius:50%;background:var(--bg);border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 0 0 6px var(--bg)}
 .journey-circle-num{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--accent)}
 .journey-week{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent);margin-bottom:8px}
