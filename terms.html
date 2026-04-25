@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特定商取引法に基づく表記 | リーンAIスタートアップ講座</title>
+<meta name="description" content="株式会社01STARTのリーンAIスタートアップ講座に関する特定商取引法に基づく表記。">
+<meta property="og:title" content="特定商取引法に基づく表記 | リーンAIスタートアップ講座">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leanaistartup.jp/terms">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #E8520E;
+  --c-primary-dark: #C44009;
+  --c-dark: #0B1120;
+  --c-gold: #F0C040;
+  --c-warm-bg: #FBF8F3;
+  --c-text: #1E1E2A;
+  --c-text-muted: #5A607A;
+  --c-border: #E2DDD4;
+  --c-white: #FFFFFF;
+  --c-accent-gradient: linear-gradient(135deg, #E8520E 0%, #F0C040 100%);
+
+  --ff-display: 'Shippori Mincho', serif;
+  --ff-body: 'Zen Kaku Gothic New', sans-serif;
+  --ff-number: 'DM Sans', sans-serif;
+
+  --fs-hero: clamp(1.75rem, 4.5vw, 3rem);
+  --fs-body: clamp(0.95rem, 1.5vw, 1.05rem);
+
+  --space-section: clamp(60px, 10vw, 100px);
+  --max-w: 1120px;
+  --max-w-narrow: 800px;
+  --radius: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--ff-body); font-size: var(--fs-body); color: var(--c-text); background: var(--c-white); line-height: 1.8; overflow-x: hidden; }
+a { color: var(--c-primary); text-decoration: none; }
+a:hover { color: var(--c-primary-dark); }
+
+.container--narrow { max-width: var(--max-w-narrow); margin: 0 auto; padding: 0 24px; }
+
+/* ===== NAV ===== */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(11,17,32,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); height: 72px; }
+.nav__inner { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.nav__logo { font-family: var(--ff-number); font-weight: 800; font-size: 1.2rem; color: var(--c-white); letter-spacing: -0.02em; }
+.nav__logo span { color: var(--c-primary); }
+.nav__links { list-style: none; display: flex; align-items: center; gap: 32px; }
+.nav__links a { color: rgba(255,255,255,0.7); font-size: 0.9rem; font-weight: 500; transition: color var(--transition); text-decoration: none; }
+.nav__links a:hover { color: var(--c-white); }
+.nav__cta { background: var(--c-primary); color: var(--c-white) !important; padding: 8px 20px; border-radius: 8px; font-weight: 700; }
+.nav__cta:hover { background: var(--c-primary-dark); }
+.nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav__hamburger span { display: block; width: 24px; height: 2px; background: var(--c-white); border-radius: 2px; }
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+  .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(11,17,32,0.98); padding: 24px; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+}
+
+/* ===== HERO ===== */
+.hero-sub { position: relative; padding: 140px 0 60px; overflow: hidden; }
+.hero-sub__bg { position: absolute; inset: 0; background: var(--c-dark); z-index: -2; }
+.hero-sub__bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 40%, rgba(232,82,14,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(240,192,64,0.08) 0%, transparent 55%); z-index: -1; }
+.hero-sub__content { text-align: center; color: var(--c-white); }
+.hero-sub h1 { font-family: var(--ff-display); font-size: var(--fs-hero); font-weight: 700; line-height: 1.3; }
+
+.gradient-divider { border: none; height: 4px; background: var(--c-accent-gradient); margin: 0; }
+
+/* ===== TERMS TABLE ===== */
+.terms { padding: var(--space-section) 0; }
+.terms-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+.terms-table th,
+.terms-table td { padding: 20px 24px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--c-border); font-size: var(--fs-body); line-height: 1.8; }
+.terms-table th { width: 180px; font-weight: 700; color: var(--c-dark); background: var(--c-warm-bg); white-space: nowrap; }
+.terms-table td { color: var(--c-text); }
+.terms-table tr:last-child th,
+.terms-table tr:last-child td { border-bottom: none; }
+
+@media (max-width: 640px) {
+  .terms-table th,
+  .terms-table td { display: block; width: 100%; padding: 12px 16px; }
+  .terms-table th { border-bottom: none; padding-bottom: 4px; }
+  .terms-table td { padding-top: 4px; }
+  .terms-table tr { border-bottom: 1px solid var(--c-border); }
+  .terms-table tr:last-child { border-bottom: none; }
+}
+
+/* ===== FOOTER ===== */
+.footer { background: var(--c-dark); color: rgba(255,255,255,0.5); padding: 40px 0; text-align: center; font-size: 0.85rem; }
+.footer a { color: rgba(255,255,255,0.5); transition: color var(--transition); text-decoration: none; }
+.footer a:hover { color: var(--c-white); }
+.footer__links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">Lean<span>AI</span> Startup</a>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="index.html#curriculum">カリキュラム</a></li>
+      <li><a href="index.html#pricing">料金プラン</a></li>
+      <li><a href="faq.html">よくある質問</a></li>
+      <li><a href="index.html#pricing" class="nav__cta">申し込む</a></li>
+    </ul>
+    <button class="nav__hamburger" id="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-sub">
+  <div class="hero-sub__bg"></div>
+  <div class="container--narrow hero-sub__content">
+    <h1>特定商取引法に基づく表記</h1>
+  </div>
+</section>
+
+<hr class="gradient-divider">
+
+<!-- CONTENT -->
+<section class="terms">
+  <div class="container--narrow">
+    <table class="terms-table">
+      <tbody>
+        <tr>
+          <th>販売業者</th>
+          <td>株式会社01START</td>
+        </tr>
+        <tr>
+          <th>代表者</th>
+          <td>芝先 恵介</td>
+        </tr>
+        <tr>
+          <th>所在地</th>
+          <td>（登記住所を記載）</td>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <td>（問い合わせ用電話番号を記載 ※請求により遅滞なく開示）</td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><a href="mailto:support@01start.jp">support@01start.jp</a></td>
+        </tr>
+        <tr>
+          <th>URL</th>
+          <td>https://leanaistartup.jp</td>
+        </tr>
+        <tr>
+          <th>商品名</th>
+          <td>リーンAIスタートアップ講座</td>
+        </tr>
+        <tr>
+          <th>販売価格</th>
+          <td>ファウンディングメンバー: 月額4,980円（税込）<br>月額プラン: 月額9,800円（税込）<br>年額プラン: 年額98,000円（税込）</td>
+        </tr>
+        <tr>
+          <th>商品代金以外の必要料金</th>
+          <td>なし（インターネット通信費はお客様のご負担となります）</td>
+        </tr>
+        <tr>
+          <th>支払方法</th>
+          <td>クレジットカード（Visa, Mastercard, American Express, JCB）</td>
+        </tr>
+        <tr>
+          <th>支払時期</th>
+          <td>お申込み時に初回決済。以降、月額プランは毎月同日、年額プランは毎年同日に自動課金</td>
+        </tr>
+        <tr>
+          <th>商品の引渡し時期</th>
+          <td>決済完了後、即時にオンラインコンテンツへのアクセスが可能</td>
+        </tr>
+        <tr>
+          <th>返品・キャンセル</th>
+          <td>受講開始から28日以内であれば全額返金いたします。28日経過後の返金はいたしかねます。月額プラン・年額プランともにいつでも解約可能です。解約した場合、次回の課金日以降のアクセスが停止されます。解約手続きはTeachableの管理画面から行えます</td>
+        </tr>
+        <tr>
+          <th>動作環境</th>
+          <td>PC、スマートフォン、タブレット等のブラウザ（Chrome, Safari, Firefox, Edge 推奨）。インターネット接続環境が必要です</td>
+        </tr>
+        <tr>
+          <th>その他</th>
+          <td>デジタルコンテンツ（オンライン動画講座）のため、物理的な商品の配送はございません</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container--narrow">
+    <div class="footer__links">
+      <a href="index.html">トップページ</a>
+      <a href="trial.html">無料体験</a>
+      <a href="faq.html">よくある質問</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+    </div>
+    <p>&copy; 2026 株式会社01START</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+</script>
+</body>
+</html>

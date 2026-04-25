@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>よくある質問 | リーンAIスタートアップ講座</title>
+<meta name="description" content="リーンAIスタートアップ講座のよくある質問。受講内容・料金・サポート・法人利用・技術的な質問にお答えします。">
+<meta property="og:title" content="よくある質問 | リーンAIスタートアップ講座">
+<meta property="og:description" content="受講前の疑問をすべて解消。25以上のQ&Aで安心してスタートできます">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leanaistartup.jp/faq">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #E8520E;
+  --c-primary-light: #FF7A3D;
+  --c-primary-dark: #C44009;
+  --c-dark: #0B1120;
+  --c-dark-mid: #151E30;
+  --c-dark-card: #1A2540;
+  --c-gold: #F0C040;
+  --c-green: #22C55E;
+  --c-warm-bg: #FBF8F3;
+  --c-warm-bg-alt: #F5F0E8;
+  --c-text: #1E1E2A;
+  --c-text-muted: #5A607A;
+  --c-text-light: #8B90A0;
+  --c-border: #E2DDD4;
+  --c-white: #FFFFFF;
+  --c-accent-gradient: linear-gradient(135deg, #E8520E 0%, #F0C040 100%);
+
+  --ff-display: 'Shippori Mincho', serif;
+  --ff-body: 'Zen Kaku Gothic New', sans-serif;
+  --ff-number: 'DM Sans', sans-serif;
+
+  --fs-hero: clamp(1.75rem, 4.5vw, 3rem);
+  --fs-h2: clamp(1.4rem, 3.5vw, 2.2rem);
+  --fs-h3: clamp(1.1rem, 2.5vw, 1.4rem);
+  --fs-body: clamp(0.95rem, 1.5vw, 1.1rem);
+  --fs-small: clamp(0.8rem, 1.2vw, 0.9rem);
+
+  --space-section: clamp(60px, 10vw, 120px);
+  --max-w: 1120px;
+  --max-w-narrow: 800px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-elevated: 6px 6px 18px rgba(0,0,0,0.1);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--ff-body); font-size: var(--fs-body); color: var(--c-text); background: var(--c-white); line-height: 1.8; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+.container--narrow { max-width: var(--max-w-narrow); margin: 0 auto; padding: 0 24px; }
+
+/* ===== NAV ===== */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(11,17,32,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); height: 72px; }
+.nav__inner { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.nav__logo { font-family: var(--ff-number); font-weight: 800; font-size: 1.2rem; color: var(--c-white); letter-spacing: -0.02em; }
+.nav__logo span { color: var(--c-primary); }
+.nav__links { list-style: none; display: flex; align-items: center; gap: 32px; }
+.nav__links a { color: rgba(255,255,255,0.7); font-size: 0.9rem; font-weight: 500; transition: color var(--transition); }
+.nav__links a:hover { color: var(--c-white); }
+.nav__cta { background: var(--c-primary); color: var(--c-white) !important; padding: 8px 20px; border-radius: 8px; font-weight: 700; }
+.nav__cta:hover { background: var(--c-primary-dark); }
+.nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav__hamburger span { display: block; width: 24px; height: 2px; background: var(--c-white); border-radius: 2px; }
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+  .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(11,17,32,0.98); padding: 24px; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+}
+
+/* ===== HERO SUB ===== */
+.hero-sub { position: relative; padding: 140px 0 80px; overflow: hidden; }
+.hero-sub__bg { position: absolute; inset: 0; background: var(--c-dark); z-index: -2; }
+.hero-sub__bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 40%, rgba(232,82,14,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(240,192,64,0.08) 0%, transparent 55%); z-index: -1; }
+.hero-sub__content { text-align: center; color: var(--c-white); }
+.hero-sub h1 { font-family: var(--ff-display); font-size: var(--fs-hero); font-weight: 700; line-height: 1.3; margin-bottom: 16px; }
+.hero-sub h1 em { font-style: normal; color: var(--c-gold); }
+.hero-sub__lead { font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 40px; line-height: 1.7; }
+
+.gradient-divider { border: none; height: 4px; background: var(--c-accent-gradient); margin: 0; }
+
+/* ===== SECTION COMMON ===== */
+.section-header { text-align: center; margin-bottom: 48px; }
+.section-label { font-family: var(--ff-number); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-primary); margin-bottom: 12px; }
+.section-h2 { font-family: var(--ff-display); font-size: var(--fs-h2); font-weight: 700; line-height: 1.4; color: var(--c-dark); }
+.section-sub { font-size: var(--fs-body); color: var(--c-text-muted); margin-top: 12px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* ===== FAQ TABS ===== */
+.faq-section { padding: var(--space-section) 0; background: var(--c-warm-bg); }
+.faq-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 48px; }
+.faq-tab { padding: 10px 20px; border-radius: 100px; border: 1.5px solid var(--c-border); background: var(--c-white); font-family: var(--ff-body); font-size: 0.9rem; font-weight: 500; color: var(--c-text-muted); cursor: pointer; transition: all var(--transition); }
+.faq-tab:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.faq-tab.active { background: var(--c-primary); color: var(--c-white); border-color: var(--c-primary); }
+
+/* ===== FAQ ACCORDION ===== */
+.faq-category { margin-bottom: 40px; }
+.faq-category__title { font-family: var(--ff-display); font-size: var(--fs-h3); font-weight: 700; margin-bottom: 20px; padding-left: 16px; border-left: 4px solid var(--c-primary); color: var(--c-dark); }
+.faq-category[data-cat] { display: block; }
+.faq-category.hidden { display: none; }
+
+.faq-item { background: var(--c-white); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow-card); transition: box-shadow var(--transition); }
+.faq-item:hover { box-shadow: var(--shadow-elevated); }
+
+.faq-question { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: none; border: none; cursor: pointer; font-family: var(--ff-body); font-size: 1rem; font-weight: 700; color: var(--c-dark); text-align: left; line-height: 1.6; }
+.faq-question::after { content: '+'; font-family: var(--ff-number); font-size: 1.4rem; font-weight: 700; color: var(--c-primary); flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: transform var(--transition); }
+.faq-item.open .faq-question::after { content: '\2212'; transform: rotate(180deg); }
+
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+.faq-answer__inner { padding: 0 24px 24px; color: var(--c-text-muted); line-height: 1.9; font-size: 0.95rem; }
+.faq-answer__inner ol { padding-left: 1.4em; margin-top: 8px; }
+.faq-answer__inner ol li { margin-bottom: 4px; }
+.faq-item.open .faq-answer { max-height: 500px; }
+
+/* ===== CONTACT CTA ===== */
+.contact-cta { padding: var(--space-section) 0; background: var(--c-white); text-align: center; }
+.contact-box { background: var(--c-warm-bg-alt); border-radius: var(--radius-lg); padding: 48px 40px; max-width: 640px; margin: 0 auto; position: relative; overflow: hidden; }
+.contact-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--c-accent-gradient); }
+.contact-box h3 { font-family: var(--ff-display); font-size: var(--fs-h3); font-weight: 700; margin-bottom: 16px; color: var(--c-dark); }
+.contact-box p { color: var(--c-text-muted); margin-bottom: 24px; font-size: 0.95rem; }
+.contact-links { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.contact-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--c-primary); font-size: 1rem; transition: color var(--transition); }
+.contact-link:hover { color: var(--c-primary-dark); }
+.contact-link svg { flex-shrink: 0; }
+
+/* ===== FOOTER ===== */
+.footer { background: var(--c-dark); color: rgba(255,255,255,0.5); padding: 40px 0; text-align: center; font-size: 0.85rem; }
+.footer a { color: rgba(255,255,255,0.5); transition: color var(--transition); }
+.footer a:hover { color: var(--c-white); }
+.footer__links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+
+/* ===== REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+
+@media (max-width: 640px) {
+  .faq-tabs { gap: 6px; }
+  .faq-tab { padding: 8px 14px; font-size: 0.8rem; }
+  .faq-question { padding: 16px 18px; font-size: 0.95rem; }
+  .faq-answer__inner { padding: 0 18px 18px; }
+  .contact-box { padding: 32px 24px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">Lean<span>AI</span> Startup</a>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="index.html#curriculum">カリキュラム</a></li>
+      <li><a href="index.html#pricing">料金プラン</a></li>
+      <li><a href="trial.html">無料体験</a></li>
+      <li><a href="index.html#pricing" class="nav__cta">申し込む</a></li>
+    </ul>
+    <button class="nav__hamburger" id="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-sub">
+  <div class="hero-sub__bg"></div>
+  <div class="container hero-sub__content">
+    <h1>よくある<em>質問</em></h1>
+    <p class="hero-sub__lead">受講前の疑問をすべて解消。安心してスタートしていただくために、25以上のQ&Aをご用意しました。</p>
+  </div>
+</section>
+
+<hr class="gradient-divider">
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container--narrow">
+
+    <!-- Tabs -->
+    <div class="faq-tabs reveal">
+      <button class="faq-tab active" data-filter="all">すべて</button>
+      <button class="faq-tab" data-filter="content">受講内容</button>
+      <button class="faq-tab" data-filter="quiz">クイズ・演習</button>
+      <button class="faq-tab" data-filter="pricing">料金・決済</button>
+      <button class="faq-tab" data-filter="support">サポート</button>
+      <button class="faq-tab" data-filter="corporate">法人利用</button>
+      <button class="faq-tab" data-filter="tech">技術的な質問</button>
+    </div>
+
+    <!-- 受講内容 -->
+    <div class="faq-category reveal" data-cat="content">
+      <h3 class="faq-category__title">受講内容について</h3>
+
+      <div class="faq-item">
+        <button class="faq-question">この講座は誰を対象にしていますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">新規事業に取り組みたい方を対象としています。具体的には、(1) 起業を志す会社員・個人 (2) 企業の新規事業担当者 (3) DX推進を任された管理職 (4) AIを活用してビジネスを始めたい方が主な対象です。プログラミングやAIの専門知識は不要です。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">プログラミングの知識は必要ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">いいえ。本講座で使用するAIツールはChatGPT等の対話型AIが中心です。コードを書く演習はありません。AIへの「質問の仕方（プロンプト）」は講座内で丁寧に解説します。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">1週間あたりどのくらいの時間が必要ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">動画視聴に約3〜4時間、演習に1〜2時間が目安です。1日30〜60分のペースで無理なく進められます。動画は10〜20分の短い単位で構成されているため、通勤時間やスキマ時間でも学習可能です。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">12週間で終わらなかったらどうなりますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">サブスクリプション継続中は全コンテンツにアクセスできます。12週間は「推奨ペース」であり、ご自身のペースで進めていただけます。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">動画の内容はアップデートされますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">はい。AI技術の進化やフレームワークの更新に合わせて、定期的にコンテンツを追加・更新します。追加費用はかかりません。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">英語は必要ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">いいえ。すべての動画・教材は日本語で提供されます。参考書籍の一部は原書が英語ですが、講座内では日本語で解説します。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Week 1の無料体験だけ受講してやめることはできますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">はい。Week 1の無料体験にクレジットカードの登録は不要です。体験後に自動で課金されることはありませんのでご安心ください。</div></div>
+      </div>
+    </div>
+
+    <!-- クイズ・演習 -->
+    <div class="faq-category reveal" data-cat="quiz">
+      <h3 class="faq-category__title">クイズ・演習について</h3>
+
+      <div class="faq-item">
+        <button class="faq-question">クイズや演習は必須ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">推奨ですが必須ではありません。ただし、演習に取り組むことで学びが格段に定着します。12週間後に「検証済みのビジネスモデル」が手元に残るのは、演習を通じて実践したからこそです。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">演習にはどのくらい時間がかかりますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">演習によりますが、1回あたり30分〜2時間程度です。AIを活用して効率化するテクニックも講座内で解説しています。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">演習の提出は誰がチェックしますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">現時点では自己採点形式です。演習の解答例と評価基準を提供しており、それに基づいてご自身で確認いただけます。</div></div>
+      </div>
+    </div>
+
+    <!-- 料金・決済 -->
+    <div class="faq-category reveal" data-cat="pricing">
+      <h3 class="faq-category__title">料金・決済について</h3>
+
+      <div class="faq-item">
+        <button class="faq-question">支払い方法は何が使えますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">クレジットカード（Visa, Mastercard, American Express, JCB）でのお支払いとなります。Stripeによる安全な決済処理を使用しています。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">領収書は発行されますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">はい。Teachableの管理画面からいつでも領収書をダウンロードできます。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">ファウンディングメンバー価格（\u00a54,980/月）はいつまで適用されますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">先着20名の方に限り、サブスクリプションを継続している限り永久にこの価格が適用されます。一度解約して再加入した場合は通常価格（\u00a59,800/月）となります。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">年額プランの途中解約は可能ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">年額プランの途中解約は可能ですが、残りの期間分の返金はございません。まずは月額プランでお試しいただくことをおすすめします。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">返金保証について教えてください</button>
+        <div class="faq-answer"><div class="faq-answer__inner">受講開始から28日以内であれば、理由を問わず全額返金いたします。返金のお申し出はメール（support@01start.jp）にご連絡ください。</div></div>
+      </div>
+    </div>
+
+    <!-- サポート -->
+    <div class="faq-category reveal" data-cat="support">
+      <h3 class="faq-category__title">サポートについて</h3>
+
+      <div class="faq-item">
+        <button class="faq-question">質問はどこからできますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">以下の3つの方法で質問できます：<ol><li>各動画のコメント欄（24時間以内に回答）</li><li>メール support@01start.jp（4時間以内に回答 ※営業時間内）</li><li>月1回のライブQ&Aセッション（講師に直接質問）</li></ol></div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">ライブQ&Aセッションとは何ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">月に1回、Zoom上で開催される質問会です。受講生であればどなたでも参加でき、講師（芝先）に直接質問できます。録画も後日公開されるため、当日参加できない場合も安心です。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">受講生コミュニティはありますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">はい。受講生同士が交流できるコミュニティを今後開設予定です。受講中のコミュニケーションは、まずライブQ&Aセッションと動画コメント欄をご利用ください。</div></div>
+      </div>
+    </div>
+
+    <!-- 法人利用 -->
+    <div class="faq-category reveal" data-cat="corporate">
+      <h3 class="faq-category__title">法人利用について</h3>
+
+      <div class="faq-item">
+        <button class="faq-question">法人で複数名の受講は可能ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">はい。5名以上でのご利用の場合、法人プラン（ボリュームディスカウント）をご用意しています。人数に応じたお見積りを作成いたしますので、お問い合わせフォームからご連絡ください。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">法人プランの価格を教えてください</button>
+        <div class="faq-answer"><div class="faq-answer__inner">人数に応じたお見積りを作成いたします。お問い合わせフォームからご連絡ください。目安として、5名パック \u00a539,800/月（1名あたり\u00a57,960）、10名パック \u00a569,800/月（1名あたり\u00a56,980）をご用意しています。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">企業研修として導入できますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">はい。eラーニング講座と組み合わせた企業研修プログラム（講師が直接ファシリテーション）もご提供しています。詳細はお問い合わせください。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">請求書払いは可能ですか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">法人プランの場合、請求書払い（月末締め翌月末払い）にも対応しています。お問い合わせ時にご相談ください。</div></div>
+      </div>
+    </div>
+
+    <!-- 技術的な質問 -->
+    <div class="faq-category reveal" data-cat="tech">
+      <h3 class="faq-category__title">技術的な質問</h3>
+
+      <div class="faq-item">
+        <button class="faq-question">どんなデバイスで視聴できますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">PC、スマートフォン、タブレットなど、ブラウザが使えるすべてのデバイスで視聴できます。専用アプリのインストールは不要です。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">動画をダウンロードしてオフラインで視聴できますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">動画のダウンロードには対応しておりません。ストリーミング視聴のみとなります。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">再生速度の変更はできますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">はい。0.5倍〜2倍速の間で再生速度を変更できます。</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">推奨のインターネット環境はありますか？</button>
+        <div class="faq-answer"><div class="faq-answer__inner">動画のスムーズな再生には、下り5Mbps以上の通信速度を推奨しています。一般的なWi-Fiや4G/5G回線であれば問題ありません。</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT CTA -->
+<section class="contact-cta">
+  <div class="container">
+    <div class="contact-box reveal">
+      <h3>解決しない場合は</h3>
+      <p>上記に該当しないご質問がございましたら、お気軽にお問い合わせください。</p>
+      <div class="contact-links">
+        <a href="mailto:support@01start.jp" class="contact-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          support@01start.jp
+        </a>
+        <a href="https://lin.ee/p6wQy2r" class="contact-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.82 2 10.5c0 2.95 1.95 5.53 4.86 7.04-.2.73-.71 2.63-.81 3.04-.13.5.18.49.38.36.16-.1 2.51-1.72 3.53-2.41.64.09 1.3.14 1.97.14h.07C17.52 18.67 22 15.18 22 10.5 22 5.82 17.52 2 12 2z"/></svg>
+          LINE @497ipgkq
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__links">
+      <a href="index.html">トップページ</a>
+      <a href="trial.html">無料体験</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">特定商取引法</a>
+    </div>
+    <p>&copy; 2026 株式会社01START</p>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Hamburger
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// FAQ Accordion
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    // Close all in same category
+    item.closest('.faq-category').querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// FAQ Tab Filter
+document.querySelectorAll('.faq-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const filter = tab.dataset.filter;
+    document.querySelectorAll('.faq-category').forEach(cat => {
+      if (filter === 'all' || cat.dataset.cat === filter) {
+        cat.classList.remove('hidden');
+      } else {
+        cat.classList.add('hidden');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
