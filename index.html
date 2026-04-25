@@ -1311,10 +1311,10 @@ window.parent.postMessage({ type: '__edit_mode_available' }, '*');
       el.style.textAlign = isMobile ? 'center' : '';
     });
     document.querySelectorAll('.journey-circle').forEach(function(el){
-      el.style.marginInline = isMobile ? 'auto' : '0';
+      el.style.marginInline = 'auto';  // CSS の margin:0 auto を効かせるため常に auto
     });
     document.querySelectorAll('.journey-step-desc').forEach(function(el){
-      el.style.marginInline = isMobile ? 'auto' : '0';
+      el.style.marginInline = 'auto';
     });
 
     // Method grid
