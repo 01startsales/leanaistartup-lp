@@ -43,6 +43,9 @@ body,body *{word-break:keep-all;line-break:strict;text-wrap:pretty}
 /* keep-all で grid/flex item の intrinsic min-width が広がるのを防ぐ */
 html,body{overflow-x:hidden}
 .tcard,.method-card,.method-step,.problems-card,.compare-cell,.ba-card,.plan-card,.gift-item,.faq-item,.curriculum-card,.week-item,.video-list-item,.tcard *,.method-card *,.method-step *,.problems-card *,.ba-card *,.plan-card *,.gift-item *,.faq-item *{min-width:0}
+/* card 系コンテナでは overflow-wrap:anywhere をフォールバックとして許可
+   (keep-all で熟語は守りつつ、card 幅に収まらない場合のみ強制改行) */
+.tcard,.method-card,.method-step,.problems-card,.compare-cell,.ba-card,.plan-card,.gift-item,.faq-item,.curriculum-card,.week-item,.video-list-item{overflow-wrap:anywhere}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
