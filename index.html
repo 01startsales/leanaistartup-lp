@@ -35,8 +35,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 /* scroll-behavior managed via JS only */
 body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:'palt'}
-/* Japanese text wrapping (熟語が改行で分断されないように) */
-body,p,li,.lead,.journey-step-desc,.journey-step-title,.journey-week,h1,h2,h3,h4,h5,h6{word-break:keep-all;line-break:strict;overflow-wrap:break-word}
+/* Japanese text wrapping (全要素に適用、熟語が改行で分断されないように) */
+body,body *{word-break:keep-all;line-break:strict;overflow-wrap:break-word}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
