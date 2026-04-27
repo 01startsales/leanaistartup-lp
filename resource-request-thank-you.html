@@ -253,12 +253,16 @@ a { color: inherit; text-decoration: none; }
 <!-- n8n Webhook trigger -->
 <script>
 (function() {
-  // sessionStorage で同一セッションでの重複発火を防ぐ
-  var FIRED_KEY = 'rr_webhook_fired';
-  if (sessionStorage.getItem(FIRED_KEY)) {
+  // 5分以内に既に発火済みなら skip (連続クリック防止)
+  // 5分以上経過したら再発火許可 (同一ブラウザでの再送信に対応)
+  var FIRED_KEY = 'rr_webhook_fired_at';
+  var DEDUP_WINDOW_MS = 5 * 60 * 1000;
+  var now = Date.now();
+  var firedAt = parseInt(sessionStorage.getItem(FIRED_KEY) || '0', 10);
+  if (firedAt && (now - firedAt) < DEDUP_WINDOW_MS) {
     return;
   }
-  sessionStorage.setItem(FIRED_KEY, '1');
+  sessionStorage.setItem(FIRED_KEY, String(now));
 
   var payload = {
     source: 'thank-you-page',
