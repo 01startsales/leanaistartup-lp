@@ -119,9 +119,8 @@ import { LiveAvatarSession, SessionEvent, AgentEventsEnum }
 
 const TOKEN_URL   = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-token';
 const SESSION_URL = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-session';
-const BOOKING_URL = 'https://01start.jp/meetings/shibasaki';  // 予約リンク（チャット表示用・音声では読み上げない）
 const $ = (id) => document.getElementById(id);
-let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false, connected = false, bookingLinkShown = false;
+let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false, connected = false;
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function pushMsg(role, text){
@@ -131,23 +130,11 @@ function pushMsg(role, text){
   if (last && last.role===role && last.text===t) return;
   transcript.push({role, text:t}); renderTranscript();
 }
-// アバターが相談・予約に言及したらチャット欄に予約リンクを1回だけ差し込む（音声では読み上げない）
-function maybeShowBooking(avatarText){
-  if (bookingLinkShown) return;
-  if (/予約|日程|無料相談|リンク|相談/.test(String(avatarText||''))) {
-    bookingLinkShown = true;
-    transcript.push({ role:'link', text:'30分オンライン無料相談のご予約はこちら', url: BOOKING_URL });
-    renderTranscript();
-  }
-}
 function renderTranscript(){
   const box = $('transcript');
-  box.innerHTML = transcript.map(m => {
-    if (m.role === 'link') {
-      return `<div class="msg booklink"><a href="${m.url}" target="_blank" rel="noopener">📅 ${escapeHtml(m.text)} →</a></div>`;
-    }
-    return `<div class="msg ${m.role==='avatar'?'avatar':'user'}">${m.role==='avatar'?'AIシバサキ':'あなた'}: ${escapeHtml(m.text)}</div>`;
-  }).join('');
+  box.innerHTML = transcript.map(m =>
+    `<div class="msg ${m.role==='avatar'?'avatar':'user'}">${m.role==='avatar'?'AIシバサキ':'あなた'}: ${escapeHtml(m.text)}</div>`
+  ).join('');
   box.scrollTop = box.scrollHeight;
 }
 function endHandler(){
@@ -210,7 +197,7 @@ async function startAvatar(){
     session.on(SessionEvent.SESSION_DISCONNECTED, endHandler);
     session.on(AgentEventsEnum.SESSION_STOPPED, endHandler);
     session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ pushMsg('user',   p.text); }});
-    session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ pushMsg('avatar', p.text); maybeShowBooking(p.text); }});
+    session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ pushMsg('avatar', p.text); }});
     startedAt = Date.now();
     await session.start();
     tryAttach();
