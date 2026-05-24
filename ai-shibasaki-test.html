@@ -123,13 +123,24 @@ const $ = (id) => document.getElementById(id);
 let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false, connected = false;
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function pushMsg(role, text){
+// 発話を1バブルにまとめる。音声認識(USER/AVATAR_TRANSCRIPTION)は同一ターン内で
+// 断片(「完全な自動化です」→「ね。」)に分割して届くため、同じ話者が連続する間は連結する。
+// coalesce=true: 同一role連続を連結（音声）。coalesce=false: 新バブル（テキスト送信）
+function addMsg(role, text, coalesce){
   const t = String(text||'').trim(); if(!t) return;
-  // 直前の同一role・同一テキストはスキップ（テキスト送信のSDKエコー重複対策）
   const last = transcript[transcript.length-1];
-  if (last && last.role===role && last.text===t) return;
+  if (last && last.role===role) {
+    if (last.text === t || last.text.endsWith(t)) return;   // 完全/末尾重複(SDKエコー)はスキップ
+    if (coalesce) {
+      if (t.startsWith(last.text)) last.text = t;            // 累積成長型 → 置換
+      else last.text = last.text + t;                        // 分割(デルタ)型 → 連結
+      renderTranscript(); return;
+    }
+  }
   transcript.push({role, text:t}); renderTranscript();
 }
+// 後方互換（テキスト送信用の薄いラッパ）
+function pushMsg(role, text){ addMsg(role, text, false); }
 function renderTranscript(){
   const box = $('transcript');
   box.innerHTML = transcript.map(m =>
@@ -196,8 +207,8 @@ async function startAvatar(){
     session.on(SessionEvent.SESSION_STREAM_READY, () => { tryAttach(); markConnected(); tryPlay(); });
     session.on(SessionEvent.SESSION_DISCONNECTED, endHandler);
     session.on(AgentEventsEnum.SESSION_STOPPED, endHandler);
-    session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ pushMsg('user',   p.text); }});
-    session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ pushMsg('avatar', p.text); }});
+    session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ addMsg('user',   p.text, true); }});
+    session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ addMsg('avatar', p.text, true); }});
     startedAt = Date.now();
     await session.start();
     tryAttach();
