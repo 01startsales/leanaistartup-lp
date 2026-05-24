@@ -57,6 +57,10 @@
   .convo-title{font-size:13px;font-weight:700;color:var(--navy);margin:0 0 10px}
   #done{text-align:center;padding:40px 16px}
   #done h2{color:var(--navy)}
+  #done p{color:#39405a;font-size:14px}
+  .done-cta{display:inline-flex;align-items:center;gap:6px;margin:18px 0 8px;background:var(--orange);color:#fff;font-weight:700;text-decoration:none;padding:14px 22px;border-radius:10px;font-size:15px;box-shadow:0 3px 12px rgba(246,105,1,.32)}
+  .done-cta:hover{filter:brightness(1.05)}
+  .done-sub{font-size:12px;color:#8a90a2;margin-top:10px}
   .note{font-size:12px;color:#8a90a2;margin-top:18px;text-align:center}
   .err{color:#c0392b;font-size:13px;margin-top:10px}
 </style>
@@ -99,7 +103,10 @@
 
   <div id="done" hidden>
     <h2>ありがとうございました</h2>
-    <p>お問い合わせ内容を承りました。必要に応じて担当よりご連絡いたします。</p>
+    <p>AIシバサキとの対話、ありがとうございました。</p>
+    <p>代表 芝先と直接お話しされたい方は、下記より<br>30分のオンライン無料相談をご予約いただけます（無料）。</p>
+    <a class="done-cta" id="doneBook" href="https://01start.jp/meetings/shibasaki" target="_blank" rel="noopener">📅 芝先との30分無料相談を予約する →</a>
+    <p class="done-sub">※ ご相談のご意向をいただいた方には、ご登録のメールアドレスにも日程調整のご案内をお送りしています。</p>
   </div>
 
   <p class="note">※ マイクの使用を許可すると音声で会話できます。テキスト入力でも質問できます。</p>
