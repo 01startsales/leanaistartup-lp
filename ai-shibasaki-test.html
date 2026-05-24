@@ -143,19 +143,31 @@ async function startAvatar(){
     const data = await r.json();
     if (!data.session_token) throw new Error('token取得に失敗しました');
     session = new LiveAvatarSession(data.session_token);
-    session.on(SessionEvent.SESSION_STREAM_READY, () => {
-      // 左: 写真→ライブ映像に切替
+    const vid = $('avatarVideo');
+    // 左: 写真→ライブ映像に切替＋スピナー解除（接続成立の確定処理）
+    function markConnected(){
       connected = true;
-      $('posterImg').hidden = true; $('avatarVideo').hidden = false;
-      try { session.attach($('avatarVideo')); } catch(_){}
-      $('status').hidden = true;
-    });
+      $('posterImg').hidden = true; vid.hidden = false; $('status').hidden = true;
+    }
+    function tryAttach(){ try { session.attach(vid); } catch(_){} }
+    // 映像が実際に再生され始めたら確実にスピナーを消す（SDKイベント名/タイミングに依存しない）
+    vid.addEventListener('loadeddata', markConnected);
+    vid.addEventListener('playing', markConnected);
+    session.on(SessionEvent.SESSION_STREAM_READY, () => { tryAttach(); markConnected(); });
     session.on(SessionEvent.SESSION_DISCONNECTED, endHandler);
     session.on(AgentEventsEnum.SESSION_STOPPED, endHandler);
     session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ pushMsg('user',   p.text); }});
     session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ pushMsg('avatar', p.text); }});
     startedAt = Date.now();
     await session.start();
+    tryAttach();
+    // フォールバック: start後に映像ストリームが来ていればスピナー解除（最大3回チェック）
+    let _chk = 0;
+    const _iv = setInterval(() => {
+      if ($('status').hidden) { clearInterval(_iv); return; }
+      if (vid.srcObject || vid.readyState >= 2) { markConnected(); clearInterval(_iv); }
+      if (++_chk >= 6) clearInterval(_iv);
+    }, 1000);
     try { await session.voiceChat.start({ defaultMuted:false }); $('micBtn').textContent='🎤 マイク: ON'; }
     catch(err){ console.warn('voiceChat', err); $('micBtn').textContent='🎤 マイク: 不可'; }
   } catch (err) {
