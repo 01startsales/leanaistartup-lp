@@ -18,6 +18,18 @@
   .sub{color:#5a6072;font-size:14px;margin:0 0 20px}
   .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 2px 14px rgba(26,35,126,.06)}
   #hsform{min-height:60px}
+  /* 2カラム: 左=芝先 待機写真 / 右=フォーム */
+  .lead-layout{display:grid;grid-template-columns:minmax(210px,290px) 1fr;gap:26px;align-items:center}
+  @media(max-width:620px){.lead-layout{grid-template-columns:1fr;gap:16px}}
+  .photo-frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 8px 30px rgba(26,35,126,.18)}
+  .photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
+  .photo-frame::after{content:"";position:absolute;inset:0;border-radius:16px;animation:ring 2.6s ease-out infinite;pointer-events:none}
+  @keyframes ring{0%{box-shadow:inset 0 0 0 3px rgba(246,105,1,.55)}70%{box-shadow:inset 0 0 0 3px rgba(246,105,1,0)}100%{box-shadow:inset 0 0 0 3px rgba(246,105,1,0)}}
+  .online-badge{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:6px;background:rgba(11,16,32,.74);color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+  .online-dot{width:9px;height:9px;border-radius:50%;background:#2ecc71;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,204,113,.6)}70%{box-shadow:0 0 0 7px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
+  .photo-caption{margin-top:12px;font-size:13px;color:#5a6072;text-align:center;line-height:1.75}
+  .photo-caption strong{color:var(--navy)}
   /* HubSpot form のブランド寄せ（最低限） */
   .hs-form .hs-button{background:var(--orange)!important;border:none!important;border-radius:10px!important;padding:13px 20px!important;font-weight:700!important;cursor:pointer;width:100%}
   .hs-form label{font-size:13px;font-weight:600;color:#39405a}
@@ -50,10 +62,19 @@
   <h1>AI芝先に質問</h1>
   <p class="sub">株式会社01START 代表「AI芝先」が、会社・サービスについてその場でお答えします（検証版）。<br>下記フォームを送信すると、AI芝先との対話が始まります。</p>
 
-  <!-- ① HubSpotフォーム -->
-  <div class="card" id="formCard">
-    <div id="hsform"></div>
-    <div class="err" id="formErr" hidden></div>
+  <!-- ① 芝先 待機写真 + HubSpotフォーム -->
+  <div class="card lead-layout" id="formCard">
+    <div class="hero-photo">
+      <div class="photo-frame">
+        <img src="/images/instructor.jpg" alt="AI芝先（芝先 恵介）がオンラインで待機中" loading="lazy">
+        <span class="online-badge"><span class="online-dot"></span>オンライン</span>
+      </div>
+      <p class="photo-caption"><strong>AI芝先</strong>が画面の向こうでお待ちしています。<br>フォーム送信で対話が始まります。</p>
+    </div>
+    <div class="form-col">
+      <div id="hsform"></div>
+      <div class="err" id="formErr" hidden></div>
+    </div>
   </div>
 
   <!-- ② アバター -->
