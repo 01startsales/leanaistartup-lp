@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AI芝先に質問（検証）| 01START</title>
+<link rel="preconnect" href="https://esm.sh" crossorigin>
+<link rel="preconnect" href="https://keisuke.app.n8n.cloud" crossorigin>
+<style>
+  :root{--navy:#1A237E;--orange:#F66901;--bg:#f5f6fa;--line:#e2e5ee}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:var(--bg);color:#1f2433;line-height:1.7}
+  .wrap{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+  h1{font-size:22px;color:var(--navy);margin:8px 0 4px}
+  .sub{color:#5a6072;font-size:14px;margin:0 0 20px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 2px 14px rgba(26,35,126,.06)}
+  label{display:block;font-size:13px;font-weight:600;color:#39405a;margin:14px 0 6px}
+  input[type=text],input[type=email]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:9px;font-size:15px}
+  .consent{display:flex;gap:8px;align-items:flex-start;margin:16px 0 4px;font-size:13px;font-weight:400;color:#5a6072}
+  .consent input{margin-top:3px}
+  .btn{appearance:none;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px}
+  .btn-primary{background:var(--orange);color:#fff;padding:14px 20px;width:100%;margin-top:18px}
+  .btn-primary:disabled{opacity:.5;cursor:not-allowed}
+  #stage{margin-top:4px}
+  .videowrap{position:relative;width:100%;aspect-ratio:16/10;background:#0b1020;border-radius:12px;overflow:hidden}
+  video{width:100%;height:100%;object-fit:cover;background:#0b1020}
+  #status{position:absolute;inset:0;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;color:#fff;font-size:14px;background:rgba(11,16,32,.82)}
+  .spin{width:34px;height:34px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+  .controls input{flex:1;min-width:160px;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px}
+  .btn-sub{background:var(--navy);color:#fff;padding:11px 14px}
+  .btn-ghost{background:#eef0f7;color:var(--navy);padding:11px 14px}
+  .btn-end{background:#c0392b;color:#fff;padding:11px 16px}
+  #transcript{margin-top:14px;max-height:240px;overflow:auto;font-size:14px}
+  .msg{margin:7px 0;padding:9px 12px;border-radius:10px;max-width:88%;white-space:pre-wrap;word-break:break-word}
+  .msg.user{background:#e9edff;margin-left:auto;color:#23306e}
+  .msg.avatar{background:#fff3e8;border:1px solid #ffd9bd;color:#7a3b07}
+  #done{text-align:center;padding:40px 16px}
+  #done h2{color:var(--navy)}
+  .note{font-size:12px;color:#8a90a2;margin-top:18px;text-align:center}
+  .err{color:#c0392b;font-size:13px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AI芝先に質問</h1>
+  <p class="sub">株式会社01START 代表「AI芝先」が、会社・サービスについてその場でお答えします（検証版）。</p>
+
+  <!-- ① フォーム -->
+  <div class="card" id="formCard">
+    <form id="leadForm" autocomplete="on">
+      <label for="company">会社名 <span style="color:#c0392b">*</span></label>
+      <input id="company" name="company" type="text" required placeholder="株式会社サンプル">
+      <label for="name">お名前 <span style="color:#c0392b">*</span></label>
+      <input id="name" name="name" type="text" required placeholder="山田 太郎">
+      <label for="email">メールアドレス <span style="color:#c0392b">*</span></label>
+      <input id="email" name="email" type="email" required placeholder="taro@example.co.jp">
+      <label class="consent"><input id="consent" type="checkbox" required>
+        <span>個人情報の取扱いに同意のうえ、AI芝先との会話内容が記録されることを承諾します。</span></label>
+      <button class="btn btn-primary" id="startBtn" type="submit">AI芝先と話す</button>
+      <div class="err" id="formErr" hidden></div>
+    </form>
+  </div>
+
+  <!-- ② アバター -->
+  <div id="stage" hidden>
+    <div class="videowrap">
+      <video id="avatarVideo" autoplay playsinline></video>
+      <div id="status"><div class="spin"></div><div id="statusText">接続中… 少々お待ちください</div></div>
+    </div>
+    <div class="controls">
+      <button class="btn btn-ghost" id="micBtn" type="button">🎤 マイク: ON</button>
+      <input id="textInput" type="text" placeholder="テキストでも質問できます">
+      <button class="btn btn-sub" id="sendBtn" type="button">送信</button>
+      <button class="btn btn-end" id="endBtn" type="button">終了</button>
+    </div>
+    <div id="transcript"></div>
+  </div>
+
+  <!-- ③ 完了 -->
+  <div id="done" hidden>
+    <h2>ありがとうございました</h2>
+    <p>お問い合わせ内容を承りました。必要に応じて担当よりご連絡いたします。</p>
+  </div>
+
+  <p class="note">※ 本ページは検証用です。マイクの使用を許可すると音声で会話できます。</p>
+</div>
+
+<script type="module">
+import { LiveAvatarSession, SessionEvent, AgentEventsEnum }
+  from 'https://esm.sh/@heygen/liveavatar-web-sdk';
+
+const TOKEN_URL   = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-token';
+const SESSION_URL = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-session';
+
+const $ = (id) => document.getElementById(id);
+let session = null, transcript = [], startedAt = 0, lead = {}, posted = false;
+
+function renderTranscript(){
+  const box = $('transcript');
+  box.innerHTML = transcript.map(m =>
+    `<div class="msg ${m.role==='avatar'?'avatar':'user'}">${m.role==='avatar'?'AI芝先':'あなた'}: ${escapeHtml(m.text)}</div>`
+  ).join('');
+  box.scrollTop = box.scrollHeight;
+}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function endHandler(){
+  if (posted) return; posted = true;
+  const payload = { company: lead.company, name: lead.name, email: lead.email,
+    transcript, durationSec: Math.round((Date.now()-startedAt)/1000), pageUrl: location.href };
+  fetch(SESSION_URL, {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload), keepalive:true}).catch(()=>{});
+  $('stage').hidden = true; $('done').hidden = false;
+}
+
+$('leadForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  lead = { company: $('company').value.trim(), name: $('name').value.trim(), email: $('email').value.trim() };
+  $('formCard').hidden = true; $('stage').hidden = false;
+  $('statusText').textContent = '接続中… 少々お待ちください';
+  try {
+    const r = await fetch(TOKEN_URL, {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(lead)});
+    const data = await r.json();
+    if (!data.session_token) throw new Error('token取得に失敗しました');
+
+    session = new LiveAvatarSession(data.session_token);
+    session.on(SessionEvent.SESSION_STREAM_READY, () => {
+      try { session.attach($('avatarVideo')); } catch(_){}
+      $('status').style.display = 'none';
+    });
+    session.on(SessionEvent.SESSION_DISCONNECTED, endHandler);
+    session.on(AgentEventsEnum.SESSION_STOPPED, endHandler);
+    session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ transcript.push({role:'user',text:p.text});   renderTranscript(); }});
+    session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ transcript.push({role:'avatar',text:p.text}); renderTranscript(); }});
+
+    startedAt = Date.now();
+    await session.start();
+    try { await session.voiceChat.start({ defaultMuted:false }); $('micBtn').textContent='🎤 マイク: ON'; }
+    catch(err){ console.warn('voiceChat', err); $('micBtn').textContent='🎤 マイク: 不可'; }
+  } catch (err) {
+    $('status').style.display='none'; $('stage').hidden=true; $('formCard').hidden=false;
+    const el=$('formErr'); el.hidden=false; el.textContent='接続エラー: '+(err.message||err)+' 時間をおいて再度お試しください。';
+  }
+});
+
+$('micBtn').addEventListener('click', async () => {
+  if (!session || !session.voiceChat) return;
+  try {
+    if (session.voiceChat.isMuted) { await session.voiceChat.unmute(); $('micBtn').textContent='🎤 マイク: ON'; }
+    else { await session.voiceChat.mute(); $('micBtn').textContent='🔇 マイク: OFF'; }
+  } catch(_){}
+});
+$('sendBtn').addEventListener('click', () => {
+  const t = $('textInput').value.trim();
+  if (t && session) { try{ session.message(t); }catch(_){} transcript.push({role:'user',text:t}); renderTranscript(); $('textInput').value=''; }
+});
+$('textInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); $('sendBtn').click(); }});
+$('endBtn').addEventListener('click', () => { if (session) { try{ session.stop(); }catch(_){} } endHandler(); });
+window.addEventListener('beforeunload', () => { if (session && !posted) endHandler(); });
+</script>
+</body>
+</html>
