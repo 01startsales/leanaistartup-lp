@@ -270,6 +270,22 @@ function createHsForm(){
   window.hbspt.forms.create({ portalId: "8655538", formId: "763c4a27-4eb7-4d41-8e68-050826367e38", region: "na2", target: "#hsform" });
 }
 createHsForm();
+
+// --- iframe 高さ自動追従: コンテンツ高さを親(LP)に postMessage で通知 ---
+// フォーム描画・対話パネル切替・トランスクリプト増加・完了画面 等の変化に ResizeObserver で追従
+let _hraf = 0;
+function postHeight(){
+  cancelAnimationFrame(_hraf);
+  _hraf = requestAnimationFrame(function(){
+    const h = Math.ceil(document.documentElement.scrollHeight);
+    try { parent.postMessage({ type: 'ai-shibasaki-height', height: h }, '*'); } catch(_){}
+  });
+}
+window.addEventListener('load', postHeight);
+window.addEventListener('resize', postHeight);
+try { new ResizeObserver(postHeight).observe(document.body); } catch(_){}
+setTimeout(postHeight, 400);   // HubSpot フォーム描画後の初期通知
+setTimeout(postHeight, 1200);  // 念のため再通知
 </script>
 </body>
 </html>
