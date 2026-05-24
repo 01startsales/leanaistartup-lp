@@ -103,7 +103,7 @@ import { LiveAvatarSession, SessionEvent, AgentEventsEnum }
 const TOKEN_URL   = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-token';
 const SESSION_URL = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-session';
 const $ = (id) => document.getElementById(id);
-let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false;
+let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false, connected = false;
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function renderTranscript(){
@@ -115,6 +115,9 @@ function renderTranscript(){
 }
 function endHandler(){
   if (posted) return; posted = true;
+  // 接続して会話が成立した場合のみ HubSpot 記録 + 完了画面を表示
+  // (接続失敗・クレジット切れ等で会話が無い場合は記録せず、エラー表示のまま維持)
+  if (!connected || transcript.length === 0) return;
   const payload = { company: lead.company, name: lead.name, email: lead.email,
     transcript, durationSec: Math.round((Date.now()-startedAt)/1000), pageUrl: location.href };
   fetch(SESSION_URL, {method:'POST', headers:{'Content-Type':'application/json'},
@@ -135,6 +138,7 @@ async function startAvatar(){
     session = new LiveAvatarSession(data.session_token);
     session.on(SessionEvent.SESSION_STREAM_READY, () => {
       // 左: 写真→ライブ映像に切替
+      connected = true;
       $('posterImg').hidden = true; $('avatarVideo').hidden = false;
       try { session.attach($('avatarVideo')); } catch(_){}
       $('status').hidden = true;
