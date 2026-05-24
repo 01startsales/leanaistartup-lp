@@ -106,6 +106,13 @@ const $ = (id) => document.getElementById(id);
 let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false, connected = false;
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function pushMsg(role, text){
+  const t = String(text||'').trim(); if(!t) return;
+  // 直前の同一role・同一テキストはスキップ（テキスト送信のSDKエコー重複対策）
+  const last = transcript[transcript.length-1];
+  if (last && last.role===role && last.text===t) return;
+  transcript.push({role, text:t}); renderTranscript();
+}
 function renderTranscript(){
   const box = $('transcript');
   box.innerHTML = transcript.map(m =>
@@ -145,8 +152,8 @@ async function startAvatar(){
     });
     session.on(SessionEvent.SESSION_DISCONNECTED, endHandler);
     session.on(AgentEventsEnum.SESSION_STOPPED, endHandler);
-    session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ transcript.push({role:'user',text:p.text});   renderTranscript(); }});
-    session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ transcript.push({role:'avatar',text:p.text}); renderTranscript(); }});
+    session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ pushMsg('user',   p.text); }});
+    session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ pushMsg('avatar', p.text); }});
     startedAt = Date.now();
     await session.start();
     try { await session.voiceChat.start({ defaultMuted:false }); $('micBtn').textContent='🎤 マイク: ON'; }
@@ -166,7 +173,7 @@ $('micBtn').addEventListener('click', async () => {
 });
 $('sendBtn').addEventListener('click', () => {
   const t = $('textInput').value.trim();
-  if (t && session) { try{ session.message(t); }catch(_){} transcript.push({role:'user',text:t}); renderTranscript(); $('textInput').value=''; }
+  if (t && session) { try{ session.message(t); }catch(_){} pushMsg('user',t); $('textInput').value=''; }
 });
 $('textInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); $('sendBtn').click(); }});
 $('endBtn').addEventListener('click', () => { if (session) { try{ session.stop(); }catch(_){} } endHandler(); });
