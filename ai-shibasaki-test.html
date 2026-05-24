@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>AI芝先に質問（検証）| 01START</title>
+<title>AIシバサキに質問（検証）| 01START</title>
 <link rel="preconnect" href="https://esm.sh" crossorigin>
 <link rel="preconnect" href="https://keisuke.app.n8n.cloud" crossorigin>
 <link rel="preconnect" href="https://js.hsforms.net" crossorigin>
@@ -21,7 +21,7 @@
   .hs-form .hs-button{background:var(--orange)!important;border:none!important;border-radius:10px!important;padding:13px 20px!important;font-weight:700!important;cursor:pointer;width:100%}
   .hs-form label{font-size:13px;font-weight:600;color:#39405a}
   .hs-form input.hs-input{width:100%!important;padding:11px 13px!important;border:1px solid var(--line)!important;border-radius:9px!important;font-size:15px!important}
-  /* 2カラム: 左=AI芝先(写真→ライブ映像) / 右=フォーム→対話 */
+  /* 2カラム: 左=AIシバサキ(写真→ライブ映像) / 右=フォーム→対話 */
   .lead-layout{display:grid;grid-template-columns:minmax(240px,330px) 1fr;gap:20px;align-items:start}
   @media(max-width:640px){.lead-layout{grid-template-columns:1fr;gap:16px}}
   .photo-frame{position:relative;width:100%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:#0b1020}
@@ -56,20 +56,20 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>AI芝先に質問</h1>
-  <p class="sub">株式会社01START 代表「AI芝先」が、会社・サービスについてその場でお答えします（検証版）。<br>フォームを送信すると、左の画面でAI芝先との対話が始まります。</p>
+  <h1>AIシバサキに質問</h1>
+  <p class="sub">株式会社01START 代表「AIシバサキ」が、会社・サービスについてその場でお答えします（検証版）。<br>フォームを送信すると、左の画面でAIシバサキとの対話が始まります。</p>
 
-  <!-- 2カラム: 左=AI芝先 / 右=フォーム→対話 -->
+  <!-- 2カラム: 左=AIシバサキ / 右=フォーム→対話 -->
   <div class="lead-layout" id="leadLayout">
-    <!-- 左: AI芝先（写真→ライブ映像） -->
+    <!-- 左: AIシバサキ（写真→ライブ映像） -->
     <div class="card" id="leftCard">
       <div class="photo-frame">
-        <img id="posterImg" src="/images/shibasaki-waiting.jpg" alt="AI芝先（芝先 恵介）がオンラインで待機中">
+        <img id="posterImg" src="/images/shibasaki-waiting.jpg" alt="AIシバサキ（芝先 恵介）がオンラインで待機中">
         <video id="avatarVideo" autoplay playsinline hidden></video>
         <span class="online-badge"><span class="online-dot"></span>オンライン</span>
         <div id="status" hidden><div class="spin"></div><div id="statusText">接続中…</div></div>
       </div>
-      <p class="photo-caption" id="leftCaption"><strong>AI芝先</strong>が画面の向こうでお待ちしています。<br>右のフォーム送信で対話が始まります。</p>
+      <p class="photo-caption" id="leftCaption"><strong>AIシバサキ</strong>が画面の向こうでお待ちしています。<br>右のフォーム送信で対話が始まります。</p>
     </div>
 
     <!-- 右: フォーム → 対話パネル -->
@@ -77,7 +77,7 @@
       <div id="hsform"></div>
       <div class="err" id="formErr" hidden></div>
       <div id="convo" hidden>
-        <p class="convo-title">AI芝先と対話中</p>
+        <p class="convo-title">AIシバサキと対話中</p>
         <div class="controls">
           <button class="btn btn-ghost" id="micBtn" type="button">🎤 マイク: ON</button>
           <input id="textInput" type="text" placeholder="テキストでも質問できます">
@@ -117,7 +117,7 @@ function pushMsg(role, text){
 function renderTranscript(){
   const box = $('transcript');
   box.innerHTML = transcript.map(m =>
-    `<div class="msg ${m.role==='avatar'?'avatar':'user'}">${m.role==='avatar'?'AI芝先':'あなた'}: ${escapeHtml(m.text)}</div>`
+    `<div class="msg ${m.role==='avatar'?'avatar':'user'}">${m.role==='avatar'?'AIシバサキ':'あなた'}: ${escapeHtml(m.text)}</div>`
   ).join('');
   box.scrollTop = box.scrollHeight;
 }
@@ -140,7 +140,7 @@ async function startAvatar(){
   $('status').hidden = false; $('status').style.display = 'flex';
   const spinnerShownAt = Date.now();   // 「接続中…」を最低 MIN_SPINNER_MS 表示する基準
   const MIN_SPINNER_MS = 1200;
-  $('leftCaption').innerHTML = '<strong>AI芝先</strong>とお話しください。';
+  $('leftCaption').innerHTML = '<strong>AIシバサキ</strong>とお話しください。';
   try {
     const r = await fetch(TOKEN_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)});
     const data = await r.json();
