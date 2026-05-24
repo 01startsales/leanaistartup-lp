@@ -187,8 +187,15 @@ function createHsForm(){
       const company = val($form,'company');
       const last = val($form,'lastname');
       const first = val($form,'firstname');
+      const lastK = val($form,'lastname_furigana');
+      const firstK = val($form,'firstname_furigana');
       const email = val($form,'email');
-      lead = { company, name: (last+' '+first).trim() || last || first, email };
+      lead = {
+        company,
+        name: (last+' '+first).trim() || last || first,
+        name_kana: (lastK+' '+firstK).trim(),
+        email
+      };
       // HubSpot側はそのまま送信（コンタクト作成）。並行してアバター起動
       startAvatar();
     }
