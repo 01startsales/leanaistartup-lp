@@ -32,6 +32,7 @@
   .online-dot{width:9px;height:9px;border-radius:50%;background:#2ecc71;animation:pulse 1.6s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,204,113,.6)}70%{box-shadow:0 0 0 7px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
   #status{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;color:#fff;font-size:13px;background:rgba(11,16,32,.82)}
+  #status[hidden]{display:none!important}
   .spin{width:32px;height:32px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite}
   @keyframes sp{to{transform:rotate(360deg)}}
   .photo-caption{margin-top:12px;font-size:13px;color:#5a6072;text-align:center;line-height:1.75}
@@ -136,7 +137,7 @@ async function startAvatar(){
   // 右: フォーム → 対話パネル
   $('hsform').style.display = 'none'; $('convo').hidden = false;
   // 左: 接続中オーバーレイ
-  $('status').hidden = false;
+  $('status').hidden = false; $('status').style.display = 'flex';
   $('leftCaption').innerHTML = '<strong>AI芝先</strong>とお話しください。';
   try {
     const r = await fetch(TOKEN_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)});
@@ -147,7 +148,8 @@ async function startAvatar(){
     // 左: 写真→ライブ映像に切替＋スピナー解除（接続成立の確定処理）
     function markConnected(){
       connected = true;
-      $('posterImg').hidden = true; vid.hidden = false; $('status').hidden = true;
+      $('posterImg').hidden = true; vid.hidden = false;
+      $('status').hidden = true; $('status').style.display = 'none';
     }
     function tryAttach(){ try { session.attach(vid); } catch(_){} }
     // 映像が実際に再生され始めたら確実にスピナーを消す（SDKイベント名/タイミングに依存しない）
@@ -171,7 +173,7 @@ async function startAvatar(){
     try { await session.voiceChat.start({ defaultMuted:false }); $('micBtn').textContent='🎤 マイク: ON'; }
     catch(err){ console.warn('voiceChat', err); $('micBtn').textContent='🎤 マイク: 不可'; }
   } catch (err) {
-    $('status').hidden = true; $('convo').hidden = true; $('hsform').style.display='';
+    $('status').hidden = true; $('status').style.display='none'; $('convo').hidden = true; $('hsform').style.display='';
     const el=$('formErr'); el.hidden=false; el.textContent='接続エラー: '+(err.message||err)+'  時間をおいて再度お試しください。';
   }
 }
