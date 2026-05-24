@@ -277,7 +277,10 @@ let _hraf = 0;
 function postHeight(){
   cancelAnimationFrame(_hraf);
   _hraf = requestAnimationFrame(function(){
-    const h = Math.ceil(document.documentElement.scrollHeight);
+    // documentElement.scrollHeight は iframe 高さを返し縮まないため、実コンテンツ .wrap を測る
+    const wrap = document.querySelector('.wrap');
+    const h = wrap ? Math.ceil(wrap.getBoundingClientRect().bottom + (window.scrollY || 0))
+                   : Math.ceil(document.body.scrollHeight);
     try { parent.postMessage({ type: 'ai-shibasaki-height', height: h }, '*'); } catch(_){}
   });
 }
