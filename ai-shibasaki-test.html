@@ -19,7 +19,7 @@
   .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 2px 14px rgba(26,35,126,.06)}
   #hsform{min-height:60px}
   /* 2カラム: 左=芝先 待機写真 / 右=フォーム */
-  .lead-layout{display:grid;grid-template-columns:minmax(210px,290px) 1fr;gap:26px;align-items:center}
+  .lead-layout{display:grid;grid-template-columns:minmax(210px,300px) 1fr;gap:20px;align-items:start}
   @media(max-width:620px){.lead-layout{grid-template-columns:1fr;gap:16px}}
   .photo-frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 8px 30px rgba(26,35,126,.18)}
   .photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
@@ -62,16 +62,16 @@
   <h1>AI芝先に質問</h1>
   <p class="sub">株式会社01START 代表「AI芝先」が、会社・サービスについてその場でお答えします（検証版）。<br>下記フォームを送信すると、AI芝先との対話が始まります。</p>
 
-  <!-- ① 芝先 待機写真 + HubSpotフォーム -->
-  <div class="card lead-layout" id="formCard">
-    <div class="hero-photo">
+  <!-- ① 芝先 待機写真（独立カード） + HubSpotフォーム（独立カード） -->
+  <div class="lead-layout" id="formCard">
+    <div class="card hero-photo">
       <div class="photo-frame">
         <img src="/images/shibasaki-waiting.jpg" alt="AI芝先（芝先 恵介）がオンラインで待機中">
         <span class="online-badge"><span class="online-dot"></span>オンライン</span>
       </div>
       <p class="photo-caption"><strong>AI芝先</strong>が画面の向こうでお待ちしています。<br>フォーム送信で対話が始まります。</p>
     </div>
-    <div class="form-col">
+    <div class="card form-col">
       <div id="hsform"></div>
       <div class="err" id="formErr" hidden></div>
     </div>
