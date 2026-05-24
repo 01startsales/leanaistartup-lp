@@ -175,30 +175,36 @@ $('endBtn').addEventListener('click', () => { if (session) { try{ session.stop()
 window.addEventListener('beforeunload', () => { if (session && !posted) endHandler(); });
 
 // --- HubSpot フォーム埋め込み + 送信時にアバター起動 ---
-function val($form, name){ try { return ($form.find('input[name="'+name+'"]').val()||'').trim(); } catch(_){ return ''; } }
+// HubSpotフォームはクロスフレームiframeで描画されるため、$form.find() では値を読めない。
+// 公式の postMessage イベント (hsFormCallback / onFormSubmit) で送信値の配列を受け取る。
+let started = false;
+function startFromValues(map){
+  if (started) return; started = true;
+  lead = {
+    company: (map.company || '').trim(),
+    name: ((map.lastname || '') + ' ' + (map.firstname || '')).trim(),
+    name_kana: ((map.lastname_furigana || '') + ' ' + (map.firstname_furigana || '')).trim(),
+    email: (map.email || '').trim()
+  };
+  startAvatar();
+}
+window.addEventListener('message', function(e){
+  try {
+    if (!e || !e.data) return;
+    if (e.data.type === 'hsFormCallback' && e.data.eventName === 'onFormSubmit') {
+      const map = {};
+      (e.data.data || []).forEach(function(f){ if (f && f.name != null) map[f.name] = f.value; });
+      startFromValues(map);
+    }
+  } catch(_){}
+});
 function createHsForm(){
   if (!window.hbspt || !window.hbspt.forms) { setTimeout(createHsForm, 200); return; }
   window.hbspt.forms.create({
     portalId: "8655538",
     formId: "763c4a27-4eb7-4d41-8e68-050826367e38",
     region: "na2",
-    target: "#hsform",
-    onFormSubmit: function($form){
-      const company = val($form,'company');
-      const last = val($form,'lastname');
-      const first = val($form,'firstname');
-      const lastK = val($form,'lastname_furigana');
-      const firstK = val($form,'firstname_furigana');
-      const email = val($form,'email');
-      lead = {
-        company,
-        name: (last+' '+first).trim() || last || first,
-        name_kana: (lastK+' '+firstK).trim(),
-        email
-      };
-      // HubSpot側はそのまま送信（コンタクト作成）。並行してアバター起動
-      startAvatar();
-    }
+    target: "#hsform"
   });
 }
 createHsForm();
