@@ -13,44 +13,40 @@
   :root{--navy:#1A237E;--orange:#F66901;--bg:#f5f6fa;--line:#e2e5ee}
   *{box-sizing:border-box}
   body{margin:0;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:var(--bg);color:#1f2433;line-height:1.7}
-  .wrap{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+  .wrap{max-width:880px;margin:0 auto;padding:24px 16px 60px}
   h1{font-size:22px;color:var(--navy);margin:8px 0 4px}
   .sub{color:#5a6072;font-size:14px;margin:0 0 20px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 2px 14px rgba(26,35,126,.06)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 2px 14px rgba(26,35,126,.06)}
   #hsform{min-height:60px}
-  /* 2カラム: 左=芝先 待機写真 / 右=フォーム */
-  .lead-layout{display:grid;grid-template-columns:minmax(210px,300px) 1fr;gap:20px;align-items:start}
-  @media(max-width:620px){.lead-layout{grid-template-columns:1fr;gap:16px}}
-  .photo-frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 8px 30px rgba(26,35,126,.18)}
-  .photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
-  .photo-frame::after{content:"";position:absolute;inset:0;border-radius:16px;animation:ring 2.6s ease-out infinite;pointer-events:none}
-  @keyframes ring{0%{box-shadow:inset 0 0 0 3px rgba(246,105,1,.55)}70%{box-shadow:inset 0 0 0 3px rgba(246,105,1,0)}100%{box-shadow:inset 0 0 0 3px rgba(246,105,1,0)}}
-  .online-badge{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:6px;background:rgba(11,16,32,.74);color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
-  .online-dot{width:9px;height:9px;border-radius:50%;background:#2ecc71;animation:pulse 1.6s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,204,113,.6)}70%{box-shadow:0 0 0 7px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
-  .photo-caption{margin-top:12px;font-size:13px;color:#5a6072;text-align:center;line-height:1.75}
-  .photo-caption strong{color:var(--navy)}
-  /* HubSpot form のブランド寄せ（最低限） */
   .hs-form .hs-button{background:var(--orange)!important;border:none!important;border-radius:10px!important;padding:13px 20px!important;font-weight:700!important;cursor:pointer;width:100%}
   .hs-form label{font-size:13px;font-weight:600;color:#39405a}
   .hs-form input.hs-input{width:100%!important;padding:11px 13px!important;border:1px solid var(--line)!important;border-radius:9px!important;font-size:15px!important}
-  .hs-form .hs-error-msgs{list-style:none;padding:0;margin:4px 0 0;color:#c0392b;font-size:12px}
-  #stage{margin-top:4px}
-  .videowrap{position:relative;width:100%;aspect-ratio:16/10;background:#0b1020;border-radius:12px;overflow:hidden}
-  video{width:100%;height:100%;object-fit:cover;background:#0b1020}
-  #status{position:absolute;inset:0;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;color:#fff;font-size:14px;background:rgba(11,16,32,.82)}
-  .spin{width:34px;height:34px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite}
+  /* 2カラム: 左=AI芝先(写真→ライブ映像) / 右=フォーム→対話 */
+  .lead-layout{display:grid;grid-template-columns:minmax(240px,330px) 1fr;gap:20px;align-items:start}
+  @media(max-width:640px){.lead-layout{grid-template-columns:1fr;gap:16px}}
+  .photo-frame{position:relative;width:100%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:#0b1020}
+  .photo-frame img,.photo-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 12%}
+  .photo-frame::after{content:"";position:absolute;inset:0;border-radius:12px;animation:ring 2.6s ease-out infinite;pointer-events:none}
+  @keyframes ring{0%{box-shadow:inset 0 0 0 3px rgba(246,105,1,.55)}70%{box-shadow:inset 0 0 0 3px rgba(246,105,1,0)}100%{box-shadow:inset 0 0 0 3px rgba(246,105,1,0)}}
+  .online-badge{position:absolute;top:10px;left:10px;z-index:3;display:flex;align-items:center;gap:6px;background:rgba(11,16,32,.74);color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+  .online-dot{width:9px;height:9px;border-radius:50%;background:#2ecc71;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,204,113,.6)}70%{box-shadow:0 0 0 7px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
+  #status{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;color:#fff;font-size:13px;background:rgba(11,16,32,.82)}
+  .spin{width:32px;height:32px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite}
   @keyframes sp{to{transform:rotate(360deg)}}
-  .controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
-  .controls input{flex:1;min-width:160px;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px}
+  .photo-caption{margin-top:12px;font-size:13px;color:#5a6072;text-align:center;line-height:1.75}
+  .photo-caption strong{color:var(--navy)}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .controls input{flex:1;min-width:150px;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px}
   .btn{appearance:none;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
   .btn-sub{background:var(--navy);color:#fff;padding:11px 14px}
   .btn-ghost{background:#eef0f7;color:var(--navy);padding:11px 14px}
   .btn-end{background:#c0392b;color:#fff;padding:11px 16px}
-  #transcript{margin-top:14px;max-height:240px;overflow:auto;font-size:14px}
-  .msg{margin:7px 0;padding:9px 12px;border-radius:10px;max-width:88%;white-space:pre-wrap;word-break:break-word}
+  #transcript{margin-top:14px;max-height:300px;overflow:auto;font-size:14px}
+  .msg{margin:7px 0;padding:9px 12px;border-radius:10px;max-width:90%;white-space:pre-wrap;word-break:break-word}
   .msg.user{background:#e9edff;margin-left:auto;color:#23306e}
   .msg.avatar{background:#fff3e8;border:1px solid #ffd9bd;color:#7a3b07}
+  .convo-title{font-size:13px;font-weight:700;color:var(--navy);margin:0 0 10px}
   #done{text-align:center;padding:40px 16px}
   #done h2{color:var(--navy)}
   .note{font-size:12px;color:#8a90a2;margin-top:18px;text-align:center}
@@ -60,39 +56,38 @@
 <body>
 <div class="wrap">
   <h1>AI芝先に質問</h1>
-  <p class="sub">株式会社01START 代表「AI芝先」が、会社・サービスについてその場でお答えします（検証版）。<br>下記フォームを送信すると、AI芝先との対話が始まります。</p>
+  <p class="sub">株式会社01START 代表「AI芝先」が、会社・サービスについてその場でお答えします（検証版）。<br>フォームを送信すると、左の画面でAI芝先との対話が始まります。</p>
 
-  <!-- ① 芝先 待機写真（独立カード） + HubSpotフォーム（独立カード） -->
-  <div class="lead-layout" id="formCard">
-    <div class="card hero-photo">
+  <!-- 2カラム: 左=AI芝先 / 右=フォーム→対話 -->
+  <div class="lead-layout" id="leadLayout">
+    <!-- 左: AI芝先（写真→ライブ映像） -->
+    <div class="card" id="leftCard">
       <div class="photo-frame">
-        <img src="/images/shibasaki-waiting.jpg" alt="AI芝先（芝先 恵介）がオンラインで待機中">
+        <img id="posterImg" src="/images/shibasaki-waiting.jpg" alt="AI芝先（芝先 恵介）がオンラインで待機中">
+        <video id="avatarVideo" autoplay playsinline hidden></video>
         <span class="online-badge"><span class="online-dot"></span>オンライン</span>
+        <div id="status" hidden><div class="spin"></div><div id="statusText">接続中…</div></div>
       </div>
-      <p class="photo-caption"><strong>AI芝先</strong>が画面の向こうでお待ちしています。<br>フォーム送信で対話が始まります。</p>
+      <p class="photo-caption" id="leftCaption"><strong>AI芝先</strong>が画面の向こうでお待ちしています。<br>右のフォーム送信で対話が始まります。</p>
     </div>
-    <div class="card form-col">
+
+    <!-- 右: フォーム → 対話パネル -->
+    <div class="card" id="rightCard">
       <div id="hsform"></div>
       <div class="err" id="formErr" hidden></div>
+      <div id="convo" hidden>
+        <p class="convo-title">AI芝先と対話中</p>
+        <div class="controls">
+          <button class="btn btn-ghost" id="micBtn" type="button">🎤 マイク: ON</button>
+          <input id="textInput" type="text" placeholder="テキストでも質問できます">
+          <button class="btn btn-sub" id="sendBtn" type="button">送信</button>
+          <button class="btn btn-end" id="endBtn" type="button">終了</button>
+        </div>
+        <div id="transcript"></div>
+      </div>
     </div>
   </div>
 
-  <!-- ② アバター -->
-  <div id="stage" hidden>
-    <div class="videowrap">
-      <video id="avatarVideo" autoplay playsinline></video>
-      <div id="status"><div class="spin"></div><div id="statusText">接続中… 少々お待ちください</div></div>
-    </div>
-    <div class="controls">
-      <button class="btn btn-ghost" id="micBtn" type="button">🎤 マイク: ON</button>
-      <input id="textInput" type="text" placeholder="テキストでも質問できます">
-      <button class="btn btn-sub" id="sendBtn" type="button">送信</button>
-      <button class="btn btn-end" id="endBtn" type="button">終了</button>
-    </div>
-    <div id="transcript"></div>
-  </div>
-
-  <!-- ③ 完了 -->
   <div id="done" hidden>
     <h2>ありがとうございました</h2>
     <p>お問い合わせ内容を承りました。必要に応じて担当よりご連絡いたします。</p>
@@ -107,10 +102,10 @@ import { LiveAvatarSession, SessionEvent, AgentEventsEnum }
 
 const TOKEN_URL   = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-token';
 const SESSION_URL = 'https://keisuke.app.n8n.cloud/webhook/liveavatar-session';
-
 const $ = (id) => document.getElementById(id);
-let session = null, transcript = [], startedAt = 0, lead = {}, posted = false;
+let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false;
 
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function renderTranscript(){
   const box = $('transcript');
   box.innerHTML = transcript.map(m =>
@@ -118,43 +113,42 @@ function renderTranscript(){
   ).join('');
   box.scrollTop = box.scrollHeight;
 }
-function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
 function endHandler(){
   if (posted) return; posted = true;
   const payload = { company: lead.company, name: lead.name, email: lead.email,
     transcript, durationSec: Math.round((Date.now()-startedAt)/1000), pageUrl: location.href };
   fetch(SESSION_URL, {method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify(payload), keepalive:true}).catch(()=>{});
-  $('stage').hidden = true; $('done').hidden = false;
+  $('leadLayout').hidden = true; $('done').hidden = false;
 }
 
 async function startAvatar(){
-  $('formCard').hidden = true; $('stage').hidden = false;
-  $('status').style.display = 'flex';
-  $('statusText').textContent = '接続中… 少々お待ちください';
+  // 右: フォーム → 対話パネル
+  $('hsform').style.display = 'none'; $('convo').hidden = false;
+  // 左: 接続中オーバーレイ
+  $('status').hidden = false;
+  $('leftCaption').innerHTML = '<strong>AI芝先</strong>とお話しください。';
   try {
-    const r = await fetch(TOKEN_URL, {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(lead)});
+    const r = await fetch(TOKEN_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)});
     const data = await r.json();
     if (!data.session_token) throw new Error('token取得に失敗しました');
-
     session = new LiveAvatarSession(data.session_token);
     session.on(SessionEvent.SESSION_STREAM_READY, () => {
+      // 左: 写真→ライブ映像に切替
+      $('posterImg').hidden = true; $('avatarVideo').hidden = false;
       try { session.attach($('avatarVideo')); } catch(_){}
-      $('status').style.display = 'none';
+      $('status').hidden = true;
     });
     session.on(SessionEvent.SESSION_DISCONNECTED, endHandler);
     session.on(AgentEventsEnum.SESSION_STOPPED, endHandler);
     session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ transcript.push({role:'user',text:p.text});   renderTranscript(); }});
     session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ transcript.push({role:'avatar',text:p.text}); renderTranscript(); }});
-
     startedAt = Date.now();
     await session.start();
     try { await session.voiceChat.start({ defaultMuted:false }); $('micBtn').textContent='🎤 マイク: ON'; }
     catch(err){ console.warn('voiceChat', err); $('micBtn').textContent='🎤 マイク: 不可'; }
   } catch (err) {
-    $('status').style.display='none'; $('stage').hidden=true; $('formCard').hidden=false;
+    $('status').hidden = true; $('convo').hidden = true; $('hsform').style.display='';
     const el=$('formErr'); el.hidden=false; el.textContent='接続エラー: '+(err.message||err)+'  時間をおいて再度お試しください。';
   }
 }
@@ -174,10 +168,7 @@ $('textInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.prevent
 $('endBtn').addEventListener('click', () => { if (session) { try{ session.stop(); }catch(_){} } endHandler(); });
 window.addEventListener('beforeunload', () => { if (session && !posted) endHandler(); });
 
-// --- HubSpot フォーム埋め込み + 送信時にアバター起動 ---
-// HubSpotフォームはクロスフレームiframeで描画されるため、$form.find() では値を読めない。
-// 公式の postMessage イベント (hsFormCallback / onFormSubmit) で送信値の配列を受け取る。
-let started = false;
+// --- HubSpotフォーム: postMessage で送信値を取得しアバター起動 ---
 function startFromValues(map){
   if (started) return; started = true;
   lead = {
@@ -190,8 +181,7 @@ function startFromValues(map){
 }
 window.addEventListener('message', function(e){
   try {
-    if (!e || !e.data) return;
-    if (e.data.type === 'hsFormCallback' && e.data.eventName === 'onFormSubmit') {
+    if (e && e.data && e.data.type === 'hsFormCallback' && e.data.eventName === 'onFormSubmit') {
       const map = {};
       (e.data.data || []).forEach(function(f){ if (f && f.name != null) map[f.name] = f.value; });
       startFromValues(map);
@@ -200,12 +190,7 @@ window.addEventListener('message', function(e){
 });
 function createHsForm(){
   if (!window.hbspt || !window.hbspt.forms) { setTimeout(createHsForm, 200); return; }
-  window.hbspt.forms.create({
-    portalId: "8655538",
-    formId: "763c4a27-4eb7-4d41-8e68-050826367e38",
-    region: "na2",
-    target: "#hsform"
-  });
+  window.hbspt.forms.create({ portalId: "8655538", formId: "763c4a27-4eb7-4d41-8e68-050826367e38", region: "na2", target: "#hsform" });
 }
 createHsForm();
 </script>
