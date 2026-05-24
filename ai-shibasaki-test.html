@@ -138,6 +138,8 @@ async function startAvatar(){
   $('hsform').style.display = 'none'; $('convo').hidden = false;
   // 左: 接続中オーバーレイ
   $('status').hidden = false; $('status').style.display = 'flex';
+  const spinnerShownAt = Date.now();   // 「接続中…」を最低 MIN_SPINNER_MS 表示する基準
+  const MIN_SPINNER_MS = 1200;
   $('leftCaption').innerHTML = '<strong>AI芝先</strong>とお話しください。';
   try {
     const r = await fetch(TOKEN_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)});
@@ -149,7 +151,11 @@ async function startAvatar(){
     function markConnected(){
       connected = true;
       $('posterImg').hidden = true; vid.hidden = false;
-      $('status').hidden = true; $('status').style.display = 'none';
+      // 接続が速すぎてもスピナーを最低 MIN_SPINNER_MS は見せる（接続中フィードバック確保）
+      const hideSpinner = () => { $('status').hidden = true; $('status').style.display = 'none'; };
+      const elapsed = Date.now() - spinnerShownAt;
+      if (elapsed >= MIN_SPINNER_MS) hideSpinner();
+      else setTimeout(hideSpinner, MIN_SPINNER_MS - elapsed);
     }
     function tryAttach(){ try { session.attach(vid); } catch(_){} }
     // 映像が実際に再生され始めたら確実にスピナーを消す（SDKイベント名/タイミングに依存しない）
