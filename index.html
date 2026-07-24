@@ -919,7 +919,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div style="position:relative;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 10px 40px rgba(26,35,126,.12);background:#0b1020">
         <!-- 相対パス: 本番(/直下)でもローカルの file:// プレビューでも同じ場所に解決される。
              先頭スラッシュだと file:// でファイルシステムのルートを指し iframe が空になる -->
-        <iframe id="aiShibasakiFrame" src="ai-shibasaki-test.html?v=20260524g"
+        <!-- 🚨 widget(ai-shibasaki-test.html) を更新したら必ず ?v= を bump すること。
+             さもないと cache-control:max-age=600 で最大10分間、旧版が表示され続ける -->
+        <iframe id="aiShibasakiFrame" src="ai-shibasaki-test.html?v=20260724a"
           title="AIシバサキに質問"
           loading="lazy"
           allow="microphone; autoplay; fullscreen; clipboard-write"
