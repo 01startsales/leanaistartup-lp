@@ -336,6 +336,28 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
    ALTERNATIVES
 ====================================================== */
 .alt-table-wrap{margin-top:64px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);overflow-x:auto}
+
+/* ======================================================
+   HORIZONTAL SCROLL HINT — 横スクロールできる表に「→」を出す
+   JS(initHScroll) が実際にスクロール可能な時だけ data-scrollable=1 を付ける。
+   収まっている幅(デスクトップ等)では一切描画されない（高さも取らない）。
+   スクロールし始めた / 右端に着いた 時点で消える（読ませたい列を隠し続けない）。
+   🚨 position:sticky は使えない: html,body{overflow-x:hidden} により
+      computed が overflow:hidden/auto になり sticky が効かない（実測済み）。
+      表の「上」に置いて、到達時点で必ず目に入るようにしている。
+====================================================== */
+.hscroll{position:relative}
+.hscroll-hint{display:none;align-items:center;gap:7px;width:max-content;
+  margin:0 2px 12px auto;padding:7px 14px;border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  background:color-mix(in srgb,var(--accent) 10%,transparent);
+  color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  white-space:nowrap;pointer-events:none;transition:opacity .35s var(--ease)}
+.hscroll[data-scrollable="1"] .hscroll-hint{display:flex;opacity:1}
+.hscroll[data-scrollable="1"][data-scrolled="1"] .hscroll-hint{opacity:0}
+.hscroll-hint svg{flex:none;animation:hscroll-nudge 1.3s ease-in-out infinite}
+@keyframes hscroll-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@media(prefers-reduced-motion:reduce){.hscroll-hint svg{animation:none}}
 .alt-table{width:100%;border-collapse:separate;border-spacing:0;min-width:600px}
 .alt-table th,.alt-table td{text-align:center;padding:18px 20px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:top}
 .alt-table thead th{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--ink);padding-bottom:16px}
@@ -694,7 +716,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2 class="h-1 mt-4" style="color:var(--dark-ink)">従来の起業と、リーンAIスタートアップの起業は<br>何が違うのか。</h2>
       <p class="lead mt-6" style="color:rgba(244,239,228,.7)">生成AIは単なるツールではありません。起業プロセスそのものを構造的に変える「新しいOS」です。</p>
     </div>
-    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:72px"><div class="compare-table-inner reveal" style="display:grid;grid-template-columns:120px 1fr 1fr;gap:1px;background:var(--dark-line);border:1px solid var(--dark-line);border-radius:12px;overflow:hidden;min-width:480px">
+    <div class="hscroll" style="margin-top:72px">
+      <div class="hscroll-hint" aria-hidden="true">スクロールできます<svg width="15" height="10" viewBox="0 0 15 10" fill="none"><path d="M1 5h12M9.5 1.5L13 5l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div data-hscroll style="overflow-x:auto;-webkit-overflow-scrolling:touch"><div class="compare-table-inner reveal" style="display:grid;grid-template-columns:120px 1fr 1fr;gap:1px;background:var(--dark-line);border:1px solid var(--dark-line);border-radius:12px;overflow:hidden;min-width:480px">
       <div class="ct-cell ct-dim"><div class="mono-sm">DIMENSION</div></div>
       <div class="ct-cell ct-new"><div class="ct-head-label" style="color:var(--accent-2)">LEAN AI STARTUP</div><div class="ct-head-title">リーンAIスタートアップ</div></div>
       <div class="ct-cell ct-old"><div class="ct-head-label">CONVENTIONAL</div><div class="ct-head-title">従来の起業</div></div>
@@ -704,7 +728,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="ct-cell ct-dim"><div class="ct-dim-label">バイアス</div></div><div class="ct-cell ct-new"><p class="ct-text-new"><span class="check-icon">✓</span>AIが反対意見・別視点を自動生成し、構造的に排除</p></div><div class="ct-cell ct-old"><p class="ct-text"><span class="cross-icon">✕</span>確認バイアスに陥り、都合の良い情報だけ集める</p></div>
       <div class="ct-cell ct-dim"><div class="ct-dim-label">ピボット</div></div><div class="ct-cell ct-new"><p class="ct-text-new"><span class="check-icon">✓</span>目的と手段を3階層で分離。戦術レベルで柔軟に転換</p></div><div class="ct-cell ct-old"><p class="ct-text"><span class="cross-icon">✕</span>目的と手段を混同し、方向転換が難しい</p></div>
     </div>
-    </div></div>
+    </div></div></div>
     <p class="ct-source">出典：芝先恵介『AI駆動新規事業の教科書』シリーズ（note.com/01start）</p>
   </div>
 </section>
@@ -1069,7 +1093,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2 class="h-1 mt-4">他の学習方法との比較。</h2>
       <p class="lead mt-6">「独学でもできるのでは？」──その疑問に、正直にお答えします。</p>
     </div>
-    <div class="alt-table-wrap reveal">
+    <div class="hscroll">
+      <div class="hscroll-hint" aria-hidden="true">スクロールできます<svg width="15" height="10" viewBox="0 0 15 10" fill="none"><path d="M1 5h12M9.5 1.5L13 5l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="alt-table-wrap reveal" data-hscroll>
       <table class="alt-table">
         <thead><tr>
           <th></th>
@@ -1088,6 +1114,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr><td>返金保証</td><td class="col-hero">◎ 14日間全額返金</td><td>—</td><td>○ 30日</td><td>✕</td></tr>
         </tbody>
       </table>
+    </div>
     </div>
   </div>
 </section>
@@ -1521,6 +1548,36 @@ window.parent.postMessage({ type: '__edit_mode_available' }, '*');
   document.addEventListener('DOMContentLoaded', applyResponsive);
   window.addEventListener('resize', applyResponsive);
   applyResponsive();
+
+  /* --- 横スクロールヒント（表の「→」） ---
+     実際にスクロール可能な時だけ出す。収まっている幅では一切描画しない。
+     スクロールし始めた or 右端に着いたら消す（読ませたい列を隠し続けない）。 */
+  function initHScroll(){
+    document.querySelectorAll('.hscroll').forEach(function(wrap){
+      var sc = wrap.querySelector('[data-hscroll]');
+      if(!sc) return;
+      function update(){
+        var slack = sc.scrollWidth - sc.clientWidth;
+        wrap.setAttribute('data-scrollable', slack > 8 ? '1' : '0');
+        var atEnd = slack - sc.scrollLeft <= 8;
+        wrap.setAttribute('data-scrolled', (sc.scrollLeft > 8 || atEnd) ? '1' : '0');
+      }
+      if(!sc.dataset.hscrollBound){
+        sc.dataset.hscrollBound = '1';
+        sc.addEventListener('scroll', update, {passive:true});
+        if(window.ResizeObserver){ try{ new ResizeObserver(update).observe(sc); }catch(e){} }
+      }
+      update();
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initHScroll);
+  window.addEventListener('resize', initHScroll);
+  window.addEventListener('orientationchange', initHScroll);
+  window.addEventListener('load', initHScroll);
+  // 日本語フォントの読込完了で表の実幅が変わるため、確定後に取り直す
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(initHScroll).catch(function(){});
+  setTimeout(initHScroll, 600); setTimeout(initHScroll, 1800);
+  initHScroll();
 })();
 </script>
 </body>
