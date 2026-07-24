@@ -917,7 +917,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="reveal" style="max-width:880px;margin:22px auto 0">
       <div style="position:relative;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 10px 40px rgba(26,35,126,.12);background:#0b1020">
-        <iframe id="aiShibasakiFrame" src="/ai-shibasaki-test.html?v=20260524g"
+        <!-- 相対パス: 本番(/直下)でもローカルの file:// プレビューでも同じ場所に解決される。
+             先頭スラッシュだと file:// でファイルシステムのルートを指し iframe が空になる -->
+        <iframe id="aiShibasakiFrame" src="ai-shibasaki-test.html?v=20260524g"
           title="AIシバサキに質問"
           loading="lazy"
           allow="microphone; autoplay; fullscreen; clipboard-write"

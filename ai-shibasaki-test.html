@@ -8,7 +8,8 @@
 <link rel="preconnect" href="https://esm.sh" crossorigin>
 <link rel="preconnect" href="https://keisuke.app.n8n.cloud" crossorigin>
 <link rel="preconnect" href="https://js.hsforms.net" crossorigin>
-<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+<!-- https: を明示（プロトコル相対だと file:// プレビューで file://js.hsforms.net を見に行き失敗する） -->
+<script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/embed/v2.js"></script>
 <style>
   :root{--navy:#1A237E;--orange:#F66901;--bg:#f5f6fa;--line:#e2e5ee}
   *{box-sizing:border-box}
@@ -76,7 +77,7 @@
     <!-- 左: AIシバサキ（写真→ライブ映像） -->
     <div class="card" id="leftCard">
       <div class="photo-frame">
-        <img id="posterImg" src="/images/shibasaki-waiting.jpg?v=20260524" alt="AIシバサキ（芝先 恵介）がオンラインで待機中">
+        <img id="posterImg" src="images/shibasaki-waiting.jpg?v=20260524" alt="AIシバサキ（芝先 恵介）がオンラインで待機中">
         <video id="avatarVideo" autoplay playsinline hidden></video>
         <span class="online-badge"><span class="online-dot"></span>オンライン</span>
         <div id="status" hidden><div class="spin"></div><div id="statusText">接続中…</div></div>
