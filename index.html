@@ -1558,8 +1558,13 @@ window.parent.postMessage({ type: '__edit_mode_available' }, '*');
       if(!sc) return;
       function update(){
         var slack = sc.scrollWidth - sc.clientWidth;
-        wrap.setAttribute('data-scrollable', slack > 8 ? '1' : '0');
-        var atEnd = slack - sc.scrollLeft <= 8;
+        var scrollable = slack > 8;
+        wrap.setAttribute('data-scrollable', scrollable ? '1' : '0');
+        // 🚨 scrollable の判定を挟まないと、レイアウト確定前(slack=0)に
+        //    atEnd が true になり data-scrolled=1（=非表示）で初期化される。
+        //    その後 opacity 0→1 の無駄なフェードが走り、バックグラウンドタブでは
+        //    トランジションが停止して消えたままに見える。
+        var atEnd = scrollable && (slack - sc.scrollLeft <= 8);
         wrap.setAttribute('data-scrolled', (sc.scrollLeft > 8 || atEnd) ? '1' : '0');
       }
       if(!sc.dataset.hscrollBound){
