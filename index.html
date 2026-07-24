@@ -51,10 +51,21 @@ body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1
 body,body *{word-break:keep-all;line-break:strict;text-wrap:pretty}
 /* keep-all で grid/flex item の intrinsic min-width が広がるのを防ぐ */
 html,body{overflow-x:hidden}
-.tcard,.method-card,.method-step,.problems-card,.compare-cell,.ba-card,.plan-card,.gift-item,.faq-item,.curriculum-card,.week-item,.video-list-item,.tcard *,.method-card *,.method-step *,.problems-card *,.ba-card *,.plan-card *,.gift-item *,.faq-item *{min-width:0}
+/* 🚨 ここのクラス名は必ず実マークアップと突合すること。2026-07-24 まで
+   method-card / problems-card / compare-cell / gift-item / curriculum-card /
+   video-list-item の 6 つが DOM に存在せず（改名の追従漏れ）、ガードの半分が
+   空振りしてスマホで grid が膨張していた。実在するのは順に
+   method-step / problem-card / ct-cell / line-gift / week-card / vl-item。
+   🚨 min-width:0 と overflow-wrap:anywhere は必ず同じスコープに置くこと。
+   min-width:0 だけを広いスコープに置くと、トラックは縮むのに折り返しが
+   許可されない幅帯ができ、文字が箱の中で無言に切り落とされる
+   （769-950px で .igroup-item の 124px 分が消える不具合を実測・回避済み）。
+   欠けていたクラスの追加は下の @media(max-width:768px) 側に置いてある。 */
+.tcard,.method-step,.ba-card,.plan-card,.faq-item,.week-item,
+.tcard *,.method-step *,.ba-card *,.plan-card *,.faq-item *{min-width:0}
 /* card 系コンテナでは overflow-wrap:anywhere をフォールバックとして許可
    (keep-all で熟語は守りつつ、card 幅に収まらない場合のみ強制改行) */
-.tcard,.method-card,.method-step,.problems-card,.compare-cell,.ba-card,.plan-card,.gift-item,.faq-item,.curriculum-card,.week-item,.video-list-item{overflow-wrap:anywhere}
+.tcard,.method-step,.ba-card,.plan-card,.faq-item,.week-item{overflow-wrap:anywhere}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -458,6 +469,33 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
 .link-underline:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ======================================================
+   NARROW / TOUCH — 縦向きスマホ(≤768px) と 横向きスマホ(全機種 768px 超) の両方
+   ※ 横向き iPhone は 812/844/896/926/932px あり max-width:768px が一切効かない
+====================================================== */
+@media(max-width:768px),(orientation:landscape) and (max-height:500px){
+  /* 本文の折り返し: keep-all は句読点しか改行機会を残さないため、
+     句点まで続く 1 文節 (20-31字 = 358-541px) が箱に収まらず右端が切れていた。
+     auto-phrase = 文節境界で折る (Chromium 119+)。未対応ブラウザは直前の
+     normal が採用され、いずれも収まらない時だけ anywhere が最後の砦になる。
+     クラスではなく要素で指定するのは、class 無しの <p> が取り残されるため。 */
+  p,li,dd,blockquote,figcaption,.hero-lead,.lead,.final-cta-primary{
+    word-break:normal;word-break:auto-phrase;overflow-wrap:anywhere}
+  /* grid の 1fr = minmax(auto,1fr) の auto 最小値が keep-all で膨張し、
+     固定列やカードを画面外へ押し出していた箇所。base の card ガードから
+     漏れていたコンテナをここで補う。
+     🚨 min-width:0 と overflow-wrap:anywhere は必ず同じスコープに置く。
+     LINE/Zoom 節は .line-box{overflow:hidden} が切り落とすため
+     「カードごとはみ出して見える」症状になっていた。 */
+  .problem-card,.ct-cell,.line-gift,.week-card,.vl-item,.ca-item,.ba-item,
+  .guarantee-card,.after-card,.after-items,.line-box,.line-grid,.line-gifts,
+  .instructor-grid,.instructor-groups,.igroup-list,.pricing-bottom,
+  .journey-steps,.journey-step,
+  .problem-card *,.ct-cell *,.line-gift *,.week-card *,.vl-item *,.journey-step *,
+  .line-grid>*,.instructor-grid>*,.instructor-groups>*,.pricing-bottom>*,.guarantee-card>*{min-width:0}
+  .problem-card,.ct-cell,.line-gift,.week-card,.vl-item,.guarantee-card,.after-card,
+  .igroup-item,.pullquote-quote,.journey-step{overflow-wrap:anywhere}
+}
+/* ======================================================
    MOBILE
 ====================================================== */
 @media(max-width:768px){
@@ -506,14 +544,60 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
   .hero-ctas .btn-lg{width:100% !important;justify-content:center !important}
   /* Japanese text wrapping */
   h1,h2,h3{word-break:keep-all !important;line-break:strict !important}
+  /* 見出しの最終手段。JS(applyResponsive) も同じ値を入れるが、初回ペイントと
+     JS 失敗時に長い見出しが箱の外へ描画されるため CSS 側にも持たせる */
+  h2,h3{overflow-wrap:anywhere}
   .hero-headline{text-wrap:balance !important}
   .problems-conclusion .pullquote{word-break:keep-all !important;line-break:strict !important}
   .hero-assurance{gap:6px !important}
   .assurance-chip{font-size:12px !important;padding:6px 10px !important}
+  .line-box .btn{width:100%;height:auto;min-height:56px;padding:14px 20px;
+    white-space:normal;line-height:1.5;justify-content:center;text-align:center}
+  /* .line-box はカード余白ぶん見出し幅が 287px しかなく、24px だと
+     「。」だけが 5 行目に孤立する。22px で 4 行に収まる */
+  .line-box .h-1{font-size:22px}
+  /* 最終 CTA: inline-flex + padding 40px でボタンの箱ごと画面外に出ていた */
+  .final-cta-primary{max-width:100%;height:auto;min-height:66px;line-height:1.5;
+    text-align:center;flex-wrap:wrap;justify-content:center;padding:16px 24px}
+  .final-cta-links{flex-wrap:wrap;gap:16px}
+  /* 固定バーの裏に最終行が隠れるのを防ぐ */
+  body{padding-bottom:64px}
+}
+/* 固定バーは 503px 未満で価格欄が潰れ CTA と重なる (info 187px + actions 260px + gap/padding 56px) */
+@media(max-width:560px){
+  /* ※ env(safe-area-inset-bottom) は viewport meta に viewport-fit=cover が
+     無いと常に 0 に解決されるため、ここでは指定しない（対応済みに見せない）。
+     通常の Safari 閲覧ではブラウザ下部バーが挟まりホームインジケータとは競合しない。 */
+  .sticky-bar-inner{gap:12px}
+  .sticky-bar-label:empty{display:none}
+  .sticky-bar-info{flex:0 0 auto;gap:0}
+  .sticky-bar-price{font-size:15px;line-height:1.25}
+  .sticky-bar-price small{display:block;font-size:11px;margin-left:0}
+  .sticky-bar-ghost{display:none}
+  .sticky-bar-actions{flex:1 1 auto;justify-content:flex-end}
+  .sticky-bar-actions .btn{height:46px}
+  .final-cta-primary{width:100%}
 }
 @media(max-width:390px){
   .container,.container-wide{padding-inline:16px}
   .hero-headline{font-size:32px !important}
+  /* 320px では 2 カラムだとセルが約 130px しかなく、
+     熟語が anywhere で語中改行される (eラーニン|グ 等) ため 1 カラムに落とす */
+  .method-grid{grid-template-columns:1fr !important}
+  .after-items{grid-template-columns:1fr}
+  .h-1{font-size:24px}
+}
+/* スマホ横向きは全機種 768px 超 (812/844/896/926/932) なので上のモバイル指定が
+   一切効かない。固定バー(65px)が高さ375pxの17%を占め、最終行がバーの裏に入る。 */
+/* 横向きは固定バー(65px)が高さ375-430pxの15-17%を占め最終行がバーの裏に入る。
+   折返しガードは上の「NARROW / TOUCH」ブロックが両向きをカバーしている。 */
+@media(orientation:landscape) and (max-height:500px){
+  .sticky-bar-inner{height:52px}
+  body{padding-bottom:52px}
+}
+/* タップ領域はビューポート幅ではなく入力デバイスで判定する（横向きでも 44px 以上） */
+@media(pointer:coarse){
+  .sticky-bar-actions .btn{min-height:46px}
 }
 </style>
 </head>
@@ -702,7 +786,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="ca-toggle"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 0v10M0 5h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
         </button>
         <div class="ca-body"><div class="ca-body-inner"><div class="ca-weeks">
-          <div class="week-card"><div class="week-head"><div><div class="week-w">Week 1</div><h4 class="week-t">起業家マインドセット × AI活用ビジネスモデル設計</h4></div><span class="tag">15動画 / 3.4h</span></div><ul class="week-items"><li class="week-item"><span class="week-item-dash">—</span><span>スタートアップの定義とJカーブ</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AI時代の新常識：100本の矢戦略</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AI×強制結合法によるアイデア量産</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AIによる客観的評価：STAGEスコアリング</span></li><li class="week-item"><span class="week-item-dash">—</span><span>リーンキャンバスの解剖学</span></li><li class="week-item"><span class="week-item-dash">—</span><span>プランAの完成とリスクの特定</span></li></ul></div>
+          <div class="week-card"><div class="week-head"><div><div class="week-w">Week 1</div><h4 class="week-t">起業家マインドセット × AI活用ビジネスモデル設計</h4></div><span class="tag">15動画 / 2.6h</span></div><ul class="week-items"><li class="week-item"><span class="week-item-dash">—</span><span>スタートアップの定義とJカーブ</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AI時代の新常識：100本の矢戦略</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AI×強制結合法によるアイデア量産</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AIによる客観的評価：STAGEスコアリング</span></li><li class="week-item"><span class="week-item-dash">—</span><span>リーンキャンバスの解剖学</span></li><li class="week-item"><span class="week-item-dash">—</span><span>プランAの完成とリスクの特定</span></li></ul></div>
           <div class="week-card"><div class="week-head"><div><div class="week-w">Week 2</div><h4 class="week-t">AIで市場分析＆実現可能性の検証</h4></div><span class="tag">15動画 / 3.9h</span></div><ul class="week-items"><li class="week-item"><span class="week-item-dash">—</span><span>ビジネスモデルのストレステスト</span></li><li class="week-item"><span class="week-item-dash">—</span><span>TAM/SAM/SOM：市場規模の算出</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AI活用した競合分析</span></li><li class="week-item"><span class="week-item-dash">—</span><span>最大リスクの特定と検証計画</span></li></ul></div>
           <div class="week-card"><div class="week-head"><div><div class="week-w">Week 3</div><h4 class="week-t">AIでUVP言語化＆ピッチ構築</h4></div><span class="tag">15動画 / 4.1h</span></div><ul class="week-items"><li class="week-item"><span class="week-item-dash">—</span><span>AIで独自の価値提案（UVP）を言語化</span></li><li class="week-item"><span class="week-item-dash">—</span><span>MVV設計</span></li><li class="week-item"><span class="week-item-dash">—</span><span>AIで30秒ピッチを磨き上げる</span></li></ul></div>
         </div></div></div>
@@ -886,21 +970,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
       <ol class="video-list">
-        <li class="vl-item"><span class="vl-num">01</span><span class="vl-title">スタートアップの定義とJカーブ</span><span class="vl-time">10m</span></li>
-        <li class="vl-item"><span class="vl-num">02</span><span class="vl-title">起業家の真のプロダクトとは</span><span class="vl-time">10m</span></li>
-        <li class="vl-item"><span class="vl-num">03</span><span class="vl-title">AI時代の新常識：100本の矢戦略</span><span class="vl-time">10m</span></li>
-        <li class="vl-item"><span class="vl-num">04</span><span class="vl-title">イノベーターのバイアスと3つのメタ原則</span><span class="vl-time">12m</span></li>
-        <li class="vl-item"><span class="vl-num">05</span><span class="vl-title">「良いアイデア」のパラドックス</span><span class="vl-time">15m</span></li>
-        <li class="vl-item"><span class="vl-num">06</span><span class="vl-title">AI×強制結合法によるアイデア量産</span><span class="vl-time">20m</span></li>
-        <li class="vl-item"><span class="vl-num">07</span><span class="vl-title">AIによる客観的評価：STAGEスコアリング</span><span class="vl-time">15m</span></li>
-        <li class="vl-item"><span class="vl-num">08</span><span class="vl-title">Founder Reality Fit：顧客の現実を知る</span><span class="vl-time">15m</span></li>
-        <li class="vl-item"><span class="vl-num">09</span><span class="vl-title">Why Me：Founder-Problem Fitの言語化</span><span class="vl-time">10m</span></li>
-        <li class="vl-item"><span class="vl-num">10</span><span class="vl-title">リーンキャンバスの解剖学：9つのブロック</span><span class="vl-time">15m</span></li>
-        <li class="vl-item"><span class="vl-num">11</span><span class="vl-title">3つのビジネスモデル原型</span><span class="vl-time">12m</span></li>
-        <li class="vl-item"><span class="vl-num">12</span><span class="vl-title">ビジネスの構造化：2サイデッド・マーケット</span><span class="vl-time">12m</span></li>
-        <li class="vl-item"><span class="vl-num">13</span><span class="vl-title">AIを活用したリーンキャンバス作成実践</span><span class="vl-time">20m</span></li>
-        <li class="vl-item"><span class="vl-num">14</span><span class="vl-title">プランAの完成とリスクの特定</span><span class="vl-time">20m</span></li>
-        <li class="vl-item"><span class="vl-num">15</span><span class="vl-title">スタートアップのメタ原則：Unlearn</span><span class="vl-time">10m</span></li>
+        <li class="vl-item"><span class="vl-num">01</span><span class="vl-title">スタートアップの定義とJカーブ</span><span class="vl-time">8m</span></li>
+        <li class="vl-item"><span class="vl-num">02</span><span class="vl-title">起業家の真のプロダクトとは</span><span class="vl-time">7m</span></li>
+        <li class="vl-item"><span class="vl-num">03</span><span class="vl-title">AI時代の新常識：100本の矢戦略</span><span class="vl-time">8m</span></li>
+        <li class="vl-item"><span class="vl-num">04</span><span class="vl-title">イノベーターのバイアスと3つのメタ原則</span><span class="vl-time">11m</span></li>
+        <li class="vl-item"><span class="vl-num">05</span><span class="vl-title">「良いアイデア」のパラドックス</span><span class="vl-time">10m</span></li>
+        <li class="vl-item"><span class="vl-num">06</span><span class="vl-title">AI×強制結合法によるアイデア量産</span><span class="vl-time">14m</span></li>
+        <li class="vl-item"><span class="vl-num">07</span><span class="vl-title">AIによる客観的評価：STAGEスコアリング</span><span class="vl-time">11m</span></li>
+        <li class="vl-item"><span class="vl-num">08</span><span class="vl-title">Founder Reality Fit：顧客の現実を知る</span><span class="vl-time">14m</span></li>
+        <li class="vl-item"><span class="vl-num">09</span><span class="vl-title">Why Me：Founder-Problem Fitの言語化</span><span class="vl-time">8m</span></li>
+        <li class="vl-item"><span class="vl-num">10</span><span class="vl-title">リーンキャンバスの解剖学：9つのブロック</span><span class="vl-time">14m</span></li>
+        <li class="vl-item"><span class="vl-num">11</span><span class="vl-title">3つのビジネスモデル原型</span><span class="vl-time">9m</span></li>
+        <li class="vl-item"><span class="vl-num">12</span><span class="vl-title">ビジネスの構造化：2サイデッド・マーケット</span><span class="vl-time">10m</span></li>
+        <li class="vl-item"><span class="vl-num">13</span><span class="vl-title">AIを活用したリーンキャンバス作成実践</span><span class="vl-time">15m</span></li>
+        <li class="vl-item"><span class="vl-num">14</span><span class="vl-title">プランAの完成とリスクの特定</span><span class="vl-time">14m</span></li>
+        <li class="vl-item"><span class="vl-num">15</span><span class="vl-title">スタートアップのメタ原則：Unlearn</span><span class="vl-time">9m</span></li>
       </ol>
     </div>
   </div>
@@ -1344,7 +1428,9 @@ window.parent.postMessage({ type: '__edit_mode_available' }, '*');
     document.querySelectorAll('h2,h3').forEach(function(el){
       el.style.wordBreak = isMobile ? 'keep-all' : '';
       el.style.lineBreak = isMobile ? 'strict' : '';
-      el.style.overflowWrap = isMobile ? 'break-word' : '';
+      // break-word は min-content に算入されず grid トラックの膨張を止められない。
+      // hero-headline と同じ anywhere に揃える。
+      el.style.overflowWrap = isMobile ? 'anywhere' : '';
     });
 
     // Problems grid
