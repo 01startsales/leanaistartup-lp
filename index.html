@@ -10,6 +10,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-P52P4NQC');</script>
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* リロード時だけ先頭から表示する。
+   ブラウザ既定 (history.scrollRestoration='auto') は前回のスクロール位置を復元するが、
+   この LP はスクロールで各セクションが fade-in する構成のため、途中の位置で復元されると
+   ・その位置より上のセクションが未表示 (opacity:0) のまま残る（上へ戻れば表示される）
+   ・ヒーローの訴求が飛ばされる
+   という状態になる。
+   ⚠️ 「戻る/進む」では復元を残す（読んでいた位置に戻れる方が良いため）。
+      そのため無条件に manual にはせず、ナビゲーション種別が reload の時だけ切り替える。
+   ⚠️ 復元はドキュメント準備完了時に行われるので、この判定は <head> で同期実行する必要がある。 */
+(function () {
+  if (!('scrollRestoration' in history)) return;
+  var type = '';
+  try {
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (nav) type = nav.type;
+    else if (performance.navigation) type = performance.navigation.type === 1 ? 'reload' : '';
+  } catch (e) {}
+  if (type === 'reload') history.scrollRestoration = 'manual';
+})();
+</script>
 <title>リーンAIスタートアップ講座 — 12週間で新規事業をPMFまで導く</title>
 <meta name="description" content="生成AI×リーン・スタートアップで12週間。CPF→PSF→PMFを一気通貫で体験するオンライン実践プログラム。月額¥9,800〜。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
