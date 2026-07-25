@@ -401,12 +401,14 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
 .chip.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .faq-list{margin-top:32px;border-top:1px solid var(--line)}
 .faq-item{border-bottom:1px solid var(--line)}
-.faq-q{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 4px;cursor:pointer;transition:color .2s}
+/* <button> なので幅と行揃えを明示する（button の既定は幅=内容・text-align:center）。
+   キーボード操作と読み上げは button にしたことで標準で付く */
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 4px;cursor:pointer;transition:color .2s;width:100%;text-align:left}
 .faq-q:hover .faq-q-text{color:var(--accent)}
 .faq-q-inner{display:flex;gap:20px;align-items:center;flex:1}
 .faq-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-3);min-width:28px}
 .faq-q-text{font-family:var(--sans);font-weight:600;font-size:17px;color:var(--ink)}
-.faq-plus{width:28px;height:28px;position:relative;border:1px solid var(--line-2);border-radius:50%;flex-shrink:0;transition:transform .35s var(--ease),border-color .2s,background .2s}
+.faq-plus{display:block;width:28px;height:28px;position:relative;border:1px solid var(--line-2);border-radius:50%;flex-shrink:0;transition:transform .35s var(--ease),border-color .2s,background .2s}
 .faq-plus::before,.faq-plus::after{content:"";position:absolute;inset:0;margin:auto;background:var(--ink);transition:background .2s,transform .35s var(--ease)}
 .faq-plus::before{width:10px;height:1px}
 .faq-plus::after{width:1px;height:10px}
@@ -1280,15 +1282,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="chip" data-cat="法人">法人</button>
     </div>
     <div class="faq-list reveal" id="faqList">
-      <div class="faq-item" data-cat="学習内容"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">01</span><span class="faq-q-text">プログラミングやAIの知識がなくても大丈夫ですか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">はい。リーンAIスタートアップ講座で使うAIツールはChatGPTなどの対話型AIが中心です。プログラミングの知識は一切不要です。AIの使い方も講座内で丁寧に解説します。</p></div></div></div></div>
-      <div class="faq-item" data-cat="学習内容"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">02</span><span class="faq-q-text">どんなデバイスで視聴できますか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">PC、スマートフォン、タブレットなど、ブラウザが使えるすべてのデバイスで視聴できます。通勤中はスマホで、自宅ではPCでなど、ご自由にお使いいただけます。</p></div></div></div></div>
-      <div class="faq-item" data-cat="学習内容"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">03</span><span class="faq-q-text">1日どのくらいの学習時間が必要ですか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">週あたり約3〜4時間が目安です。1日30分程度の視聴で無理なく進められます。動画は10〜20分の短い単位で構成されているので、スキマ時間でも学習できます。</p></div></div></div></div>
-      <div class="faq-item" data-cat="学習内容"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">04</span><span class="faq-q-text">修了証はもらえますか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">はい。全12週間のカリキュラムを完了すると、修了証をPDFで発行します。</p></div></div></div></div>
-      <div class="faq-item" data-cat="学習内容"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">05</span><span class="faq-q-text">受講期限はありますか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">サブスクリプション継続中は、全コンテンツに無期限でアクセスできます。自分のペースで何度でも復習可能です。</p></div></div></div></div>
-      <div class="faq-item" data-cat="学習内容"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">06</span><span class="faq-q-text">他のオンライン講座と何が違いますか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">3つの点で異なります。(1)「リーンAIスタートアップ講座」は教科書の著者自身が設計した唯一の講座 (2) 理論だけでなく12週間で実際にビジネスモデルを検証する実践型 (3) CPF→PSF→PMFの一気通貫フレームワークで、断片的な学びではなく体系的に習得できます。</p></div></div></div></div>
-      <div class="faq-item" data-cat="サポート"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">07</span><span class="faq-q-text">サポートはありますか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">サポート</span><p class="faq-a">月1回のライブQ&Aセッション（ウェビナー形式）で講師に直接質問できます。また、各動画のコメント欄やメールでの質問にも対応しています。</p></div></div></div></div>
-      <div class="faq-item" data-cat="料金・解約"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">08</span><span class="faq-q-text">いつでも解約できますか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">料金・解約</span><p class="faq-a">はい。月額プランはいつでも解約可能で、違約金はありません。解約後も、その月の末日まで視聴を続けられます。</p></div></div></div></div>
-      <div class="faq-item" data-cat="法人"><div class="faq-q"><div class="faq-q-inner"><span class="faq-num">09</span><span class="faq-q-text">法人での一括購入はできますか？</span></div><div class="faq-plus"></div></div><div class="faq-body"><div><div class="faq-a-wrap"><span class="faq-cat">法人</span><p class="faq-a">はい。5名以上でご利用の場合は法人プランをご用意しています。人数に応じたお見積りを作成いたしますので、お問い合わせフォームからご連絡ください。</p></div></div></div></div>
+      <div class="faq-item" data-cat="学習内容"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-01"><span class="faq-q-inner"><span class="faq-num">01</span><span class="faq-q-text">プログラミングやAIの知識がなくても大丈夫ですか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-01"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">はい。リーンAIスタートアップ講座で使うAIツールはChatGPTなどの対話型AIが中心です。プログラミングの知識は一切不要です。AIの使い方も講座内で丁寧に解説します。</p></div></div></div></div>
+      <div class="faq-item" data-cat="学習内容"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-02"><span class="faq-q-inner"><span class="faq-num">02</span><span class="faq-q-text">どんなデバイスで視聴できますか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-02"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">PC、スマートフォン、タブレットなど、ブラウザが使えるすべてのデバイスで視聴できます。通勤中はスマホで、自宅ではPCでなど、ご自由にお使いいただけます。</p></div></div></div></div>
+      <div class="faq-item" data-cat="学習内容"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-03"><span class="faq-q-inner"><span class="faq-num">03</span><span class="faq-q-text">1日どのくらいの学習時間が必要ですか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-03"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">週あたり約3〜4時間が目安です。1日30分程度の視聴で無理なく進められます。動画は10〜20分の短い単位で構成されているので、スキマ時間でも学習できます。</p></div></div></div></div>
+      <div class="faq-item" data-cat="学習内容"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-04"><span class="faq-q-inner"><span class="faq-num">04</span><span class="faq-q-text">修了証はもらえますか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-04"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">はい。全12週間のカリキュラムを完了すると、修了証をPDFで発行します。</p></div></div></div></div>
+      <div class="faq-item" data-cat="学習内容"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-05"><span class="faq-q-inner"><span class="faq-num">05</span><span class="faq-q-text">受講期限はありますか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-05"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">サブスクリプション継続中は、全コンテンツに無期限でアクセスできます。自分のペースで何度でも復習可能です。</p></div></div></div></div>
+      <div class="faq-item" data-cat="学習内容"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-06"><span class="faq-q-inner"><span class="faq-num">06</span><span class="faq-q-text">他のオンライン講座と何が違いますか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-06"><div><div class="faq-a-wrap"><span class="faq-cat">学習内容</span><p class="faq-a">3つの点で異なります。(1)「リーンAIスタートアップ講座」は教科書の著者自身が設計した唯一の講座 (2) 理論だけでなく12週間で実際にビジネスモデルを検証する実践型 (3) CPF→PSF→PMFの一気通貫フレームワークで、断片的な学びではなく体系的に習得できます。</p></div></div></div></div>
+      <div class="faq-item" data-cat="サポート"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-07"><span class="faq-q-inner"><span class="faq-num">07</span><span class="faq-q-text">サポートはありますか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-07"><div><div class="faq-a-wrap"><span class="faq-cat">サポート</span><p class="faq-a">月1回のライブQ&Aセッション（ウェビナー形式）で講師に直接質問できます。また、各動画のコメント欄やメールでの質問にも対応しています。</p></div></div></div></div>
+      <div class="faq-item" data-cat="料金・解約"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-08"><span class="faq-q-inner"><span class="faq-num">08</span><span class="faq-q-text">いつでも解約できますか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-08"><div><div class="faq-a-wrap"><span class="faq-cat">料金・解約</span><p class="faq-a">はい。月額プランはいつでも解約可能で、違約金はありません。解約後も、その月の末日まで視聴を続けられます。</p></div></div></div></div>
+      <div class="faq-item" data-cat="法人"><button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-body-09"><span class="faq-q-inner"><span class="faq-num">09</span><span class="faq-q-text">法人での一括購入はできますか？</span></span><span class="faq-plus"></span></button><div class="faq-body" id="faq-body-09"><div><div class="faq-a-wrap"><span class="faq-cat">法人</span><p class="faq-a">はい。5名以上でご利用の場合は法人プランをご用意しています。人数に応じたお見積りを作成いたしますので、お問い合わせフォームからご連絡ください。</p></div></div></div></div>
     </div>
     <div class="faq-more"><a href="https://leanaistartup.jp/faq.html">その他のご質問はこちら →</a></div>
   </div>
@@ -1483,9 +1485,16 @@ faqChips.forEach(chip => {
 faqItems.forEach(item => {
   item.querySelector('.faq-q').addEventListener('click', () => {
     const isOpen = item.classList.contains('open');
-    // close all
-    faqItems.forEach(fi => { fi.classList.remove('open'); });
-    if (!isOpen) item.classList.add('open');
+    // close all（aria-expanded も実状態に同期させる。従来は false を書く経路しか無く、
+    // 開いても aria-expanded="false" のままで読み上げと表示が食い違っていた）
+    faqItems.forEach(fi => {
+      fi.classList.remove('open');
+      fi.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
+    }
   });
 });
 
