@@ -560,6 +560,11 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
   .hero-headline{font-size:clamp(22px,6vw,30px) !important;word-break:keep-all !important}
   .hero-headline em{white-space:nowrap !important}
   html body .hero-headline span.block{white-space:normal !important}
+  /* 意図した改行位置を塊単位で確定させる（エンジン差を排除）。
+     32px 実測幅: 最短12週間で、=220 / 生成AIを武器に=224 / 新規事業を=160 / PMFまで導く。=224px
+     → 320px 幅（利用可能 280px）でも最長 224px が収まる。
+     ⚠️ コピーを長くする時はこの塊が箱に収まるか必ず測る（nowrap なので溢れる） */
+  html body .hero-headline .nb{white-space:nowrap !important}
   .stats-grid{grid-template-columns:repeat(2,1fr) !important}
   /* 3 項目 x 2 列だと 3 番目が右半分を空けて残るので横いっぱいに伸ばす。
      2 列時は 3 番目が行頭に来るので左境界線は消す */
@@ -769,12 +774,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="hero-eyebrow-text">生成AI × リーン・スタートアップ</span>
     </div>
     <h1 class="hero-headline h-display reveal reveal-d1">
-      <span class="block">最短12週間で、<em style="color:var(--accent);font-style:normal">生成AI</em>を武器に</span>
+      <!-- .nb = モバイルで「1行として扱う塊」。keep-all は CJK 同士の改行しか禁止せず、
+           「生成AI」と「を」のような英字↔日本語の境界は改行可能なまま残る。
+           Chromium は text-wrap:balance が効いて「、」で折れていたが、iOS Safari では
+           効かず貪欲に詰めて「最短12週間で、生成AI / を武器に」と割れていた（実機報告）。
+           塊ごと nowrap にすれば、どのエンジンでも改行位置は「、」の後だけになる。 -->
+      <span class="block"><span class="nb">最短12週間で、</span><span class="nb"><em style="color:var(--accent);font-style:normal">生成AI</em>を武器に</span></span>
       <!-- <wbr> = 改行「機会」。keep-all だと「新規事業をPMFまで導く。」が句読点を含まない
            1 トークン (32px で 384px) になり、335px の箱に収まらず overflow-wrap:anywhere が
            語中で割っていた (「…導」/「く。」)。助詞「を」の後に機会を 1 つ足すだけで
            「新規事業を」/「PMFまで導く。」に落ち着く。1 行に収まる幅では不活性。 -->
-      <span class="block">新規事業を<wbr><em style="color:var(--accent);font-style:normal">PMF</em>まで導く。</span>
+      <span class="block"><span class="nb">新規事業を</span><wbr><span class="nb"><em style="color:var(--accent);font-style:normal">PMF</em>まで導く。</span></span>
     </h1>
     <p class="hero-lead reveal reveal-d2">最短12週間のカリキュラム。自分のペースで進められるサブスクリプション型の実践プログラム。</p>
     <div class="hero-ctas reveal reveal-d3">
