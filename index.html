@@ -28,7 +28,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     if (nav) type = nav.type;
     else if (performance.navigation) type = performance.navigation.type === 1 ? 'reload' : '';
   } catch (e) {}
-  if (type === 'reload') history.scrollRestoration = 'manual';
+  if (type !== 'reload') return;
+  /* ⚠️ #trial 等のハッシュ付き URL のリロードは対象外にする。
+     ハッシュはユーザーの明示的な指定なので、先頭へ戻すとアンカーを壊す
+     （実測: #trial でリロードすると trial セクションに留まらず先頭へ飛んだ）。 */
+  if (location.hash && location.hash.length > 1) return;
+  history.scrollRestoration = 'manual';
+  /* ⚠️ manual を <head> で立てても「そのリロード自体」には間に合わない
+     （復元モードは履歴エントリに記録されており、ブラウザは遷移開始時の値で復元する。
+       本番で実測: manual になっているのに 3080 のまま復元された）。
+     そのため実際に先頭へ戻す。復元はドキュメント準備完了の前後に走るので、
+     直後 / DOMContentLoaded / load / その次のフレーム の 4 点で 0 に戻す。 */
+  var toTop = function () { window.scrollTo(0, 0); };
+  toTop();
+  document.addEventListener('DOMContentLoaded', toTop);
+  window.addEventListener('load', function () {
+    toTop();
+    requestAnimationFrame(toTop);
+  });
 })();
 </script>
 <title>リーンAIスタートアップ講座 — 12週間で新規事業をPMFまで導く</title>
