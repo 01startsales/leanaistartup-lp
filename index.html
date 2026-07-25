@@ -618,6 +618,13 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
   .week-items{grid-template-columns:1fr !important}
   .instructor-grid{grid-template-columns:1fr !important;gap:32px !important}
   .instructor-portrait{aspect-ratio:4/3 !important;max-height:300px}
+  /* 🚨 縦長写真(2400x3600)を 4/3 の横長枠に cover で入れているため、既定の
+     object-position:50% 50% では画像の 25%〜75% しか見えず**頭頂が切れる**
+     (顔の位置は実測で 頭頂10% / 眼鏡29% / 顎42%)。
+     10% にすると 5%〜55% が見え、頭の上に 5% の余白が残り顎まで入る。
+     デスクトップ(769px 以上)は枠が 4/5 縦長で 8.3%〜91.7% が見えており
+     元から切れていないので、この指定はモバイルに限定する。 */
+  .instructor-portrait img{object-position:50% 10%}
   .instructor-groups{grid-template-columns:1fr !important}
   .testimonials-grid{grid-template-columns:1fr !important}
   .tcard{padding:24px 20px !important}
