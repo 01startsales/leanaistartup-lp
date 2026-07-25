@@ -11,7 +11,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>リーンAIスタートアップ講座 — 12週間で新規事業をPMFまで導く</title>
-<meta name="description" content="生成AI×リーン・スタートアップで12週間。CPF→PSF→PMFを一気通貫で体験するオンライン実践プログラム。月額¥4,980〜。">
+<meta name="description" content="生成AI×リーン・スタートアップで12週間。CPF→PSF→PMFを一気通貫で体験するオンライン実践プログラム。月額¥9,800〜。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -66,6 +66,11 @@ html,body{overflow-x:hidden}
 /* card 系コンテナでは overflow-wrap:anywhere をフォールバックとして許可
    (keep-all で熟語は守りつつ、card 幅に収まらない場合のみ強制改行) */
 .tcard,.method-step,.ba-card,.plan-card,.faq-item,.week-item{overflow-wrap:anywhere}
+/* 🚨 価格は上の anywhere から除外する。anywhere は min-content 幅を 1 文字まで
+   縮めるため、.plan-price-row (flex, 214px) の中で .plan-price が押し潰され
+   「¥9,800」→「¥9,80」+「0」と割れていた (320px で実害。normal に戻しても
+   実描画幅 152px は不変で横溢れも 0 = 折り返す必要が無いのに折れていた)。 */
+.plan-price,.plan-per,.sticky-bar-price{overflow-wrap:normal;word-break:keep-all}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -146,7 +151,9 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
 .assurance-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(255,255,255,.22);border-radius:var(--r-pill);background:rgba(255,255,255,.08);backdrop-filter:blur(10px);color:#fff;font-size:13px;font-weight:500;white-space:nowrap}
 .assurance-chip svg{color:var(--accent);flex-shrink:0}
 .hero-stats{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.14);background:rgba(10,14,28,.82);backdrop-filter:blur(14px)}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+/* ファウンディング枠(20名)の統計は同名プランの廃止に伴い削除 → 4 列から 3 列へ
+   (4 列のままだと 3 項目が左に寄り右端に空きセルができる) */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr)}
 .stat-item{padding:32px 28px;border-left:1px solid rgba(255,255,255,.14)}
 .stat-item:first-child{border-left:none}
 .stat-num-hero{font-family:var(--serif);font-weight:500;font-size:clamp(36px,3.6vw,52px);color:#fff;line-height:1}
@@ -505,9 +512,26 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
      句点まで続く 1 文節 (20-31字 = 358-541px) が箱に収まらず右端が切れていた。
      auto-phrase = 文節境界で折る (Chromium 119+)。未対応ブラウザは直前の
      normal が採用され、いずれも収まらない時だけ anywhere が最後の砦になる。
-     クラスではなく要素で指定するのは、class 無しの <p> が取り残されるため。 */
+     クラスではなく要素で指定するのは、class 無しの <p> が取り残されるため。
+     .vl-title は span なので要素指定から漏れており、157px の grid 列に対して
+     keep-all の 1 トークンが収まらず anywhere が語中で割っていた
+     (「アイデ|ア」「リーンキャン|バス」)。auto-phrase なら助詞境界で折れる。
+     🚨 base の `body *{word-break:keep-all}` が全要素に**直接**値を与えるため、
+     親に auto-phrase を当てても子の span/em/strong には継承されない
+     (継承は「宣言が無い」時だけ効く)。そのため本文コンテナの
+     インライン子孫まで明示的に列挙する。無クラスの span が
+     「シミュレー|ション」と割れていたのがこれ。 */
   p,li,dd,blockquote,figcaption,.hero-lead,.lead,.final-cta-primary{
     word-break:normal;word-break:auto-phrase;overflow-wrap:anywhere}
+  /* 🚨 今回追加した分はフォールバックを normal ではなく keep-all にする。
+     auto-phrase は Chromium 119+ 限定で、iOS Safari / Firefox は宣言を捨てて
+     直前の値を使う。ここで normal にすると貪欲充填になり
+     「ビジネスの構造化：2サ|イデッド・マーケット」のように**パッチ前より悪化**する
+     (パッチ前は keep-all で「：」で折れていた)。keep-all を残せば
+     非対応エンジンはパッチ前と完全に同一 = 回帰ゼロ、Chromium だけが改善する。
+     overflow-wrap:anywhere は親 (p/li/dd/.vl-item) から継承済みなので再宣言しない。 */
+  .vl-title,p span,p em,p strong,li span,li em,li strong,dd span,figcaption span{
+    word-break:keep-all;word-break:auto-phrase}
   /* grid の 1fr = minmax(auto,1fr) の auto 最小値が keep-all で膨張し、
      固定列やカードを画面外へ押し出していた箇所。base の card ガードから
      漏れていたコンテナをここで補う。
@@ -535,7 +559,9 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
   .hero-headline em{white-space:nowrap !important}
   html body .hero-headline span.block{white-space:normal !important}
   .stats-grid{grid-template-columns:repeat(2,1fr) !important}
-  .stat-item:nth-child(3){border-left:1px solid rgba(255,255,255,.14) !important}
+  /* 3 項目 x 2 列だと 3 番目が右半分を空けて残るので横いっぱいに伸ばす。
+     2 列時は 3 番目が行頭に来るので左境界線は消す */
+  .stat-item:nth-child(3){grid-column:1/-1 !important;border-left:none !important}
   .stat-item{padding:24px 20px !important}
   .problems-grid{grid-template-columns:1fr !important}
   .compare-table-inner{}
@@ -575,6 +601,12 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
   /* 見出しの最終手段。JS(applyResponsive) も同じ値を入れるが、初回ペイントと
      JS 失敗時に長い見出しが箱の外へ描画されるため CSS 側にも持たせる */
   h2,h3{overflow-wrap:anywhere}
+  /* 見出しは keep-all を維持する (auto-phrase にすると「リーンAIスタートアップ」が
+     「リーン」/「AIスタートアップ」に割れ、ブランド名が壊れる。29 見出しで実測)。
+     代わりに、長すぎて anywhere に落ちる見出しだけ <span class="brk-mobile"> を
+     置き、ここで ZWSP を挿入して意味のある改行機会を 1 つ与える。
+     769px 以上では挿入されないので広い幅の表示は一切変わらない。 */
+  .brk-mobile::before{content:"\200B"}
   .hero-headline{text-wrap:balance !important}
   .problems-conclusion .pullquote{word-break:keep-all !important;line-break:strict !important}
   .hero-assurance{gap:6px !important}
@@ -607,6 +639,10 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
   .final-cta-primary{width:100%}
 }
 @media(max-width:390px){
+  /* ⚠️ この padding-inline は効いていない。上の max-width:768px ブロックの
+     `padding-inline:20px !important` に負けるため、実効値は 320px 幅でも 20px。
+     直すと ≤390px の全セクションの余白が動くので、意図的に現状維持している
+     (レイアウト計算をする時は 20px が正しい値)。 */
   .container,.container-wide{padding-inline:16px}
   .hero-headline{font-size:32px !important}
   /* 320px では 2 カラムだとセルが約 130px しかなく、
@@ -615,6 +651,13 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
   .after-items{grid-template-columns:1fr}
   .h-1{font-size:24px}
 }
+/* 320px 級では .vl-item の中央列が 102px しかなく、auto-phrase で文節境界に
+   折っても「STAGEスコアリング」(124px) 自体が収まらず anywhere が語中で割る。
+   固定列(48/56px)は維持し、余白と gap を詰めて中央列に 28px 譲る (→130px)。
+   ※ 375px では中央列 157px で足りているため、ここだけの調整に留める。 */
+@media(max-width:360px){
+  .vl-item{padding-inline:12px;gap:10px}
+}
 /* スマホ横向きは全機種 768px 超 (812/844/896/926/932) なので上のモバイル指定が
    一切効かない。固定バー(65px)が高さ375pxの17%を占め、最終行がバーの裏に入る。 */
 /* 横向きは固定バー(65px)が高さ375-430pxの15-17%を占め最終行がバーの裏に入る。
@@ -622,10 +665,66 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
 @media(orientation:landscape) and (max-height:500px){
   .sticky-bar-inner{height:52px}
   body{padding-bottom:52px}
+  /* 🚨 812px ではヘッダーに「ロゴ240px + 5リンク + 無料体験リンク + ボタン148px」が
+     収まらず、全リンクが 2 行に折れて「カリキュラ|ム」「講|師」「FA|Q」と割れていた
+     (幅 14-17px の押しても当たらないリンクが 7 個できていた)。
+     縦向き(≤768px)と同じ扱いに揃えてロゴだけにする。CTA は固定バーが担う。 */
+  .nav-links,.nav-trial-link,.nav-actions .btn{display:none !important}
+  .nav-inner{height:56px !important;overflow:hidden !important}
 }
 /* タップ領域はビューポート幅ではなく入力デバイスで判定する（横向きでも 44px 以上） */
 @media(pointer:coarse){
   .sticky-bar-actions .btn{min-height:46px}
+}
+/* ======================================================
+   タップ領域 44px (2026-07-25)
+   16 個の操作要素が 44px 未満だった (実測: ロゴ 26px / FAQ チップ 34px /
+   下線リンク 20-26px / SNS 36px / フッターリンク 16px)。
+   判定は「入力デバイス(coarse)」と「狭い幅」の和集合にする:
+     - 横向きスマホは 812px 以上あるので幅条件だけでは当たらない → coarse が必要
+     - デスクトップ Chromium は coarse を報告しない → 検証可能性のために幅も必要
+   下線付きリンクは border-bottom → text-decoration に替える。border は箱の
+   下端に付くので padding で広げると下線が文字から離れるが、text-decoration は
+   文字に付いてくるため見た目が変わらない。
+====================================================== */
+@media(pointer:coarse),(max-width:768px){
+  /* ロゴ 26 → 44。nav(56px) の内側で受け皿だけ広げるので見た目は不変 */
+  .nav-logo{min-height:44px}
+  /* FAQ 絞り込みチップ 34 → 44 (used height = max(min-height, height) で min が勝つ) */
+  .faq-chips .chip{min-height:44px}
+  /* 単独リンク 20 → 45 */
+  .faq-more a{display:inline-block;padding-block:11px;border-bottom:0;
+    text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
+  /* 最終 CTA の下線リンク 26 → 45 */
+  .final-cta-link{padding-block:11px;border-bottom:0;
+    text-decoration:underline;text-decoration-color:rgba(255,255,255,.4);text-underline-offset:3px}
+  /* SNS 36 → 44。円の見た目は変えず ::after で受け皿だけ広げる。
+     🚨 inset は「padding ボックス」基準なので border 1px 分を足して -5px にする
+     (-4px だと border 分だけ足りず実測 42px。elementFromPoint で確認済み)。
+     🚨 border-radius を付けると円形にクリップされ四隅が当たらないので付けない
+     (透明なので見た目に影響しない)。gap:10px に対し左右 4px の拡張なので
+     隣の受け皿とは 2px 空き、重ならない。 */
+  .footer-socials .social-icon{position:relative}
+  .footer-socials .social-icon::after{content:'';position:absolute;inset:-5px}
+  /* フッターのリンク列 16 → 45。gap を padding に置き換え、受け皿を隙間なく
+     敷き詰める (リンクの間に「押しても何も起きない帯」を作らない) */
+  .footer-links{gap:0}
+  .footer-links a{display:block;padding-block:12px}
+  /* 🚨 固定バーの「無料体験」は class="sticky-bar-ghost btn-sm" で **btn を持たない**
+     ため、上の `.sticky-bar-actions .btn{min-height:46px}` に一致しない。
+     display:none になるのも ≤560px だけなので 561px 以上では 40px のまま残っていた。 */
+  .sticky-bar-ghost{min-height:44px}
+  /* 🚨 タブレット (幅 >768px かつ coarse、例: iPad 横 1024px) ではナビが表示される。
+     素のインライン <a> なので当たり判定が 1 行分 (約23px) しかない。
+     nav-inner は 68px あるので padding で 44px にしても収まる。
+     ※ 横向きスマホ (≤500px 高) は下の landscape ブロックでナビ自体を隠している。 */
+     padding-block は 12px（11px だと 13px フォントの nav-trial-link が 43px で 1px 足りない）。
+     「講師」「FAQ」は 2-3 文字で幅 27-28px しかないので padding-inline も足すが、
+     その分 gap を 32→12px に減らして見た目の間隔 (12+10+10=32px) を保つ。 */
+  .nav-links{gap:12px}
+  .nav-links a,.nav-trial-link{display:inline-block;padding-block:12px}
+  .nav-links a{padding-inline:10px}
+  .nav-actions .btn{min-height:44px}
 }
 </style>
 </head>
@@ -669,7 +768,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <h1 class="hero-headline h-display reveal reveal-d1">
       <span class="block">最短12週間で、<em style="color:var(--accent);font-style:normal">生成AI</em>を武器に</span>
-      <span class="block">新規事業を<em style="color:var(--accent);font-style:normal">PMF</em>まで導く。</span>
+      <!-- <wbr> = 改行「機会」。keep-all だと「新規事業をPMFまで導く。」が句読点を含まない
+           1 トークン (32px で 384px) になり、335px の箱に収まらず overflow-wrap:anywhere が
+           語中で割っていた (「…導」/「く。」)。助詞「を」の後に機会を 1 つ足すだけで
+           「新規事業を」/「PMFまで導く。」に落ち着く。1 行に収まる幅では不活性。 -->
+      <span class="block">新規事業を<wbr><em style="color:var(--accent);font-style:normal">PMF</em>まで導く。</span>
     </h1>
     <p class="hero-lead reveal reveal-d2">最短12週間のカリキュラム。自分のペースで進められるサブスクリプション型の実践プログラム。</p>
     <div class="hero-ctas reveal reveal-d3">
@@ -687,7 +790,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="stats-grid">
         <div class="stat-item"><div class="stat-num-hero" data-count="10000" data-suffix="+"></div><div class="stat-label">累計受講者数</div></div>
         <div class="stat-item"><div class="stat-num-hero" data-count="161" data-suffix=""></div><div class="stat-label">動画本数</div></div>
-        <div class="stat-item"><div class="stat-num-hero" data-count="20" data-suffix="名"></div><div class="stat-label">ファウンディング枠</div></div>
         <div class="stat-item"><div class="stat-num-hero" data-count="12" data-suffix="週"></div><div class="stat-label">プログラム期間</div></div>
       </div>
     </div>
@@ -724,9 +826,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="hscroll" style="margin-top:72px">
       <div class="hscroll-hint" aria-hidden="true">スクロールできます<svg width="15" height="10" viewBox="0 0 15 10" fill="none"><path d="M1 5h12M9.5 1.5L13 5l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div data-hscroll style="overflow-x:auto;-webkit-overflow-scrolling:touch"><div class="compare-table-inner reveal" style="display:grid;grid-template-columns:120px 1fr 1fr;gap:1px;background:var(--dark-line);border:1px solid var(--dark-line);border-radius:12px;overflow:hidden;min-width:480px">
+      <!-- min-width は 480px だと見出し列の内容幅が 129px しかなく、20px の
+           「リーンAIスタートアップ」(239px) が anywhere で語中割れしていた
+           (「リーンAIスタ」/「ートアップ」)。520px にすると内容幅 149px となり、
+           下の <wbr> による「リーンAI」/「スタートアップ」(140px) が収まる。
+           デスクトップでは 1fr が min-width より広いので影響しない。 -->
+      <div data-hscroll style="overflow-x:auto;-webkit-overflow-scrolling:touch"><div class="compare-table-inner reveal" style="display:grid;grid-template-columns:120px 1fr 1fr;gap:1px;background:var(--dark-line);border:1px solid var(--dark-line);border-radius:12px;overflow:hidden;min-width:520px">
       <div class="ct-cell ct-dim"><div class="mono-sm">DIMENSION</div></div>
-      <div class="ct-cell ct-new"><div class="ct-head-label" style="color:var(--accent-2)">LEAN AI STARTUP</div><div class="ct-head-title">リーンAIスタートアップ</div></div>
+      <div class="ct-cell ct-new"><div class="ct-head-label" style="color:var(--accent-2)">LEAN AI STARTUP</div><div class="ct-head-title">リーンAI<wbr>スタートアップ</div></div>
       <div class="ct-cell ct-old"><div class="ct-head-label">CONVENTIONAL</div><div class="ct-head-title">従来の起業</div></div>
       <div class="ct-cell ct-dim"><div class="ct-dim-label">コスト・速度</div></div><div class="ct-cell ct-new"><p class="ct-text-new"><span class="check-icon">✓</span>リーンAIスタートアップ4フェーズで12週間。最速でPMFに到達</p></div><div class="ct-cell ct-old"><p class="ct-text"><span class="cross-icon">✕</span>検証に数ヶ月〜数年。資金が尽きるリスク</p></div>
       <div class="ct-cell ct-dim"><div class="ct-dim-label">アイデア</div></div><div class="ct-cell ct-new"><p class="ct-text-new"><span class="check-icon">✓</span>「100本の矢戦略」で多数の仮説を並行生成・選別</p></div><div class="ct-cell ct-old"><p class="ct-text"><span class="cross-icon">✕</span>1つのアイデアに固執し、感情的に手放せない</p></div>
@@ -956,7 +1063,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container-wide">
     <div class="reveal" style="text-align:center;max-width:1100px;margin-inline:auto">
       <div class="eyebrow" style="justify-content:center">Trusted by</div>
-      <h2 class="h-1 mt-4">累計1万人以上が受講した企業研修プログラム、そのエッセンス。</h2>
+      <!-- .brk-mobile = 768px 以下でだけ有効になる改行機会 (CSS が ZWSP を挿入)。
+           keep-all だと「累計1万人以上が受講した企業研修プログラム、」が 1 トークンに
+           なり、480-620px で anywhere が「プログ|ラム」と語中で割ったり
+           「、」を行頭に送っていた。h2 全体を auto-phrase にすると
+           「リーンAIスタートアップ」が「リーン|AIスタートアップ」に割れるので採らない。 -->
+      <h2 class="h-1 mt-4">累計1万人以上が受講した<span class="brk-mobile"></span>企業研修プログラム、そのエッセンス。</h2>
     </div>
     <div class="ticker-wrap">
       <div class="ticker">
