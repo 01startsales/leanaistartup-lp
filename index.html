@@ -151,8 +151,8 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;line-
 .assurance-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(255,255,255,.22);border-radius:var(--r-pill);background:rgba(255,255,255,.08);backdrop-filter:blur(10px);color:#fff;font-size:13px;font-weight:500;white-space:nowrap}
 .assurance-chip svg{color:var(--accent);flex-shrink:0}
 .hero-stats{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.14);background:rgba(10,14,28,.82);backdrop-filter:blur(14px)}
-/* ファウンディング枠(20名)の統計は同名プランの廃止に伴い削除 → 4 列から 3 列へ
-   (4 列のままだと 3 項目が左に寄り右端に空きセルができる) */
+/* 統計は 4 項目 → 3 項目 (2026-07-25 に 1 項目を廃止) に伴い 3 列へ。
+   4 列のままだと 3 項目が左に寄り右端に空きセルができる */
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr)}
 .stat-item{padding:32px 28px;border-left:1px solid rgba(255,255,255,.14)}
 .stat-item:first-child{border-left:none}
