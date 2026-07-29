@@ -214,24 +214,37 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink-3);font-s
       var qaP = document.createElement('p');
       qaP.className = 'qa-note';
       qaP.textContent = 'ご提案の内容について、その場で音声でお答えします（最長5分・無料）。';
+      // 🚨 照合成功と同時にアバターを起動しない。接続した瞬間からクレジット（2cr/分）と
+      //    5分のセッション上限が走り、動画（数分）を見ている間に切れてしまう。
+      //    iframe は待機画面のまま埋め込み、「質問する」ボタンで proposal-lead を送って起動する。
+      var qaBtn = mkBtn('🎙 AIシバサキに質問する', 'btn-ghost', function () {
+        if (!qaReady) return;   // widget の listener が張られる前の空振りを防ぐ
+        qaStarted = true;
+        qaBtn.hidden = true;
+        try { qf.contentWindow.postMessage({ type: 'proposal-lead', viewerToken: viewerToken }, location.origin); } catch (err) {}
+      });
       var qf = document.createElement('iframe');
       qf.id = 'aiFrame';
       qf.src = 'ai-shibasaki-test.html?mode=proposal&v=20260729a';   // widget 更新時は ?v= を bump
       qf.title = 'AIシバサキに質問';
       qf.setAttribute('allow', 'microphone; autoplay; fullscreen; clipboard-write');
       qf.style.height = '640px';
-      qa.appendChild(qaH); qa.appendChild(qaP); qa.appendChild(qf);
+      qa.appendChild(qaH); qa.appendChild(qaP); qa.appendChild(qaBtn); qa.appendChild(qf);
       card.appendChild(qa);
 
       // widget との postMessage 契約。
       // 🚨 既存の startWatch のリスナは context!=='player.js' で捨てるため相乗りできない（別リスナ必須）。
       // 🚨 viewerToken は postMessage でのみ渡す（iframe の URL に載せると Referer/履歴に残る）。
+      var qaReady = false, qaStarted = false;
       window.addEventListener('message', function (e) {
         if (e.origin !== location.origin) return;    // 同一オリジンの widget のみ
         var m = e.data || {};
         if (m.type === 'proposal-ready') {
-          // ready を受けるたびに再送 = 冪等ハンドシェイク（load 契機だけでは module import 前で取りこぼす）
-          try { qf.contentWindow.postMessage({ type: 'proposal-lead', viewerToken: viewerToken }, location.origin); } catch (err) {}
+          qaReady = true;
+          // ボタンを押した後に widget が再読込された場合も、押下済みなら再送する（冪等）
+          if (qaStarted) {
+            try { qf.contentWindow.postMessage({ type: 'proposal-lead', viewerToken: viewerToken }, location.origin); } catch (err) {}
+          }
         } else if (m.type === 'ai-shibasaki-height' && m.height) {
           qf.style.height = Math.max(360, Math.min(2000, m.height)) + 'px';
         } else if (m.type === 'proposal-qa') {
