@@ -71,6 +71,11 @@ button{font:inherit;cursor:pointer}
 .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .actions{display:flex;flex-wrap:wrap;gap:10px}
 .actions .btn{flex:1 1 220px}
+#qa{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+#qa h2{font-size:17px;margin-bottom:4px}
+.qa-note{color:var(--ink-2);font-size:13.5px;margin-bottom:14px}
+#aiFrame{width:100%;border:1px solid var(--line);border-radius:var(--r-md);
+  background:var(--surface);transition:height .25s ease}
 footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink-3);font-size:12.5px}
 @media (max-width:520px){
   main{padding:26px 0 48px}
@@ -199,6 +204,42 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink-3);font-s
       track('book_click'); window.open(d.bookingUrl, '_blank', 'noopener');
     }));
     card.appendChild(acts);
+
+    // ── AIシバサキ質疑応答（qaEnabled のときだけ描画。無効なら痕跡も残さない） ──
+    if (d.qaEnabled === true) {
+      var qa = document.createElement('div');
+      qa.id = 'qa';
+      var qaH = document.createElement('h2');
+      qaH.textContent = 'ご質問は AIシバサキへ';
+      var qaP = document.createElement('p');
+      qaP.className = 'qa-note';
+      qaP.textContent = 'ご提案の内容について、その場で音声でお答えします（最長5分・無料）。';
+      var qf = document.createElement('iframe');
+      qf.id = 'aiFrame';
+      qf.src = 'ai-shibasaki-test.html?mode=proposal&v=20260729a';   // widget 更新時は ?v= を bump
+      qf.title = 'AIシバサキに質問';
+      qf.setAttribute('allow', 'microphone; autoplay; fullscreen; clipboard-write');
+      qf.style.height = '640px';
+      qa.appendChild(qaH); qa.appendChild(qaP); qa.appendChild(qf);
+      card.appendChild(qa);
+
+      // widget との postMessage 契約。
+      // 🚨 既存の startWatch のリスナは context!=='player.js' で捨てるため相乗りできない（別リスナ必須）。
+      // 🚨 viewerToken は postMessage でのみ渡す（iframe の URL に載せると Referer/履歴に残る）。
+      window.addEventListener('message', function (e) {
+        if (e.origin !== location.origin) return;    // 同一オリジンの widget のみ
+        var m = e.data || {};
+        if (m.type === 'proposal-ready') {
+          // ready を受けるたびに再送 = 冪等ハンドシェイク（load 契機だけでは module import 前で取りこぼす）
+          try { qf.contentWindow.postMessage({ type: 'proposal-lead', viewerToken: viewerToken }, location.origin); } catch (err) {}
+        } else if (m.type === 'ai-shibasaki-height' && m.height) {
+          qf.style.height = Math.max(360, Math.min(2000, m.height)) + 'px';
+        } else if (m.type === 'proposal-qa') {
+          if (m.phase === 'start') track('qa_start');
+          if (m.phase === 'end') track('qa_end');
+        }
+      });
+    }
 
     var note = document.createElement('p');
     note.className = 'note';
