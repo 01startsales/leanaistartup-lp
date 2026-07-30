@@ -74,7 +74,8 @@ button{font:inherit;cursor:pointer}
 #qa{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
 #qa h2{font-size:17px;margin-bottom:4px}
 .qa-note{color:var(--ink-2);font-size:13.5px;margin-bottom:14px}
-#aiFrame{width:100%;border:1px solid var(--line);border-radius:var(--r-md);
+/* 「質問する」ボタンと待機中のアバター枠が接触していたので間を開ける（ボタン非表示時も効く） */
+#aiFrame{width:100%;margin-top:18px;border:1px solid var(--line);border-radius:var(--r-md);
   background:var(--surface);transition:height .25s ease}
 /* 予約モーダル: 視聴ページから遷移させずに HubSpot カレンダーを開く */
 .bk-modal{position:fixed;inset:0;z-index:300;background:rgba(10,14,28,.55);
