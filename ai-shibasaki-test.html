@@ -138,6 +138,9 @@ const SESSION_URL = IS_PROPOSAL ? 'https://keisuke.app.n8n.cloud/webhook/pv-qa-s
                                 : 'https://keisuke.app.n8n.cloud/webhook/liveavatar-session';
 const $ = (id) => document.getElementById(id);
 let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false, connected = false;
+// トークン発行時にサーバが返す短命の nonce。会話終了の記録に添えて「トークンを発行した本人か」を
+// サーバ側で照合させる（無認証 webhook にデータを再送されてメールが再送される穴を塞ぐため）。
+let laNonce = '';
 let qaMaxSec = 0, qaTimerIv = 0;   // 提案モード: セッション上限（サーバが max_sec で返す）のカウントダウン
 
 function startQaTimer(){
@@ -197,7 +200,7 @@ function endHandler(){
     ? { viewerToken: lead.viewerToken, transcript: tx,
         durationSec: Math.round((Date.now()-startedAt)/1000),
         pageUrl: location.origin + location.pathname }
-    : { company: lead.company, name: lead.name, email: lead.email,
+    : { company: lead.company, name: lead.name, email: lead.email, nonce: laNonce,
         transcript: tx, durationSec: Math.round((Date.now()-startedAt)/1000), pageUrl: location.href };
   fetch(SESSION_URL, {method:'POST',
     headers: IS_PROPOSAL ? {} : {'Content-Type':'application/json'},
@@ -222,6 +225,7 @@ async function startAvatar(){
       : {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)});
     const data = await r.json();
     if (!data.session_token) throw new Error('token取得に失敗しました');
+    laNonce = String(data.nonce || '');                        // LP 版のみ返る（提案モードは viewerToken で照合）
     if (IS_PROPOSAL) qaMaxSec = Number(data.max_sec) || 300;   // サーバの上限に追従（取れなければ5分）
     session = new LiveAvatarSession(data.session_token);
     const vid = $('avatarVideo');
