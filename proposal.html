@@ -247,7 +247,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink-3);font-s
       }
       var qf = document.createElement('iframe');
       qf.id = 'aiFrame';
-      qf.src = 'ai-shibasaki-test.html?mode=proposal&v=20260730a';   // widget 更新時は ?v= を bump
+      qf.src = 'ai-shibasaki-test.html?mode=proposal&v=20260731a';   // widget 更新時は ?v= を bump
       qf.title = 'AIシバサキに質問';
       qf.setAttribute('allow', 'microphone; autoplay; fullscreen; clipboard-write');
       qf.style.height = '640px';
@@ -335,28 +335,50 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink-3);font-s
   // ── 視聴の計測 ──
   // 🚨 Bunny の再生状態はクロスオリジンで直接読めない。まず player.js を試し、
   //    応答が無ければ「プレーヤーがクリックされた + 画面が見えている秒数」で代替する。
+  //
+  // 🚨 2026-07-31 まで watch_seconds は全件 0 だった。原因は 4 つ（すべてここで直している）:
+  //    ① 購読の申し込みを iframe 作成直後に 1 回だけ送っていた。Bunny の受け口ができるのは
+  //       約 1.1 秒後なので捨てられていた → `ready` を受けてから送り直す
+  //    ② `gotPlayerJs` を player.js の**任意の**メッセージ（= ready）で立てていたため、
+  //       購読が失敗していても予備の計測まで止まっていた → timeupdate が実際に届いた時だけ立てる
+  //    ③ `m.value.seconds` の truthy 判定で **0 秒を捨てていた** → 数値かどうかで判定する
+  //    ④ `playing` を false に戻す処理がどこにも無く、一時停止・終了後・PDF 閲覧中・
+  //       AI 質疑応答中（最長 5 分）も加算され続けた → pause / ended で降ろす
   function startWatch() {
     var f = q('player');
-    var gotPlayerJs = false;
+    var gotPlayerJs = false;      // timeupdate が実際に届いたか（= 再生位置を信用してよいか）
+    var subscribed = false;
+
+    // 🚨 記録するのは「到達した最大位置」であって「実際に見た合計時間」ではない。
+    //    飛ばし見されると両者はずれるが、営業判断には到達位置のほうが有用。
+    function subscribe() {
+      try {
+        ['play', 'pause', 'ended', 'timeupdate'].forEach(function (ev) {
+          f.contentWindow.postMessage(JSON.stringify(
+            { context: 'player.js', method: 'addEventListener', value: ev }), '*');
+        });
+        subscribed = true;
+      } catch (e) {}
+    }
 
     window.addEventListener('message', function (e) {
       if (!e.data) return;
       var m = e.data;
       if (typeof m === 'string') { try { m = JSON.parse(m); } catch (err) { return; } }
       if (m.context !== 'player.js') return;
-      gotPlayerJs = true;
-      if (m.event === 'play' && !playing) { playing = true; track('play'); }
-      if (m.event === 'ended') { track('ended', { watchSeconds: watchSec }); }
-      if (m.event === 'timeupdate' && m.value && m.value.seconds) {
+      // Bunny 側の受け口ができた合図。ここで初めて購読が通る
+      if (m.event === 'ready' || !subscribed) subscribe();
+      if (m.event === 'play') { if (!playing) { playing = true; track('play'); } }
+      if (m.event === 'pause') { playing = false; }
+      if (m.event === 'ended') { playing = false; track('ended', { watchSeconds: watchSec, estimated: !gotPlayerJs }); }
+      if (m.event === 'timeupdate' && m.value && typeof m.value.seconds === 'number') {
+        gotPlayerJs = true;                       // 再生位置が本当に届いた時だけ予備計測を止める
         watchSec = Math.max(watchSec, Math.round(m.value.seconds));
       }
     });
-    try {
-      ['play', 'ended', 'timeupdate'].forEach(function (ev) {
-        f.contentWindow.postMessage(JSON.stringify(
-          { context: 'player.js', method: 'addEventListener', value: ev }), '*');
-      });
-    } catch (e) {}
+    subscribe();                       // 1 回目（間に合えば儲けもの）
+    setTimeout(subscribe, 1500);       // 🚨 受け口ができる約 1.1 秒後に必ず送り直す
+    setTimeout(subscribe, 4000);       // 回線が遅い端末向けの保険
 
     // クロスオリジン iframe のクリックは blur で検知できる
     window.addEventListener('blur', function () {
@@ -364,14 +386,23 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--ink-3);font-s
       if (document.activeElement === f) { playing = true; track('play'); }
     });
 
+    // 🚨 予備の計測が数えているのは「ページが見えていた秒数」で、
+    //    「動画がどこまで進んだか」とは意味が違う。同じ欄に入れると到達率が水増しされるので、
+    //    estimated フラグを添えてサーバ側で区別できるようにする（到達率の分子には使わせない）。
     setInterval(function () {
       if (!playing || document.visibilityState !== 'visible') return;
       if (!gotPlayerJs) watchSec++;
-      if (watchSec - sentSec >= 30) { sentSec = watchSec; track('progress', { watchSeconds: watchSec }); }
+      if (watchSec - sentSec >= 30) {
+        sentSec = watchSec;
+        track('progress', { watchSeconds: watchSec, estimated: !gotPlayerJs });
+      }
     }, 1000);
 
     var flush = function () {
-      if (playing && watchSec > sentSec) { sentSec = watchSec; track('progress', { watchSeconds: watchSec }); }
+      if (playing && watchSec > sentSec) {
+        sentSec = watchSec;
+        track('progress', { watchSeconds: watchSec, estimated: !gotPlayerJs });
+      }
     };
     window.addEventListener('pagehide', flush);
     document.addEventListener('visibilitychange', function () {
