@@ -43,6 +43,15 @@
   @keyframes sp{to{transform:rotate(360deg)}}
   .photo-caption{margin-top:12px;font-size:13px;color:#5a6072;text-align:center;line-height:1.75}
   .photo-caption strong{color:var(--navy)}
+  /* 提案動画モード: アバターを主役に大きく表示（右の対話パネルは従、待機中は単独センター） */
+  body.proposal .lead-layout{grid-template-columns:minmax(320px,1fr) minmax(250px,320px)}
+  body.proposal .lead-layout.waiting{grid-template-columns:minmax(280px,440px);justify-content:center}
+  @media(max-width:700px){body.proposal .lead-layout,body.proposal .lead-layout.waiting{grid-template-columns:1fr}}
+  /* セッション上限（5分）のカウントダウン。上限があることを会話中ずっと見せる */
+  .time-badge{position:absolute;top:10px;right:10px;z-index:3;background:rgba(11,16,32,.74);
+    color:#fff;font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+  .time-badge.warn{background:#c0392b}
+  .time-badge[hidden]{display:none!important}
   .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .controls input{flex:1;min-width:150px;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px}
   .btn{appearance:none;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
@@ -80,6 +89,7 @@
         <img id="posterImg" src="images/shibasaki-waiting.jpg?v=20260524" alt="AIシバサキ（芝先 恵介）がオンラインで待機中">
         <video id="avatarVideo" autoplay playsinline hidden></video>
         <span class="online-badge"><span class="online-dot"></span>オンライン</span>
+        <span class="time-badge" id="qaTimer" hidden></span>
         <div id="status" hidden><div class="spin"></div><div id="statusText">接続中…</div></div>
         <button id="tapPlay" type="button" hidden><span class="tp-ico">▶</span>タップして会話を開始</button>
       </div>
@@ -128,6 +138,21 @@ const SESSION_URL = IS_PROPOSAL ? 'https://keisuke.app.n8n.cloud/webhook/pv-qa-s
                                 : 'https://keisuke.app.n8n.cloud/webhook/liveavatar-session';
 const $ = (id) => document.getElementById(id);
 let session = null, transcript = [], startedAt = 0, lead = {}, posted = false, started = false, connected = false;
+let qaMaxSec = 0, qaTimerIv = 0;   // 提案モード: セッション上限（サーバが max_sec で返す）のカウントダウン
+
+function startQaTimer(){
+  if (!qaMaxSec) return;
+  const el = $('qaTimer'), deadline = Date.now() + qaMaxSec*1000;
+  el.hidden = false;
+  const tick = () => {
+    const s = Math.max(0, Math.ceil((deadline - Date.now())/1000));
+    el.textContent = '⏱ 残り ' + Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+    el.classList.toggle('warn', s <= 60);
+    if (s <= 0) { el.textContent = '⏱ まもなく終了します'; clearInterval(qaTimerIv); }
+  };
+  tick(); qaTimerIv = setInterval(tick, 500);
+}
+function stopQaTimer(){ clearInterval(qaTimerIv); const el=$('qaTimer'); if(el) el.hidden = true; }
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 // 発話を1バブルにまとめる。SDKの USER_TRANSCRIPTION / AVATAR_TRANSCRIPTION は
@@ -160,6 +185,7 @@ function renderTranscript(){
 }
 function endHandler(){
   if (posted) return; posted = true;
+  stopQaTimer();
   // 接続して会話が成立した場合のみ HubSpot 記録 + 完了画面を表示
   // (接続失敗・クレジット切れ等で会話が無い場合は記録せず、エラー表示のまま維持)
   if (!connected || transcript.length === 0) return;
@@ -181,8 +207,9 @@ function endHandler(){
 }
 
 async function startAvatar(){
-  // 右: フォーム → 対話パネル
+  // 右: フォーム → 対話パネル（提案モードは待機中に隠していた対話パネルをここで出す）
   $('hsform').style.display = 'none'; $('convo').hidden = false;
+  if (IS_PROPOSAL) { $('rightCard').hidden = false; $('leadLayout').classList.remove('waiting'); }
   // 左: 接続中オーバーレイ
   $('status').hidden = false; $('status').style.display = 'flex';
   const spinnerShownAt = Date.now();   // 「接続中…」を最低 MIN_SPINNER_MS 表示する基準
@@ -195,6 +222,7 @@ async function startAvatar(){
       : {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)});
     const data = await r.json();
     if (!data.session_token) throw new Error('token取得に失敗しました');
+    if (IS_PROPOSAL) qaMaxSec = Number(data.max_sec) || 300;   // サーバの上限に追従（取れなければ5分）
     session = new LiveAvatarSession(data.session_token);
     const vid = $('avatarVideo');
     // 左: 写真→ライブ映像に切替＋スピナー解除（接続成立の確定処理）
@@ -231,6 +259,8 @@ async function startAvatar(){
     session.on(AgentEventsEnum.USER_TRANSCRIPTION,   p => { if(p&&p.text){ addMsg('user',   p.text, true); }});
     session.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, p => { if(p&&p.text){ addMsg('avatar', p.text, true); }});
     startedAt = Date.now();
+    // タイマーはサーバ課金の開始（session.start）より先に起動 = 表示が数秒早く0になる安全側
+    if (IS_PROPOSAL) startQaTimer();
     await session.start();
     tryAttach();
     // フォールバック: start後に映像ストリームが来ていればスピナー解除（最大3回チェック）
@@ -243,6 +273,7 @@ async function startAvatar(){
     try { await session.voiceChat.start({ defaultMuted:false }); $('micBtn').textContent='🎤 マイク: ON'; }
     catch(err){ console.warn('voiceChat', err); $('micBtn').textContent='🎤 マイク: 不可'; }
   } catch (err) {
+    stopQaTimer();
     $('status').hidden = true; $('status').style.display='none'; $('convo').hidden = true; $('hsform').style.display='';
     const el=$('formErr'); el.hidden=false; el.textContent='接続エラー: '+(err.message||err)+'  時間をおいて再度お試しください。';
   }
@@ -295,6 +326,15 @@ if (!IS_PROPOSAL) {
   //    widget 側から proposal-ready を送り、親は受け取るたびに proposal-lead を再送する（冪等）。
   $('hsform').style.display = 'none';
   $('leftCaption').innerHTML = 'ご提案内容について、<strong>AIシバサキ</strong>がお答えします。';
+  // アバターを主役に大きく表示。待機中は空の対話パネルを見せない（開始時に startAvatar が出す）
+  document.body.classList.add('proposal');
+  $('leadLayout').classList.add('waiting');
+  $('rightCard').hidden = true;
+  // 完了画面の予約 CTA は親（視聴ページ）のモーダルで開き、ページから遷移させない
+  $('doneBook').addEventListener('click', function(e){
+    e.preventDefault();
+    try { parent.postMessage({type:'proposal-book'}, '*'); } catch(_){}
+  });
   window.addEventListener('message', function(e){
     if (e.origin !== location.origin) return;   // 同一オリジンの親（視聴ページ）のみ受け付ける
     if (e.data && e.data.type === 'proposal-lead' && e.data.viewerToken && !started) {
